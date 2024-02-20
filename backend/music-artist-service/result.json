@@ -1,0 +1,43 @@
+[
+    {
+        "id": "8009d8eb-2c2b-4f02-9516-878376bc488b",
+        "createdAt": "2024-02-20T10:51:48.538Z",
+        "updatedAt": "2024-02-20T10:51:48.538Z",
+        "deletedAt": "2024-02-20T10:51:48.538Z",
+        "version": 1,
+        "name": "Saison",
+        "albumPicture": "http://google.com/kerchak-picture",
+        "description": "Album kerchak",
+        "releaseData": "2021-08-02",
+        "songs": [
+            {
+                "id": "cc244191-892d-47d4-b932-a195f68dab25",
+                "createdAt": "2024-02-20T11:07:54.300Z",
+                "updatedAt": "2024-02-20T11:07:54.300Z",
+                "deletedAt": "2024-02-20T11:07:54.300Z",
+                "version": 0,
+                "name": "saison2",
+                "songDuration": 2
+            },
+            {
+                "id": "3a9b25ba-580a-47c8-9c40-bc13e95de575",
+                "createdAt": "2024-02-20T11:08:21.786Z",
+                "updatedAt": "2024-02-20T11:08:21.786Z",
+                "deletedAt": "2024-02-20T11:08:21.786Z",
+                "version": 0,
+                "name": "Beugeu",
+                "songDuration": 2
+            }
+        ],
+        "artist": {
+            "id": "658f3b23-0473-410b-b665-5de36c703e14",
+            "createdAt": "2024-02-20T10:51:20.018Z",
+            "updatedAt": "2024-02-20T10:51:20.018Z",
+            "deletedAt": "2024-02-20T10:51:20.018Z",
+            "version": 1,
+            "pseudo": "kerchak",
+            "profilePicture": "http://local",
+            "description": "un gars dur"
+        }
+    }
+]

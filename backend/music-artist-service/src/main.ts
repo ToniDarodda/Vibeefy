@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+  const appMicro = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
       transport: Transport.TCP,
@@ -14,6 +14,6 @@ async function bootstrap() {
       },
     },
   );
-  await app.listen();
+  await appMicro.listen();
 }
 bootstrap();

@@ -1,7 +1,6 @@
-// app.module.ts ou un module dédié dans user-management-service
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UserService } from './app.service'
+import { UserService } from './app.service';
 import { UserController } from './app.controller';
 
 @Module({
