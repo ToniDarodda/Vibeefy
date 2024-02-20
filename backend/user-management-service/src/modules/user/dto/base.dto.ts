@@ -12,24 +12,24 @@ export class UserBaseDTO {
   id: string;
 
   @ApiProperty({
-    example: '',
-    description: '',
+    example: 'Toni',
+    description: 'Firstname of user',
   })
   @IsNotEmpty()
   @IsString()
   firstName: string;
 
   @ApiProperty({
-    example: '',
-    description: '',
+    example: 'Da rodda',
+    description: 'Lastname of user',
   })
   @IsNotEmpty()
   @IsString()
   lastName: string;
 
   @ApiProperty({
-    example: '',
-    description: '',
+    example: 'toni.da.rodda.dev@gmail.pro@gmail.com',
+    description: 'Email of user',
   })
   @IsNotEmpty()
   @IsString()
@@ -37,8 +37,8 @@ export class UserBaseDTO {
   email: string;
 
   @ApiProperty({
-    example: '',
-    description: '',
+    example: 'test1234',
+    description: 'Password of user',
   })
   @IsNotEmpty()
   @IsString()
@@ -46,6 +46,8 @@ export class UserBaseDTO {
 }
 
 export class UserCreate extends OmitType(UserBaseDTO, ['id']) {}
+
+export class UserLogin extends PickType(UserBaseDTO, ['email', 'password']) {}
 
 export class UserGetById extends PickType(UserBaseDTO, ['id']) {}
 

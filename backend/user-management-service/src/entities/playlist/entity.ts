@@ -26,7 +26,7 @@ export class Playlist extends Common {
   name: string;
 
   @Column('boolean', { name: 'public', default: false })
-  public?: boolean;
+  isPublic?: boolean;
 
   @OneToMany(
     'PlaylistSong',

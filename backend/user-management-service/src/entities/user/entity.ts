@@ -3,7 +3,7 @@ import { Common } from '../common/entity';
 import { Playlist } from '../playlist/entity';
 import { pbkdf2Sync, randomBytes } from 'crypto';
 
-const { SALT } = process.env;
+const SALT = ">mA3%?9[RoJH>09+HWuDLdb/6ay'JF*8";
 
 @Entity()
 export class User extends Common {

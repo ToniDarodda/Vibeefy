@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user/entity';
 import { Repository } from 'typeorm';
-import { UserCreate, UserPatch } from '../dto/base.dto';
+import { UserCreate, UserLogin, UserPatch } from '../dto/base.dto';
 
 @Injectable()
 export class UserService {
@@ -16,6 +16,18 @@ export class UserService {
         ...data,
       }),
     );
+  }
+
+  async loginUser({ email, password }: UserLogin): Promise<User> {
+    const retrievedUser = await this.userRepository.findOneBy({ email });
+
+    const isPasswordCorrect = await retrievedUser.checkPassword(password);
+
+    if (isPasswordCorrect) {
+      return retrievedUser;
+    }
+
+    return null;
   }
 
   async getUser(id: string): Promise<User> {
