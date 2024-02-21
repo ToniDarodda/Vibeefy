@@ -2,6 +2,7 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 import { Common } from '../common/entity';
 import { Playlist } from '../playlist/entity';
 import { pbkdf2Sync, randomBytes } from 'crypto';
+import { LovedSong } from '../lovedSong/entity';
 
 const SALT = ">mA3%?9[RoJH>09+HWuDLdb/6ay'JF*8";
 
@@ -21,6 +22,9 @@ export class User extends Common {
 
   @OneToMany(() => Playlist, (playlist) => playlist.user)
   playlist: Playlist;
+
+  @OneToMany(() => LovedSong, (lovedSong) => lovedSong.user)
+  lovedSong: LovedSong;
 
   @BeforeInsert()
   @BeforeUpdate()

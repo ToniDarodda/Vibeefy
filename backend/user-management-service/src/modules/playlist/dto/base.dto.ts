@@ -1,15 +1,16 @@
 import { ApiProperty, OmitType, PickType } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
-export class BasePlaylistDto {
+class BasePlaylistDto {
   @ApiProperty({
     example: 'cb638b04-44cc-432e-bfb5-7a971edcdb96',
-    description: 'User id',
+    description: 'Playlist id',
   })
   @IsUUID()
   @IsNotEmpty()
   @IsString()
   id: string;
+
   @ApiProperty({
     example: 'The playlist de merde',
     description: 'Name of the playlist',
@@ -25,6 +26,32 @@ export class BasePlaylistDto {
   @IsOptional()
   isPublic?: string;
 }
+
+class BasePLaylistSongDTO {
+  @ApiProperty({
+    example: 'cb638b04-44cc-432e-bfb5-7a971edcdb96',
+    description: 'Playlist song id',
+  })
+  @IsUUID()
+  @IsNotEmpty()
+  @IsString()
+  id: string;
+
+  @ApiProperty({
+    example: 'cb638b04-44cc-432e-bfb5-7a971edcdb96',
+    description: 'Song id',
+  })
+  @IsUUID()
+  @IsNotEmpty()
+  @IsString()
+  songId: string;
+}
+
+export class PlaylistSongCreate extends OmitType(BasePLaylistSongDTO, ['id']) {}
+
+export class PlaylistSongDelete extends PickType(BasePLaylistSongDTO, [
+  'songId',
+]) {}
 
 export class PlaylistCreate extends OmitType(BasePlaylistDto, ['id']) {}
 

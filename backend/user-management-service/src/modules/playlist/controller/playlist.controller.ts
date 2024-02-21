@@ -1,28 +1,64 @@
 import {
-  Body,
   Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
   Post,
+  Body,
+  Param,
+  Get,
+  Patch,
+  Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
+import {
+  PlaylistCreate,
+  PlaylistSongCreate,
+  PlaylistPatch,
+} from '../dto/base.dto';
 import { PlaylistService } from '../service/playlist.service';
-import { PlaylistCreate, PlaylistPatch } from '../dto/base.dto';
-import { Playlist } from 'src/entities/playlist/entity';
+import { QueryFailedError } from 'typeorm';
+import { AuthToken } from 'src/decorators/auth.decorator';
+import { DecodedUserToken } from 'src/utils/jwt.util';
 
 @ApiTags('Playlist')
-@Controller('playlist')
+@Controller('playlists')
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
-  @Post(':userId')
-  createPlaylist(
-    @Body() data: PlaylistCreate,
-    @Param('userId') userId: string,
+  @Post()
+  createPlaylistForUser(
+    @Body() playlistData: PlaylistCreate,
+    @AuthToken() { userId }: DecodedUserToken,
   ): Promise<Playlist> {
-    return this.playlistService.createPlaylist(data, userId);
+    return this.playlistService.createPlaylist(playlistData, userId);
+  }
+
+  @Post(':playlistId/songs')
+  addSongToPlaylist(
+    @Param('playlistId') playlistId: string,
+    @Body() songData: PlaylistSongCreate,
+  ): Promise<PlaylistSong> {
+    return this.playlistService.addSongToPlaylist(playlistId, songData);
+  }
+
+  @Post(':playlistId/album/:albumId')
+  async addAlbumToPlaylist(
+    @Param('playlistId') playlistId: string,
+    @Param('albumId') albumId: string,
+  ): Promise<PlaylistSong[]> {
+    try {
+      return await this.playlistService.addAlbumToPlaylist(albumId, playlistId);
+    } catch (err) {
+      if (err instanceof QueryFailedError) {
+        throw new HttpException(
+          'Invalid input for albumId or playlistId',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   @Get(':playlistId')
@@ -30,26 +66,36 @@ export class PlaylistController {
     return this.playlistService.getPlaylistById(playlistId);
   }
 
-  @Get('/name/:name')
-  getPlaylistByName(@Param('name') name: string): Promise<Playlist> {
+  @Get('by-name/:name')
+  findPlaylistsByName(@Param('name') name: string): Promise<Playlist> {
     return this.playlistService.getPlaylistByName(name);
   }
 
-  @Get('/user/:userId')
-  getPlaylistByUserId(@Param('userId') userId: string): Promise<Playlist[]> {
+  @Get('by-user')
+  findPlaylistsByUserId(
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<Playlist[]> {
     return this.playlistService.getPlaylistByUserId(userId);
   }
 
   @Patch(':playlistId')
-  patchPlaylistById(
-    @Body() data: PlaylistPatch,
+  updatePlaylistById(
     @Param('playlistId') playlistId: string,
+    @Body() updateData: PlaylistPatch,
   ): Promise<number> {
-    return this.playlistService.patchPlaylistById(playlistId, data);
+    return this.playlistService.patchPlaylistById(playlistId, updateData);
   }
 
   @Delete(':playlistId')
-  deletePlaylistById(@Param('playlistId') playlistId: string): void {
-    return this.playlistService.deletePlaylistById(playlistId);
+  removePlaylistById(@Param('playlistId') playlistId: string): void {
+    this.playlistService.deletePlaylistById(playlistId);
+  }
+
+  @Delete(':playlistId/songs/:songId')
+  removeSongFromPlaylist(
+    @Param('playlistId') playlistId: string,
+    @Param('songId') songId: string,
+  ): void {
+    this.playlistService.deleteSongFromPlaylist(playlistId, songId);
   }
 }

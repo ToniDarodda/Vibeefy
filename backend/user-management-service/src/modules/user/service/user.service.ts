@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user/entity';
 import { Repository } from 'typeorm';
 import { UserCreate, UserLogin, UserPatch } from '../dto/base.dto';
+import { createAccessToken } from 'src/utils/jwt.util';
 
 @Injectable()
 export class UserService {
@@ -10,21 +11,25 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  async createUser(data: UserCreate): Promise<User> {
-    return this.userRepository.save(
+  async createUser(data: UserCreate): Promise<string> {
+    const user = await this.userRepository.save(
       this.userRepository.create({
         ...data,
       }),
     );
+
+    const accessToken = createAccessToken(user.id);
+
+    return accessToken;
   }
 
-  async loginUser({ email, password }: UserLogin): Promise<User> {
+  async loginUser({ email, password }: UserLogin): Promise<string> {
     const retrievedUser = await this.userRepository.findOneBy({ email });
 
     const isPasswordCorrect = await retrievedUser.checkPassword(password);
 
     if (isPasswordCorrect) {
-      return retrievedUser;
+      return createAccessToken(retrievedUser.id);
     }
 
     return null;

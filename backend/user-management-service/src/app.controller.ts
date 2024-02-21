@@ -1,9 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { UserService } from './app.service';
+import { ArtistService } from './app.service';
 
 @Controller()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: ArtistService) {}
 
   @Get('artist-info/:artistId')
   async getArtistInfo(@Param('artistId') artistId: string) {
