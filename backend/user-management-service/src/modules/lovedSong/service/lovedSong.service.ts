@@ -46,14 +46,11 @@ export class LovedSongService {
           id: userId,
         },
       },
-      relations: {
-        lovedSongToSong: true,
-      },
     });
   }
 
-  deleteLovedSong(songId: string): void {
-    this.lovedSongToSongRepository.delete({
+  async deleteLovedSong(songId: string): Promise<void> {
+    await this.lovedSongToSongRepository.delete({
       songId,
     });
   }

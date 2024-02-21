@@ -8,6 +8,7 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
@@ -35,11 +36,22 @@ export class PlaylistController {
   }
 
   @Post(':playlistId/songs')
-  addSongToPlaylist(
+  async addSongToPlaylist(
     @Param('playlistId') playlistId: string,
     @Body() songData: PlaylistSongCreate,
   ): Promise<PlaylistSong> {
-    return this.playlistService.addSongToPlaylist(playlistId, songData);
+    try {
+      return await this.playlistService.addSongToPlaylist(playlistId, songData);
+    } catch (err) {
+      if (err instanceof QueryFailedError) {
+        throw new HttpException(
+          'Invalid input for albumId or playlistId',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   @Post(':playlistId/album/:albumId')
@@ -56,14 +68,32 @@ export class PlaylistController {
           HttpStatus.BAD_REQUEST,
         );
       } else {
-        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
   }
 
   @Get(':playlistId')
-  getPlaylistById(@Param('playlistId') playlistId: string): Promise<Playlist> {
-    return this.playlistService.getPlaylistById(playlistId);
+  async getPlaylistById(
+    @Param('playlistId') playlistId: string,
+  ): Promise<Playlist> {
+    try {
+      return await this.playlistService.getPlaylistById(playlistId);
+    } catch (err) {
+      if (err instanceof QueryFailedError)
+        throw new HttpException(
+          'Invalid input for playlistId',
+          HttpStatus.BAD_REQUEST,
+        );
+      else throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get('by-user/me')
+  async findPlaylistsByUserId(
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<Playlist[]> {
+    return await this.playlistService.getPlaylistByUserId(userId);
   }
 
   @Get('by-name/:name')
@@ -71,31 +101,56 @@ export class PlaylistController {
     return this.playlistService.getPlaylistByName(name);
   }
 
-  @Get('by-user')
-  findPlaylistsByUserId(
-    @AuthToken() { userId }: DecodedUserToken,
-  ): Promise<Playlist[]> {
-    return this.playlistService.getPlaylistByUserId(userId);
-  }
-
   @Patch(':playlistId')
-  updatePlaylistById(
+  async updatePlaylistById(
     @Param('playlistId') playlistId: string,
     @Body() updateData: PlaylistPatch,
   ): Promise<number> {
-    return this.playlistService.patchPlaylistById(playlistId, updateData);
+    try {
+      return await this.playlistService.patchPlaylistById(
+        playlistId,
+        updateData,
+      );
+    } catch (err) {
+      if (err instanceof QueryFailedError)
+        throw new HttpException(
+          'Invalid input for playlistId',
+          HttpStatus.BAD_REQUEST,
+        );
+      else throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Delete(':playlistId')
-  removePlaylistById(@Param('playlistId') playlistId: string): void {
-    this.playlistService.deletePlaylistById(playlistId);
+  async removePlaylistById(
+    @Param('playlistId') playlistId: string,
+  ): Promise<void> {
+    try {
+      await this.playlistService.deletePlaylistById(playlistId);
+    } catch (err) {
+      if (err instanceof QueryFailedError)
+        throw new HttpException(
+          'Invalid input for playlistId',
+          HttpStatus.BAD_REQUEST,
+        );
+      else throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Delete(':playlistId/songs/:songId')
-  removeSongFromPlaylist(
+  async removeSongFromPlaylist(
     @Param('playlistId') playlistId: string,
     @Param('songId') songId: string,
-  ): void {
-    this.playlistService.deleteSongFromPlaylist(playlistId, songId);
+  ): Promise<void> {
+    try {
+      await this.playlistService.deleteSongFromPlaylist(playlistId, songId);
+    } catch (err) {
+      if (err instanceof QueryFailedError)
+        throw new HttpException(
+          'Invalid input for playlistId or songId',
+          HttpStatus.BAD_REQUEST,
+        );
+      else throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

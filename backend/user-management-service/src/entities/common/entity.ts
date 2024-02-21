@@ -1,5 +1,6 @@
 import {
   CreateDateColumn,
+  DeleteDateColumn,
   PrimaryGeneratedColumn,
   VersionColumn,
 } from 'typeorm';
@@ -20,7 +21,7 @@ export abstract class Common {
   updatedAt: Date;
 
   @Exclude()
-  @CreateDateColumn({ name: 'deleted_at', nullable: true })
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
   deletedAt?: Date;
 
   @Exclude()
