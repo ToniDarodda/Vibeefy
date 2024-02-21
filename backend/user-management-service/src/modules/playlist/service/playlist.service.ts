@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
 import { Repository } from 'typeorm';
@@ -76,15 +76,17 @@ export class PlaylistService {
     return playlistPatched.affected;
   }
 
-  deletePlaylistById(playlistId: string): void {
-    this.playlistRepository.softDelete(playlistId);
+  async deletePlaylistById(playlistId: string): Promise<void> {
+    await this.playlistRepository.softDelete(playlistId);
   }
 
   async addSongToPlaylist(
     playlistId: string,
     data: PlaylistSongCreate,
   ): Promise<PlaylistSong> {
-    return this.playlistSongRepository.save(
+    await this.getPlaylistById(playlistId);
+
+    const playlistSong = await this.playlistSongRepository.save(
       this.playlistSongRepository.create({
         ...data,
         playlist: {
@@ -92,6 +94,8 @@ export class PlaylistService {
         },
       }),
     );
+
+    return playlistSong;
   }
 
   async addAlbumToPlaylist(
@@ -122,7 +126,7 @@ export class PlaylistService {
     playlistId: string,
     songId: string,
   ): Promise<void> {
-    this.playlistSongRepository.delete({
+    await this.playlistSongRepository.delete({
       playlist: {
         id: playlistId,
       },

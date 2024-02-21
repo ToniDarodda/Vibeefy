@@ -4,6 +4,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   UseInterceptors,
@@ -14,6 +16,7 @@ import { LovedSongCreate } from '../dto/base.dto';
 import { LovedSong } from 'src/entities/lovedSong/entity';
 import { AuthToken } from 'src/decorators/auth.decorator';
 import { DecodedUserToken } from 'src/utils/jwt.util';
+import { QueryFailedError } from 'typeorm';
 
 @ApiTags('LovedSong')
 @Controller('love-song')
@@ -22,12 +25,21 @@ export class LovedSongController {
 
   @Post(':songId/user')
   @UseInterceptors(ClassSerializerInterceptor)
-  createLovedSong(
+  async createLovedSong(
     @Body() data: LovedSongCreate,
     @AuthToken() { userId }: DecodedUserToken,
     @Param('songId') songId: string,
   ): Promise<LovedSong> {
-    return this.lovedSongService.createLovedSong(data, songId, userId);
+    try {
+      return await this.lovedSongService.createLovedSong(data, songId, userId);
+    } catch (err) {
+      if (err instanceof QueryFailedError)
+        throw new HttpException(
+          'Invalid input for songId',
+          HttpStatus.BAD_REQUEST,
+        );
+      else throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get()
@@ -39,7 +51,18 @@ export class LovedSongController {
   }
 
   @Delete(':songId')
-  deleteLovedSong(@Param('songId') songId: string): void {
-    return this.lovedSongService.deleteLovedSong(songId);
+  async deleteLovedSong(@Param('songId') songId: string): Promise<void> {
+    try {
+      return await this.lovedSongService.deleteLovedSong(songId);
+    } catch (err) {
+      if (err instanceof QueryFailedError) {
+        throw new HttpException(
+          'Invalid input for songId',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 }
