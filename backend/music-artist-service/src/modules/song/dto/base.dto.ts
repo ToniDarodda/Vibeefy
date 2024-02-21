@@ -31,3 +31,5 @@ export class SondBaseDTO {
 export class SongGetById extends PickType(SondBaseDTO, ['id']) {}
 
 export class SongGetByName extends PickType(SondBaseDTO, ['name']) {}
+
+export class SongGetByAlbumId extends PickType(SondBaseDTO, ['id']) {}

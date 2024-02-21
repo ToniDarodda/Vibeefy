@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { SongService } from '../service/song.service';
-import { SongGetById, SongGetByName } from '../dto/base.dto';
+import { SongGetByAlbumId, SongGetById, SongGetByName } from '../dto/base.dto';
 import { Song } from 'src/entities/song/entity';
 import { MessagePattern } from '@nestjs/microservices';
 
@@ -19,7 +19,7 @@ export class SongController {
   }
 
   @MessagePattern({ cmd: 'get_songs_by_album_id' })
-  async getSonsByAlbumid(albumId: string): Promise<Song[]> {
-    return await this.songService.getSongsByAlbumId(albumId);
+  async getSonsByAlbumid({ id }: SongGetByAlbumId): Promise<Song[]> {
+    return await this.songService.getSongsByAlbumId(id);
   }
 }
