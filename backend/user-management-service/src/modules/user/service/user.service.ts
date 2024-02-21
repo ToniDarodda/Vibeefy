@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user/entity';
 import { Repository } from 'typeorm';
@@ -28,11 +28,11 @@ export class UserService {
 
     const isPasswordCorrect = await retrievedUser.checkPassword(password);
 
-    if (isPasswordCorrect) {
-      return createAccessToken(retrievedUser.id);
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedException('Invalid credential');
     }
 
-    return null;
+    return createAccessToken(retrievedUser.id);
   }
 
   async getUser(id: string): Promise<User> {
