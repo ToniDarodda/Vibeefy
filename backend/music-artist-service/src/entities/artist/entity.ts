@@ -7,10 +7,10 @@ export class Artist extends Common {
   @Column('varchar', { name: 'pseudo', length: 100, unique: true })
   pseudo: string;
 
-  @Column('varchar', { name: 'profile_picture' })
+  @Column('varchar', { name: 'profile_picture', nullable: true })
   profilePicture: string;
 
-  @Column('varchar', { name: 'description' })
+  @Column('varchar', { name: 'description', nullable: true })
   description: string;
 
   @OneToMany(() => Album, (album) => album.artist)
