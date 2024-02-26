@@ -27,6 +27,7 @@ export function LoginCard({ title }: CardInterface) {
 
   const handleClick = () => setShow(!show);
   const redirectRegister = () => navigate('/register');
+  const redirectToLoading = () => navigate('/loading');
 
   return (
     <VStack
@@ -128,6 +129,7 @@ export function LoginCard({ title }: CardInterface) {
           _active={{ backgroundColor: '#ff961563' }}
           fontWeight={'bold'}
           type="submit"
+          onClick={redirectToLoading}
         >
           Login
         </Button>
