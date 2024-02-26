@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  my_job:
+    name: Build user backend
+    runs-on: ubuntu-latest  # Updated to use the latest Ubuntu version
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Make sure to checkout your repository's code
+
+      - name: Setup Node
+        uses: actions/setup-node@v2  # Updated to use a newer version of setup-node
+        with:
+          node-version: '18.17.0'
+
+      - name: Install dependencies
+        working-directory: ./user-management-service
+        run: yarn
+
+      - name: Build project
+        working-directory: ./user-management-service
+        run: yarn build
