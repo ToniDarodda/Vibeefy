@@ -23,7 +23,9 @@ jobs:
           node-version: '18.17.0'
 
       - name: Install dependencies
+        working-directory: ./frontend
         run: yarn
 
       - name: Build project
+        working-directory: ./frontend
         run: yarn build
