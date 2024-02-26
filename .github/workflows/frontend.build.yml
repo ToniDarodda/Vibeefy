@@ -11,6 +11,7 @@ on:
 
 jobs:
   my_job:
+    if: contains(github.event.head_commit.modified, 'frontend/')
     name: Deploy to Staging
     runs-on: ubuntu-latest  # Updated to use the latest Ubuntu version
     steps:
