@@ -19,7 +19,13 @@ export function BaseStep({
         Step {step} of 3
       </Text>
       <VStack alignItems={'flex-start'} marginBottom={'20px'}>
-        <Stack w={'500px'}>
+        <Stack
+          w={{
+            base: '300px',
+            sm: '400px',
+            md: '500px',
+          }}
+        >
           <Progress
             colorScheme="orange"
             size="sm"

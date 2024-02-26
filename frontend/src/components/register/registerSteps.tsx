@@ -22,7 +22,11 @@ export function RegisterStep({
               Email or username
             </Text>
             <Input
-              w={'500px'}
+              w={{
+                base: '300px',
+                sm: '400px',
+                md: '500px',
+              }}
               h={'70px'}
               type="email"
               color={'#ffffff'}
@@ -41,7 +45,15 @@ export function RegisterStep({
           step="1"
           barValue={33.33}
         >
-          <VStack alignItems={'flex-start'} gap={'20px'}>
+          <VStack
+            alignItems={'flex-start'}
+            gap={'20px'}
+            w={{
+              base: '300px',
+              sm: '400px',
+              md: '500px',
+            }}
+          >
             <Text fontSize={'xl'} color={'#ffffff'}>
               Password
             </Text>
@@ -59,12 +71,24 @@ export function RegisterStep({
           barValue={66.66}
           step="2"
         >
-          <VStack alignItems={'flex-start'} gap={'20px'}>
+          <VStack
+            alignItems={'flex-start'}
+            gap={'20px'}
+            w={{
+              base: '300px',
+              sm: '400px',
+              md: '500px',
+            }}
+          >
             <Text fontSize={'xl'} color={'#ffffff'}>
               Name
             </Text>
             <Input
-              w={'500px'}
+              w={{
+                base: '300px',
+                sm: '400px',
+                md: '500px',
+              }}
               h={'70px'}
               type="name"
               color={'#ffffff'}
@@ -77,7 +101,11 @@ export function RegisterStep({
               Date of birth
             </Text>
             <Input
-              w={'500px'}
+              w={{
+                base: '300px',
+                sm: '400px',
+                md: '500px',
+              }}
               h={'70px'}
               type="date"
               color={'#ffffff'}
@@ -104,7 +132,11 @@ export function RegisterStep({
           step="3"
         >
           <VStack
-            w={'460px'}
+            w={{
+              base: '300px',
+              sm: '400px',
+              md: '500px',
+            }}
             alignSelf={'center'}
             backgroundColor={'#333030'}
             borderRadius={'8px'}
@@ -112,20 +144,34 @@ export function RegisterStep({
           >
             <HStack h={'60px'} gap={'30px'}>
               <Checkbox size={'lg'} colorScheme="orange" border={'orange'} />
-              <Text color={'#ffffff'}>
+              <Text
+                color={'#ffffff'}
+                fontSize={{
+                  base: '12px',
+                  sm: '14px',
+                  md: '14px',
+                }}
+              >
                 Share my registration data with Vibeefy's content providers for
                 marketing purposes.
               </Text>
             </HStack>
           </VStack>
-          <VStack w={'420px'} alignSelf={'center'}>
+          <VStack
+            w={{
+              base: '300px',
+              sm: '400px',
+              md: '500px',
+            }}
+            alignSelf={'center'}
+          >
             <Text color={'#ffffff'}>
               By clicking on sign-up, you agree to Vibeefy's Terms and
               Conditions of Use.
             </Text>
             <Text color={'#ffffff'}>
-              To learn more about how Spotify collects, uses, shares and
-              protects your personal data, please see Spotify's Privacy Policy.
+              To learn more about how Vibeefy collects, uses, shares and
+              protects your personal data, please see Vibeefy's Privacy Policy.
             </Text>
           </VStack>
         </BaseStep>

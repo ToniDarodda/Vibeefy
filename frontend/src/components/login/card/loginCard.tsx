@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   HStack,
   VStack,
@@ -8,6 +9,7 @@ import {
   InputGroup,
   InputRightElement,
   Image,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,13 +21,27 @@ interface CardInterface {
 export function LoginCard({ title }: CardInterface) {
   const navigate = useNavigate();
 
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+
   const [show, setShow] = useState(false);
 
   const handleClick = () => setShow(!show);
   const redirectRegister = () => navigate('/register');
 
   return (
-    <VStack w={'800px'} backgroundColor={'#1E1E1E'} borderRadius={'12px'}>
+    <VStack
+      w={{
+        base: '350px',
+        md: '700px',
+        sm: '500px',
+      }}
+      backgroundColor={{
+        base: 'transparent',
+        md: '#1E1E1E',
+        sm: '#1E1E1E',
+      }}
+      borderRadius={'12px'}
+    >
       <HStack
         h={'700px'}
         marginTop={'30px'}
@@ -37,12 +53,16 @@ export function LoginCard({ title }: CardInterface) {
         </Text>
         <VStack borderBottom={'1px solid #4E4E4E'} w={'100%'} />
 
-        <VStack w={'100%'} alignItems={'flex-start'}>
+        <VStack w={'100%'} alignItems={'center'}>
           <Text fontSize={'xl'} color={'#ffffff'}>
             Email or username
           </Text>
           <Input
-            w={'500px'}
+            w={{
+              base: '300px',
+              sm: '400px',
+              md: '500px',
+            }}
             h={'70px'}
             type="email"
             color={'#ffffff'}
@@ -57,10 +77,14 @@ export function LoginCard({ title }: CardInterface) {
             Password
           </Text>
 
-          <InputGroup size="md">
+          <InputGroup alignItems={'center'} justifyContent={'center'}>
             <Input
               h={'70px'}
-              w={'500px'}
+              w={{
+                base: '300px',
+                sm: '400px',
+                md: '500px',
+              }}
               color={'#ffffff'}
               focusBorderColor="#000000"
               placeholder="Enter your information..."
@@ -69,10 +93,18 @@ export function LoginCard({ title }: CardInterface) {
               type={show ? 'text' : 'password'}
             />
             <InputRightElement
-              width="4.5rem"
+              w={{
+                base: '300px',
+                sm: '400px',
+                md: '500px',
+              }}
               height={'100%'}
-              justifyContent={'center'}
-              alignItems={'center'}
+              justifyContent={'flex-end'}
+              marginRight={{
+                base: '40px',
+                sm: '20px',
+                md: '20px',
+              }}
             >
               <Image
                 src={show ? '/hide.png' : '/unhide.png'}
@@ -113,9 +145,17 @@ export function LoginCard({ title }: CardInterface) {
         >
           Forgot your password?
         </Text>
-        <VStack borderBottom={'1px solid #4E4E4E'} w={'100%'} />
+        <VStack borderBottom={'1px solid #4E4E4E'} w={'60%'} />
         <VStack flexDirection={'row'} gap={'10px'} onClick={redirectRegister}>
-          <Text color={'#ffffff'} cursor={'pointer'}>
+          <Text
+            color={'#ffffff'}
+            cursor={'pointer'}
+            fontSize={{
+              base: '12px',
+              sm: '16px',
+              md: '16px',
+            }}
+          >
             Don't have an account yet?
           </Text>
           <Text

@@ -23,7 +23,19 @@ export function RegisterCard() {
   };
 
   return (
-    <VStack w={'800px'} backgroundColor={'#1E1E1E'} borderRadius={'12px'}>
+    <VStack
+      w={{
+        base: '350px',
+        md: '700px',
+        sm: '500px',
+      }}
+      backgroundColor={{
+        base: 'transparent',
+        md: '#1E1E1E',
+        sm: '#1E1E1E',
+      }}
+      borderRadius={'12px'}
+    >
       <HStack h={'700px'} marginTop={'30px'} flexDirection={'column'}>
         <VStack w={'100%'} alignItems={'flex-start'}>
           <RegisterStep
