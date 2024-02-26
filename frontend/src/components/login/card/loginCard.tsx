@@ -93,11 +93,6 @@ export function LoginCard({ title }: CardInterface) {
               type={show ? 'text' : 'password'}
             />
             <InputRightElement
-              w={{
-                base: '300px',
-                sm: '400px',
-                md: '500px',
-              }}
               height={'100%'}
               justifyContent={'flex-end'}
               marginRight={{

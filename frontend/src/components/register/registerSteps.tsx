@@ -6,12 +6,12 @@ import { BaseStep } from './steps/baseStep';
 
 interface RegisterFlowInterface {
   registerFlow: RegisterFlow;
-  registerFlowNextStep: () => void;
+  registerFlowPrevStep: () => void;
 }
 
 export function RegisterStep({
   registerFlow,
-  registerFlowNextStep,
+  registerFlowPrevStep,
 }: RegisterFlowInterface) {
   return (
     <>
@@ -41,7 +41,7 @@ export function RegisterStep({
       )}
       {registerFlow === RegisterFlow.PASSWORD && (
         <BaseStep
-          registerFlowNextStep={registerFlowNextStep}
+          registerFlowPrevStep={registerFlowPrevStep}
           step="1"
           barValue={33.33}
         >
@@ -67,7 +67,7 @@ export function RegisterStep({
       )}
       {registerFlow === RegisterFlow.BIRTH && (
         <BaseStep
-          registerFlowNextStep={registerFlowNextStep}
+          registerFlowPrevStep={registerFlowPrevStep}
           barValue={66.66}
           step="2"
         >
@@ -127,7 +127,7 @@ export function RegisterStep({
       )}
       {registerFlow === RegisterFlow.VALIDATE && (
         <BaseStep
-          registerFlowNextStep={registerFlowNextStep}
+          registerFlowPrevStep={registerFlowPrevStep}
           barValue={100}
           step="3"
         >

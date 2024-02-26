@@ -2,14 +2,14 @@ import { VStack, Stack, Progress, Button, Text } from '@chakra-ui/react';
 
 interface BaseStepInterface {
   children: React.ReactNode;
-  registerFlowNextStep: () => void;
+  registerFlowPrevStep: () => void;
   barValue: number;
   step: string;
 }
 
 export function BaseStep({
   children,
-  registerFlowNextStep,
+  registerFlowPrevStep,
   barValue,
   step,
 }: BaseStepInterface) {
@@ -44,7 +44,7 @@ export function BaseStep({
         _hover={{ backgroundColor: '#ff9615ac' }}
         _active={{ backgroundColor: '#ff961563' }}
         type="submit"
-        onClick={registerFlowNextStep}
+        onClick={registerFlowPrevStep}
         marginBottom={'20px'}
       >
         {/* <Image src="/rarrow.png" boxSize={'30px'} /> */}

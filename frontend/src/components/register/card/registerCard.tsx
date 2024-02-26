@@ -22,6 +22,9 @@ export function RegisterCard() {
     setRegisterFlow((prev) => prev + 1);
   };
 
+  const registerFlowPrevStep = () =>
+    setRegisterFlow((prev: RegisterFlow) => prev - 1);
+
   return (
     <VStack
       w={{
@@ -40,7 +43,7 @@ export function RegisterCard() {
         <VStack w={'100%'} alignItems={'flex-start'}>
           <RegisterStep
             registerFlow={registerFlow}
-            registerFlowNextStep={registerFlowNextStep}
+            registerFlowPrevStep={registerFlowPrevStep}
           />
         </VStack>
 
