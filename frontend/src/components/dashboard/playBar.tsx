@@ -60,7 +60,7 @@ export function Playbar({
               //   onClick={(e) => console.log(e)}
             >
               <Text color={'#ffffff'} textAlign={'center'}>
-                0m30
+                0m31
               </Text>
               <Stack spacing={5} h={'100%'} w={'80%'}>
                 <Progress
