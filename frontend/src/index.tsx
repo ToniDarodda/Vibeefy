@@ -1,12 +1,9 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
 import { ChakraProvider } from '@chakra-ui/react';
-import { Login } from './pages/login';
-import { Register } from './pages/register';
-import { Loading } from './pages/loading';
-import { Dashboard } from './pages/dashboard';
+
+import { Login, Register, Loading, Dashboard } from './pages';
 
 const router = createBrowserRouter([
   {
