@@ -3,6 +3,7 @@ import { CreateUser, UserLogin } from '../interfaces/user';
 import { userService } from '../services/user';
 
 const MutationKeyCreateUser = 'CREATE_USER_KEY';
+const MutationKeyLoginUser = 'CREATE_LOGIN_KEY';
 
 export const useCreateUser = () => {
   return useMutation({
@@ -15,7 +16,7 @@ export const useCreateUser = () => {
 
 export const useLoginUser = () => {
   return useMutation({
-    mutationKey: [],
+    mutationKey: [MutationKeyLoginUser],
     mutationFn: (params: { data: UserLogin }) =>
       userService.UserLogin(params.data),
     onError: (err) => err,

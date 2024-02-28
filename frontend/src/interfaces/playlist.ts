@@ -10,6 +10,8 @@ export interface BasePlaylistInterface {
   sharedToUser: string;
 }
 
+export type PlaylistType = Omit<BasePlaylistInterface, 'id'>;
+
 export type CreatePlaylist = Pick<BasePlaylistInterface, 'name' | 'isPublic'>;
 
 export type AddSongToPlaylist = Pick<BasePlaylistInterface, 'id' | 'songId'>;

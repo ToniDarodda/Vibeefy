@@ -8,7 +8,6 @@ import {
   Delete,
   HttpException,
   HttpStatus,
-  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
@@ -23,7 +22,7 @@ import { AuthToken } from 'src/decorators/auth.decorator';
 import { DecodedUserToken } from 'src/utils/jwt.util';
 
 @ApiTags('Playlist')
-@Controller('playlists')
+@Controller('playlist')
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 

@@ -37,6 +37,11 @@ export class UserService {
   async loginUser({ email, password }: UserLogin): Promise<string> {
     const retrievedUser = await this.userRepository.findOneBy({ email });
 
+    console.log(retrievedUser);
+
+    if (retrievedUser === undefined || retrievedUser === null)
+      throw new UnauthorizedException('Invalid credential');
+
     const isPasswordCorrect = await retrievedUser.checkPassword(password);
 
     if (!isPasswordCorrect) {

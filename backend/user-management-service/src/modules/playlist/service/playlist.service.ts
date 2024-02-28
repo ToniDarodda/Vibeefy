@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
 import { Repository } from 'typeorm';
