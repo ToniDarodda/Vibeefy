@@ -57,7 +57,6 @@ export function Playbar({
               h={'4px'}
               justifyContent={'center'}
               alignItems={'center'}
-              //   onClick={(e) => console.log(e)}
             >
               <Text color={'#ffffff'} textAlign={'center'}>
                 0m31

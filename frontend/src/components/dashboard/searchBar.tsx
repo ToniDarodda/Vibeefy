@@ -2,14 +2,9 @@ import { HStack, Input } from '@chakra-ui/react';
 
 interface SearchBarInterface {
   isSearching: boolean;
-  isLargerThan1000: boolean;
 }
 
-export function SearchBar({
-  isSearching,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isLargerThan1000,
-}: SearchBarInterface) {
+export function SearchBar({ isSearching }: SearchBarInterface) {
   return (
     <>
       {isSearching && (

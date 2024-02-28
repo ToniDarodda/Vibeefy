@@ -12,7 +12,6 @@ export function AlbumBoard({
   setIsListening,
   isSearching,
   setSongPlaying,
-  isLargardThan1000,
 }: AlbumBoardInterface) {
   const activeListening = (songPlaying: string) => {
     setIsListening(true);
@@ -20,10 +19,7 @@ export function AlbumBoard({
   };
   return (
     <>
-      <SearchBar
-        isSearching={isSearching}
-        isLargerThan1000={isLargardThan1000}
-      />
+      <SearchBar isSearching={isSearching} />
       <VStack flex={1} w={'100%'} padding={'40px'}>
         <HStack
           flex={1}

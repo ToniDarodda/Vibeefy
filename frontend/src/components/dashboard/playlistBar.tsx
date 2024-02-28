@@ -1,7 +1,9 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 import { PlaylistType } from '../../interfaces/playlist';
-import { useCreatePlaylist, useGetPlaylist } from '../../query/playlist';
+import { useGetPlaylist } from '../../query/playlist';
 import { useState } from 'react';
+import { ModalPlaylistOpen } from './modal/playlistOpen';
+import { ModalPlaylistOption } from './modal/playlistOption';
 
 interface PlaylistBarInterface {
   isLargardThan1000: boolean;
@@ -13,18 +15,19 @@ export function PlaylistBar({
   setIsSearching,
 }: PlaylistBarInterface) {
   const [isModalPlaylistOpen, setModalPlaylistOpen] = useState<boolean>(false);
+  const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
+    useState<boolean>(false);
   const [mooseCoord, setMouseCoord] = useState<{
     clientX: number;
     clientY: number;
   }>({ clientX: 0, clientY: 0 });
 
-  const { mutate: createPlaylist } = useCreatePlaylist();
   const { data: playlists } = useGetPlaylist();
 
   return (
     <VStack flex={1} h={'100%'} display={isLargardThan1000 ? 'normal' : 'none'}>
       {isLargardThan1000 && (
-        <VStack w={'100%'} flex={1} borderRadius={'8px'}>
+        <VStack w={'100%'} h={'100%'} flex={1} borderRadius={'8px'}>
           <VStack
             flex={1}
             w={'100%'}
@@ -79,41 +82,21 @@ export function PlaylistBar({
             padding={'24px'}
             onContextMenu={(e) => {
               e.preventDefault();
+              setModalPlaylistOptionOpen(false);
               setModalPlaylistOpen(true);
               setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
             }}
             contextMenu={'preventDefault'}
-            onClick={() => setModalPlaylistOpen(false)}
+            onClick={() => {
+              setModalPlaylistOpen(false);
+              setModalPlaylistOptionOpen(false);
+            }}
           >
-            {isModalPlaylistOpen && (
-              <VStack
-                position={'absolute'}
-                top={mooseCoord.clientY}
-                left={mooseCoord.clientX}
-              >
-                <VStack
-                  backgroundColor={'#3d3d3d'}
-                  padding={'16px'}
-                  borderRadius={'8px'}
-                >
-                  <HStack _hover={{ color: '#ffffff', cursor: 'pointer' }}>
-                    <Image src="/plus.png" boxSize={'12px'}></Image>
-                    <Text
-                      color={'#ffffff9c'}
-                      fontSize={'14px'}
-                      _hover={{ color: '#ffffff' }}
-                      onClick={() =>
-                        createPlaylist({
-                          name: `Playlist - ${playlists?.length}`,
-                        })
-                      }
-                    >
-                      Create playlist
-                    </Text>
-                  </HStack>
-                </VStack>
-              </VStack>
-            )}
+            <ModalPlaylistOpen
+              isModalPlaylistOpen={isModalPlaylistOpen}
+              mooseCoord={mooseCoord}
+              playlistsLength={playlists?.length}
+            />
             <HStack
               h={'50px'}
               w={'100%'}
@@ -134,22 +117,50 @@ export function PlaylistBar({
               h={'500px'}
               onScroll={(e) => console.log(e)}
             >
-              {playlists?.map((playlist: PlaylistType) => {
+              {playlists?.map((playlist: PlaylistType, idx: number) => {
                 return (
-                  <Text
-                    color={'#ffffff'}
-                    cursor={'pointer'}
-                    onContextMenu={(e) => {
-                      e.stopPropagation(); // Stops the event from reaching the parent VStack's onContextMenu
-                      e.preventDefault(); // Optional: Prevent the browser's default context menu
-                      // Implement your specific right-click behavior here
-                      console.log(
-                        `Right-clicked on playlist: ${playlist.name}`,
-                      );
-                    }}
-                  >
-                    {playlist.name}
-                  </Text>
+                  <VStack w={'100%'}>
+                    <HStack
+                      w={'100%'}
+                      alignItems={'center'}
+                      justifyContent={'flex-start'}
+                      gap={'40px'}
+                    >
+                      <VStack
+                        w={'60px'}
+                        h={'60px'}
+                        justifyContent={'center'}
+                        backgroundColor={'#0000006e'}
+                        borderRadius={'8px'}
+                      >
+                        <Image src="/vinyl.png" boxSize={'50px'}></Image>
+                      </VStack>
+                      <Text
+                        key={idx}
+                        color={'#ffffff'}
+                        cursor={'pointer'}
+                        onContextMenu={(e) => {
+                          e.stopPropagation(); // Stops the event from reaching the parent VStack's onContextMenu
+                          e.preventDefault(); // Optional: Prevent the browser's default context menu
+                          setMouseCoord({
+                            clientX: e.clientX,
+                            clientY: e.clientY,
+                          });
+
+                          setModalPlaylistOptionOpen(true);
+                          console.log(
+                            `Right-clicked on playlist: ${playlist.name}`,
+                          );
+                        }}
+                      >
+                        {playlist.name}
+                      </Text>
+                      <ModalPlaylistOption
+                        isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
+                        mooseCoord={mooseCoord}
+                      />
+                    </HStack>
+                  </VStack>
                 );
               })}
             </VStack>
