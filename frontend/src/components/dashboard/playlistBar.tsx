@@ -130,7 +130,7 @@ export function PlaylistBar({
                         w={'60px'}
                         h={'60px'}
                         justifyContent={'center'}
-                        backgroundColor={'#0000006e'}
+                        backgroundColor={'#0000003e'}
                         borderRadius={'8px'}
                       >
                         <Image src="/vinyl.png" boxSize={'50px'}></Image>
