@@ -12,6 +12,8 @@ export interface BaseUserInterface {
 
 export type UserType = BaseUserInterface;
 
+export type UserLogin = Pick<BaseUserInterface, 'email' | 'password'>;
+
 export type CreateUser = Omit<BaseUserInterface, 'id'>;
 
 export type UpdateEmail = Pick<BaseUserInterface, 'email'>;

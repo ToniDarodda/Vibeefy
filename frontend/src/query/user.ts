@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { CreateUser } from '../interfaces/user';
+import { CreateUser, UserLogin } from '../interfaces/user';
 import { userService } from '../services/user';
 
 const MutationKeyCreateUser = 'CREATE_USER_KEY';
@@ -9,8 +9,15 @@ export const useCreateUser = () => {
     mutationKey: [MutationKeyCreateUser],
     mutationFn: (params: { data: CreateUser }) =>
       userService.UserCreate(params.data),
-    onError: (err) => {
-      console.log(err);
-    },
+    onError: (err) => err,
+  });
+};
+
+export const useLoginUser = () => {
+  return useMutation({
+    mutationKey: [],
+    mutationFn: (params: { data: UserLogin }) =>
+      userService.UserLogin(params.data),
+    onError: (err) => err,
   });
 };
