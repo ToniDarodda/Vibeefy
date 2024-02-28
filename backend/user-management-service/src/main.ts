@@ -12,9 +12,15 @@ async function bootstrap() {
     .addTag('vibeefy')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  app.use(cookieParser());
 
+  app.use(cookieParser());
+  app.enableCors({
+    origin: ['*', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'UPDATE', 'DELETE'],
+    credentials: true,
+  });
+
+  SwaggerModule.setup('api', app, document);
   await app.listen(3002);
 }
 bootstrap();

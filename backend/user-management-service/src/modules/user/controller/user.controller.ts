@@ -5,6 +5,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -16,9 +18,10 @@ import { UserService } from '../service/user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthToken } from 'src/decorators/auth.decorator';
 import { DecodedUserToken } from 'src/utils/jwt.util';
+import { QueryFailedError } from 'typeorm';
 
 @ApiTags('User')
-@Controller('User')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -28,13 +31,21 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() data: UserCreate,
   ): Promise<void> {
-    const { ACCESS_TOKEN, COOKIE_TOKEN_NAME } = process.env;
+    try {
+      const { ACCESS_TOKEN, COOKIE_TOKEN_NAME } = process.env;
 
-    const accessToken = await this.userService.createUser(data);
+      const accessToken = await this.userService.createUser(data);
 
-    res.cookie(COOKIE_TOKEN_NAME, accessToken, {
-      expires: new Date(Date.now() + parseInt(ACCESS_TOKEN, 10)),
-    });
+      res.cookie(COOKIE_TOKEN_NAME, accessToken, {
+        expires: new Date(Date.now() + parseInt(ACCESS_TOKEN, 10)),
+      });
+    } catch (err) {
+      if (err instanceof QueryFailedError) {
+        throw new HttpException('Email already taken!', HttpStatus.BAD_REQUEST);
+      } else {
+        throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   @Post('login')
@@ -55,7 +66,6 @@ export class UserController {
   @Get()
   @ApiOperation({ summary: 'Get user by id' })
   getUserById(@AuthToken() { userId }: DecodedUserToken): Promise<User> {
-    console.log(userId);
     return this.userService.getUser(userId);
   }
 

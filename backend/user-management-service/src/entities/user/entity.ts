@@ -8,16 +8,16 @@ const SALT = ">mA3%?9[RoJH>09+HWuDLdb/6ay'JF*8";
 
 @Entity()
 export class User extends Common {
-  @Column('varchar', { name: 'fist_name', length: 100 })
-  firstName: string;
-
   @Column('varchar', { name: 'last_name', length: 100 })
-  lastName: string;
+  pseudo: string;
 
   @Column('varchar', { name: 'email', length: 255, unique: true })
   email: string;
 
-  @Column('varchar', { name: 'password' })
+  @Column('varchar', { name: 'date_of_birth', nullable: false })
+  dateOfBirth: string;
+
+  @Column('varchar', { name: 'password', nullable: false })
   password: string;
 
   @OneToMany(() => Playlist, (playlist) => playlist.user)

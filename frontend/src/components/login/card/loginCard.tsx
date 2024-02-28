@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   HStack,
   VStack,
@@ -9,25 +8,59 @@ import {
   InputGroup,
   InputRightElement,
   Image,
-  useMediaQuery,
+  useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLoginUser } from '../../../query/user';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { AxiosError } from 'axios';
+
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 interface CardInterface {
   title: string;
 }
 
 export function LoginCard({ title }: CardInterface) {
-  const navigate = useNavigate();
+  const toast = useToast();
 
-  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
 
   const handleClick = () => setShow(!show);
   const redirectRegister = () => navigate('/register');
-  const redirectToLoading = () => navigate('/loading');
+
+  const { mutate: loginUser } = useLoginUser();
+
+  const { register, handleSubmit } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    loginUser(
+      {
+        data,
+      },
+      {
+        onSuccess: () => {
+          navigate('/loading');
+        },
+        onError: (err) => {
+          const axiosError = err as unknown as AxiosError<any>;
+
+          toast({
+            title: axiosError.response?.data.message,
+            description: axiosError.response?.data.message,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        },
+      },
+    );
+  };
 
   return (
     <VStack
@@ -72,6 +105,7 @@ export function LoginCard({ title }: CardInterface) {
             _hover={{ border: '2px solid #ffffff' }}
             _focus={{ border: '2px solid #FF9615' }}
             marginBottom={'20px'}
+            {...register('email', { required: 'Ce champ est obligatoire' })}
           />
 
           <Text fontSize={'xl'} color={'#ffffff'}>
@@ -92,7 +126,11 @@ export function LoginCard({ title }: CardInterface) {
               _hover={{ border: '2px solid #ffffff' }}
               _focus={{ border: '2px solid #FF9615' }}
               type={show ? 'text' : 'password'}
+              {...register('password', {
+                required: 'Ce champ est obligatoire',
+              })}
             />
+
             <InputRightElement
               height={'100%'}
               justifyContent={'flex-end'}
@@ -129,7 +167,7 @@ export function LoginCard({ title }: CardInterface) {
           _active={{ backgroundColor: '#ff961563' }}
           fontWeight={'bold'}
           type="submit"
-          onClick={redirectToLoading}
+          onClick={handleSubmit(onSubmit)}
         >
           Login
         </Button>

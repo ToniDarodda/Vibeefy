@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user/entity';
 import { Repository } from 'typeorm';
@@ -12,6 +16,13 @@ export class UserService {
   ) {}
 
   async createUser(data: UserCreate): Promise<string> {
+    const findUserIfAlreadyExist = await this.getUserByEmail(data.email);
+
+    console.log(findUserIfAlreadyExist);
+
+    if (findUserIfAlreadyExist !== null)
+      throw new UnprocessableEntityException('User mail already taken!');
+
     const user = await this.userRepository.save(
       this.userRepository.create({
         ...data,
@@ -25,6 +36,11 @@ export class UserService {
 
   async loginUser({ email, password }: UserLogin): Promise<string> {
     const retrievedUser = await this.userRepository.findOneBy({ email });
+
+    console.log(retrievedUser);
+
+    if (retrievedUser === undefined || retrievedUser === null)
+      throw new UnauthorizedException('Invalid credential');
 
     const isPasswordCorrect = await retrievedUser.checkPassword(password);
 

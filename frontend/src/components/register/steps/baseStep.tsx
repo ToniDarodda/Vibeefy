@@ -14,7 +14,7 @@ export function BaseStep({
   step,
 }: BaseStepInterface) {
   return (
-    <VStack gap={'26px'}>
+    <VStack gap={'26px'} w={'100%'}>
       <Text fontSize={'xl'} color={'#ffffff'}>
         Step {step} of 3
       </Text>

@@ -17,15 +17,7 @@ export class UserBaseDTO {
   })
   @IsNotEmpty()
   @IsString()
-  firstName: string;
-
-  @ApiProperty({
-    example: 'Da rodda',
-    description: 'Lastname of user',
-  })
-  @IsNotEmpty()
-  @IsString()
-  lastName: string;
+  pseudo: string;
 
   @ApiProperty({
     example: 'toni.da.rodda.dev@gmail.pro@gmail.com',
@@ -35,6 +27,15 @@ export class UserBaseDTO {
   @IsString()
   @IsEmail()
   email: string;
+
+  @ApiProperty({
+    example: 'toni.da.rodda.dev@gmail.pro@gmail.com',
+    description: 'Email of user',
+  })
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  dateOfBirth: string;
 
   @ApiProperty({
     example: 'test1234',
