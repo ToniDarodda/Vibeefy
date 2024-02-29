@@ -67,6 +67,7 @@ export function AlbumBoard({
                 justifyContent={'flex-end'}
                 onClick={() => activeListening(data.title)}
               >
+                <img src={data.thumbnails} alt={data.title} />
                 <Text color={'#ffffff'}>{data.title}</Text>
               </VStack>
             );
