@@ -2,12 +2,20 @@ from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from ytmusicapi import YTMusic
 import yt_dlp
 
 
 app = FastAPI(docs_url="/api")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 yt = YTMusic()
 executor = ThreadPoolExecutor()
 
