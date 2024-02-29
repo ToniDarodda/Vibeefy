@@ -112,7 +112,7 @@ export function PlaylistBar({
             </HStack>
             <VStack
               gap={'20px'}
-              overflow={'scroll'}
+              overflow={'auto'}
               w={'100%'}
               h={'500px'}
               onScroll={(e) => console.log(e)}

@@ -26,7 +26,7 @@ export function Dashboard() {
           <VStack
             flex={4}
             h={'100%'}
-            overflow={'scroll'}
+            overflow={'auto'}
             borderRadius={'8px'}
             backgroundColor={'#2b2b2b'}
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
