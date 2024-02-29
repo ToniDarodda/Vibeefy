@@ -31,7 +31,6 @@ export function AlbumBoard({
   });
 
   useEffect(() => {
-    if (!search || search === '') return;
     setSearchData(searchValue as SearchResponse[]);
   }, [search, searchValue]);
 
