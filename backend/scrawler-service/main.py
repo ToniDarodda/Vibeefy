@@ -2,12 +2,20 @@ from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from ytmusicapi import YTMusic
 import yt_dlp
 
 
 app = FastAPI(docs_url="/api")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 yt = YTMusic()
 executor = ThreadPoolExecutor()
 
@@ -21,7 +29,7 @@ class ActionPostDownload(yt_dlp.postprocessor.common.PostProcessor):
             # File already downloaded or not downloaded at all
             pass
         print("Downloaded: ", f"{information['__finaldir']}/{information['filepath']}")
-        # TODO: upload to S3 here ...
+        # TODO: Run Lambda here ...
 
 ydl = yt_dlp.YoutubeDL({
     "quiet": True,
@@ -50,7 +58,8 @@ def search(query: str, filter: SearchFilter = SearchFilter.songs):
         {
             "title": songs["title"],
             "id": songs["videoId"],
-            "author": songs["artists"],
+            "artists": songs["artists"][0],
+            "featured_artists": songs["artists"][1:],
             "album": songs["album"],
             "link": f"https://music.youtube.com/watch?v={songs['videoId']}",
             "duration_seconds": songs["duration_seconds"],

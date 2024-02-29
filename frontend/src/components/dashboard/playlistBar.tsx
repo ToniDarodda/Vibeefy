@@ -119,7 +119,7 @@ export function PlaylistBar({
             >
               {playlists?.map((playlist: PlaylistType, idx: number) => {
                 return (
-                  <VStack w={'100%'}>
+                  <VStack key={idx} w={'100%'}>
                     <HStack
                       w={'100%'}
                       alignItems={'center'}

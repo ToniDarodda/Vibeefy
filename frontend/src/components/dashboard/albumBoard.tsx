@@ -1,5 +1,8 @@
 import { VStack, HStack, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { SearchBar } from './searchBar';
+import { SearchResponse } from '../../interfaces/search';
+import { useGetSearch } from '../../query/search';
 
 interface AlbumBoardInterface {
   setIsListening: (b: boolean) => void;
@@ -17,9 +20,24 @@ export function AlbumBoard({
     setIsListening(true);
     setSongPlaying(songPlaying);
   };
+
+  const [search, setSearch] = useState<string>('');
+  const [searchData, setSearchData] = useState<SearchResponse[] | undefined>(
+    [],
+  );
+  const { data: searchValue } = useGetSearch({
+    query: search,
+    filter: 'songs',
+  });
+
+  useEffect(() => {
+    if (!search || search === '') return;
+    setSearchData(searchValue as SearchResponse[]);
+  }, [search, searchValue]);
+
   return (
     <>
-      <SearchBar isSearching={isSearching} />
+      <SearchBar isSearching={isSearching} setSearch={setSearch} />
       <VStack flex={1} w={'100%'} padding={'40px'}>
         <HStack
           flex={1}
@@ -28,25 +46,7 @@ export function AlbumBoard({
           flexWrap={'wrap'}
           justifyContent={'center'}
         >
-          {[
-            'Love me',
-            'Goulag',
-            'Less me',
-            'Top',
-            'Less me',
-            'Tryna',
-            'Less me',
-            'Tryna',
-            'Go fast',
-            'Tryna',
-            'Tryna',
-            'Go fast',
-            'Tryna',
-            'Go fast',
-            'Tryna',
-            'Go fast',
-            'Tryna',
-          ].map((name: string, indx) => {
+          {searchData?.map((data, indx) => {
             return (
               <VStack
                 key={indx}
@@ -65,9 +65,10 @@ export function AlbumBoard({
                 box-shadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
                 alignItems={'center'}
                 justifyContent={'flex-end'}
-                onClick={() => activeListening(name)}
+                onClick={() => activeListening(data.title)}
               >
-                <Text color={'#ffffff'}>{name}</Text>
+                <img src={data.thumbnails} alt={data.title} />
+                <Text color={'#ffffff'}>{data.title}</Text>
               </VStack>
             );
           })}
