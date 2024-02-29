@@ -1,4 +1,4 @@
-import { VStack, HStack, Text } from '@chakra-ui/react';
+import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { SearchBar } from './searchBar';
 import { SearchResponse } from '../../interfaces/search';
@@ -67,7 +67,15 @@ export function AlbumBoard({
                 justifyContent={'flex-end'}
                 onClick={() => activeListening(data.title)}
               >
-                <img src={data.thumbnails} alt={data.title} />
+                <Image
+                  src={data.thumbnails}
+                  alt={data.title}
+                  boxSize={{
+                    base: '60px',
+                    sm: '80px',
+                    md: '120px',
+                  }}
+                />
                 <Text color={'#ffffff'}>{data.title}</Text>
               </VStack>
             );
