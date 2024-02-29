@@ -8,7 +8,7 @@ const SALT = ">mA3%?9[RoJH>09+HWuDLdb/6ay'JF*8";
 
 @Entity()
 export class User extends Common {
-  @Column('varchar', { name: 'last_name', length: 100 })
+  @Column('varchar', { name: 'pseudo', length: 100 })
   pseudo: string;
 
   @Column('varchar', { name: 'email', length: 255, unique: true })
