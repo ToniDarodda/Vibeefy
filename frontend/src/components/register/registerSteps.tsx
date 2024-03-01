@@ -76,7 +76,6 @@ export function RegisterStep() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     createUser(
       {
         data,

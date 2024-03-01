@@ -5,17 +5,17 @@ import { Song } from '../song/entity';
 
 @Entity()
 export class Album extends Common {
-  @Column('varchar', { name: 'name', length: 100 })
-  name: string;
+  @Column('varchar', { name: 'title', length: 255 })
+  title: string;
 
-  @Column('varchar', { name: 'album_picture' })
-  albumPicture: string;
+  @Column('varchar', { name: 'thumbnails' })
+  thumbnails: string;
 
-  @Column('varchar', { name: 'description' })
-  description: string;
+  @Column('varchar', { name: 'description', nullable: true })
+  description?: string;
 
-  @Column('date', { name: 'release_date' })
-  releaseData: Date;
+  @Column('varchar', { name: 'album_youtube_id' })
+  albumId: string;
 
   @ManyToOne(() => Artist, (artist) => artist.albums)
   artist: Artist;
