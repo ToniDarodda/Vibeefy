@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+
 import { PlaylistType } from '../../interfaces/playlist';
 import { useGetPlaylist } from '../../query/playlist';
-import { useState } from 'react';
 import { ModalPlaylistOpen } from './modal/playlistOpen';
 import { ModalPlaylistOption } from './modal/playlistOption';
 
@@ -140,8 +141,8 @@ export function PlaylistBar({
                         color={'#ffffff'}
                         cursor={'pointer'}
                         onContextMenu={(e) => {
-                          e.stopPropagation(); // Stops the event from reaching the parent VStack's onContextMenu
-                          e.preventDefault(); // Optional: Prevent the browser's default context menu
+                          e.stopPropagation();
+                          e.preventDefault();
                           setMouseCoord({
                             clientX: e.clientX,
                             clientY: e.clientY,

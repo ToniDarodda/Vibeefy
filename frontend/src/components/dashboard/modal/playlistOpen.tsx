@@ -1,16 +1,17 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+
 import { useCreatePlaylist } from '../../../query/playlist';
 
 interface PlaylistOpenInterface {
   isModalPlaylistOpen: boolean;
-  mooseCoord: { clientX: number; clientY: number };
   playlistsLength: number | undefined;
+  mooseCoord: { clientX: number; clientY: number };
 }
 
 export function ModalPlaylistOpen({
-  isModalPlaylistOpen,
   mooseCoord,
   playlistsLength,
+  isModalPlaylistOpen,
 }: PlaylistOpenInterface) {
   const { mutate: createPlaylist } = useCreatePlaylist();
 
@@ -23,22 +24,28 @@ export function ModalPlaylistOpen({
           left={mooseCoord.clientX}
         >
           <VStack
-            backgroundColor={'#282828'}
+            backgroundColor={'#42414189'}
             w={'250px'}
-            padding={'16px'}
+            padding={'12px'}
             borderRadius={'8px'}
+            onClick={() =>
+              createPlaylist({
+                name: `Playlist - ${playlistsLength}`,
+              })
+            }
+            _hover={{
+              backgroundColor: '#4241413e',
+            }}
           >
-            <HStack _hover={{ color: '#ffffff', cursor: 'pointer' }}>
-              <Image src="/plus.png" boxSize={'12px'}></Image>
+            <HStack
+              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              gap={'30px'}
+            >
+              <Image src="/plus3.png" boxSize={'30px'}></Image>
               <Text
-                color={'#ffffff9c'}
+                color={'#bcbcbc'}
                 fontSize={'14px'}
                 _hover={{ color: '#ffffff' }}
-                onClick={() =>
-                  createPlaylist({
-                    name: `Playlist - ${playlistsLength}`,
-                  })
-                }
               >
                 Create playlist
               </Text>

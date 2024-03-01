@@ -1,6 +1,6 @@
-import { VStack, Text, Image, Spinner } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { VStack, Text, Image, Spinner } from '@chakra-ui/react';
 
 export function Loading() {
   const navigate = useNavigate();

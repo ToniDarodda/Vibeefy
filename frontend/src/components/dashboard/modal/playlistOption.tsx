@@ -1,13 +1,13 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 
 interface PlaylistOption {
-  mooseCoord: { clientX: number; clientY: number };
   isModalPlaylistOptionOpen: boolean;
+  mooseCoord: { clientX: number; clientY: number };
 }
 
 export function ModalPlaylistOption({
-  isModalPlaylistOptionOpen,
   mooseCoord,
+  isModalPlaylistOptionOpen,
 }: PlaylistOption) {
   return (
     <>

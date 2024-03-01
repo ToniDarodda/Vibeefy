@@ -63,15 +63,12 @@ export function RegisterStep() {
   };
 
   const rfns = async () => {
-    const isFormValid = await trigger(whichStep()); // Valide tous les champs
+    const isFormValid = await trigger(whichStep());
     if (isFormValid) {
-      // Si le formulaire est valide, passez à l'étape suivante
       if (registerFlow < RegisterFlow.VALIDATE) {
         setRegisterFlow((prev) => prev + 1);
       }
     } else {
-      // Gérer ici le cas où le formulaire n'est pas valide
-      // Par exemple, afficher un toast ou un message d'erreur
     }
   };
 

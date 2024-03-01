@@ -1,4 +1,5 @@
 import { VStack, HStack, Text } from '@chakra-ui/react';
+
 import { useNavigate } from 'react-router-dom';
 import { RegisterStep } from '../registerSteps';
 
