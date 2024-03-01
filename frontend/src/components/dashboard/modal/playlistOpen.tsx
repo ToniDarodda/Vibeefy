@@ -1,16 +1,17 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+
 import { useCreatePlaylist } from '../../../query/playlist';
 
 interface PlaylistOpenInterface {
   isModalPlaylistOpen: boolean;
-  mooseCoord: { clientX: number; clientY: number };
   playlistsLength: number | undefined;
+  mooseCoord: { clientX: number; clientY: number };
 }
 
 export function ModalPlaylistOpen({
-  isModalPlaylistOpen,
   mooseCoord,
   playlistsLength,
+  isModalPlaylistOpen,
 }: PlaylistOpenInterface) {
   const { mutate: createPlaylist } = useCreatePlaylist();
 

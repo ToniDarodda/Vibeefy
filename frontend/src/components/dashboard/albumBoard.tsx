@@ -1,25 +1,27 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+
 import { SearchBar } from './searchBar';
 import { SearchResponse } from '../../interfaces/search';
 
 interface AlbumBoardInterface {
-  setIsListening: (b: boolean) => void;
   isSearching: boolean;
-  setSongPlaying: (b: string) => void;
+
   setLink: (b: string) => void;
-  searchValue: SearchResponse[] | undefined;
   setSearch: (b: string) => void;
   setThumbnail: (b: string) => void;
+  setSongPlaying: (b: string) => void;
+  setIsListening: (b: boolean) => void;
+  searchValue: SearchResponse[] | undefined;
 }
 
 export function AlbumBoard({
-  setIsListening,
-  isSearching,
-  setSongPlaying,
   setLink,
-  searchValue,
   setSearch,
+  searchValue,
+  isSearching,
   setThumbnail,
+  setSongPlaying,
+  setIsListening,
 }: AlbumBoardInterface) {
   const activeListening = (title: string, link: string, thumbnail: string) => {
     setSongPlaying(title);

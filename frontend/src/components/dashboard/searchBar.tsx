@@ -1,5 +1,6 @@
-import { HStack, Input } from '@chakra-ui/react';
 import { forwardRef } from 'react';
+import { HStack, Input } from '@chakra-ui/react';
+
 interface SearchBarInterface {
   isSearching: boolean;
   setSearch: (b: string) => void;

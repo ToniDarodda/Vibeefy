@@ -1,5 +1,5 @@
-import React from 'react';
 import { VStack } from '@chakra-ui/react';
+
 import { Navbar, LoginCard } from '../components';
 
 export function Login(): JSX.Element {

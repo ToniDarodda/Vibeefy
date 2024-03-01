@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   HStack,
   VStack,
@@ -10,11 +13,9 @@ import {
   Image,
   useToast,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLoginUser } from '../../../query/user';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import { AxiosError } from 'axios';
+
+import { useLoginUser } from '../../../query/user';
 
 type Inputs = {
   email: string;

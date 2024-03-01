@@ -1,5 +1,5 @@
-import { InputGroup, Input, InputRightElement, Image } from '@chakra-ui/react';
 import { useState, forwardRef } from 'react';
+import { InputGroup, Input, InputRightElement, Image } from '@chakra-ui/react';
 
 interface PasswordInputInterface {
   isImage?: boolean;
@@ -7,7 +7,6 @@ interface PasswordInputInterface {
   placeHolder?: string;
 }
 
-// Wrap your component with forwardRef. It provides refs and props as parameters.
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputInterface>(
   (
     {
@@ -27,7 +26,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputInterface>(
     return (
       <InputGroup size="md">
         <Input
-          ref={ref} // Forward the ref to the Input component
+          ref={ref}
           {...rest}
           h={'70px'}
           w={'500px'}
@@ -58,6 +57,6 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputInterface>(
   },
 );
 
-PasswordInput.displayName = 'PasswordInput'; // It's a good practice to set a displayName for your forwardRef components
+PasswordInput.displayName = 'PasswordInput';
 
 export default PasswordInput;

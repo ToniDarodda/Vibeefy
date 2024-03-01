@@ -1,5 +1,4 @@
-import { Box, HStack, VStack, Text } from '@chakra-ui/react';
-import { Image } from '@chakra-ui/react';
+import { Box, HStack, VStack, Text, Image } from '@chakra-ui/react';
 
 export function Navbar() {
   return (

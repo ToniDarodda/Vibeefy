@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { searchService } from '../services/search';
 import { Search, DownloadSong } from '../interfaces/search';
 

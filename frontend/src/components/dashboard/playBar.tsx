@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   HStack,
   Text,
@@ -10,7 +11,7 @@ import {
   Progress,
   Stack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+
 import { formatTime } from '../../utils/formatTime';
 import { SearchResponse } from '../../interfaces/search';
 import { PlaybarMobile } from './playBarMobile';

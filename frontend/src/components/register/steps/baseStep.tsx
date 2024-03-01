@@ -47,7 +47,6 @@ export function BaseStep({
         onClick={registerFlowPrevStep}
         marginBottom={'20px'}
       >
-        {/* <Image src="/rarrow.png" boxSize={'30px'} /> */}
         Miss something?
       </Button>
     </VStack>
