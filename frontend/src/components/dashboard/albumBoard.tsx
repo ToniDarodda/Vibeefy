@@ -72,7 +72,8 @@ export function AlbumBoard({
                 backgroundColor={'#4e4e4e4e'}
                 box-shadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
                 alignItems={'center'}
-                justifyContent={'flex-end'}
+                justifyContent={'space-around'}
+                padding={'4px'}
                 onClick={() =>
                   activeListening(data.title, data.link, data.thumbnails)
                 }
@@ -80,13 +81,20 @@ export function AlbumBoard({
                 <Image
                   src={data.thumbnails}
                   alt={data.title}
+                  borderRadius={'8px'}
                   boxSize={{
                     base: '60px',
                     sm: '80px',
                     md: '120px',
                   }}
                 />
-                <Text color={'#ffffff'}>{data.title}</Text>
+                <Text
+                  color={'#ffffff'}
+                  overflow={'hidden'}
+                  textAlign={'center'}
+                >
+                  {data.title}
+                </Text>
               </VStack>
             );
           })}
