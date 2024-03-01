@@ -40,3 +40,12 @@ export interface SearchResponse {
   duration_seconds: number;
   thumbnails: string;
 }
+
+export interface DownloadSong {
+  link: string;
+  download: boolean;
+}
+
+export interface DownloadSongResponse {
+  stream_url: string;
+}

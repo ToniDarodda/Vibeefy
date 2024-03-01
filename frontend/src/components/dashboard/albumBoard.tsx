@@ -1,8 +1,9 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { SearchBar } from './searchBar';
-import { SearchResponse } from '../../interfaces/search';
-import { useGetSearch } from '../../query/search';
+import { SearchResponse, DownloadSongResponse } from '../../interfaces/search';
+import { useGetSearch, useDownloadSong } from '../../query/search';
+import { player } from '../../utils/player';
 
 interface AlbumBoardInterface {
   setIsListening: (b: boolean) => void;
@@ -16,23 +17,39 @@ export function AlbumBoard({
   isSearching,
   setSongPlaying,
 }: AlbumBoardInterface) {
-  const activeListening = (songPlaying: string) => {
-    setIsListening(true);
-    setSongPlaying(songPlaying);
-  };
-
+  const [link, setLink] = useState<string>('');
   const [search, setSearch] = useState<string>('');
   const [searchData, setSearchData] = useState<SearchResponse[] | undefined>(
     [],
   );
+
   const { data: searchValue } = useGetSearch({
     query: search,
     filter: 'songs',
-  });
+  }) as { data: SearchResponse[] | undefined };
+
+  const { data: linkValue } = useDownloadSong({
+    link,
+    download: false,
+  }) as { data: DownloadSongResponse | undefined };
+
+  const activeListening = (title: string, link: string) => {
+    setSongPlaying(title);
+    if (!link || link === '') return;
+    setLink(link);
+    setIsListening(true);
+  };
+
+  useEffect(() => {
+    if (!link || link === '' || link === undefined) return;
+    if (linkValue?.stream_url) {
+      player.play(linkValue.stream_url);
+    }
+  }, [link, linkValue]);
 
   useEffect(() => {
     if (!search || search === '') return;
-    setSearchData(searchValue as SearchResponse[]);
+    setSearchData(searchValue);
   }, [search, searchValue]);
 
   return (
@@ -60,12 +77,13 @@ export function AlbumBoard({
                   sm: '150px',
                   md: '200px',
                 }}
+                cursor={'pointer'}
                 borderRadius={'8px'}
                 backgroundColor={'#4e4e4e4e'}
                 box-shadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
                 alignItems={'center'}
                 justifyContent={'flex-end'}
-                onClick={() => activeListening(data.title)}
+                onClick={() => activeListening(data.title, data.link)}
               >
                 <Image
                   src={data.thumbnails}
