@@ -22,10 +22,10 @@ export class SongService {
     });
   }
 
-  async getSongsByName(name: string): Promise<Song[]> {
+  async getSongsByName(title: string): Promise<Song[]> {
     return this.songRepository.find({
       where: {
-        name,
+        title,
       },
       relations: {
         album: {

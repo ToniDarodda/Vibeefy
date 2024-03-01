@@ -19,7 +19,7 @@ export class ArtistBaseDTO {
   @IsString()
   @IsNotEmpty()
   @Length(1, 100)
-  pseudo: string;
+  name: string;
 
   @ApiProperty({
     example: 'https://google.com/kerchak',
@@ -32,4 +32,4 @@ export class ArtistBaseDTO {
 
 export class ArtistGetById extends PickType(ArtistBaseDTO, ['id']) {}
 
-export class ArtistGetByPseudo extends PickType(ArtistBaseDTO, ['pseudo']) {}
+export class ArtistGetByPseudo extends PickType(ArtistBaseDTO, ['name']) {}

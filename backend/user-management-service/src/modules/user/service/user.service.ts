@@ -18,8 +18,6 @@ export class UserService {
   async createUser(data: UserCreate): Promise<string> {
     const findUserIfAlreadyExist = await this.getUserByEmail(data.email);
 
-    console.log(findUserIfAlreadyExist);
-
     if (findUserIfAlreadyExist !== null)
       throw new UnprocessableEntityException('User mail already taken!');
 
@@ -36,8 +34,6 @@ export class UserService {
 
   async loginUser({ email, password }: UserLogin): Promise<string> {
     const retrievedUser = await this.userRepository.findOneBy({ email });
-
-    console.log(retrievedUser);
 
     if (retrievedUser === undefined || retrievedUser === null)
       throw new UnauthorizedException('Invalid credential');

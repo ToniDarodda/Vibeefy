@@ -21,10 +21,10 @@ export class AlbumService {
     });
   }
 
-  async getAlbumByName(name: string): Promise<Album[]> {
+  async getAlbumByName(title: string): Promise<Album[]> {
     return this.albumRepository.find({
       where: {
-        name,
+        title,
       },
       relations: {
         songs: true,
