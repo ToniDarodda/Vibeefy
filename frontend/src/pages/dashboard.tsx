@@ -53,14 +53,12 @@ export function Dashboard() {
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
           >
             <AlbumBoard
-              search={search}
               setLink={setLink}
               setSearch={setSearch}
               searchValue={searchValue}
               isSearching={isSearching}
               setIsListening={setIsListening}
               setSongPlaying={setSongPlaying}
-              isLargardThan1000={isLargardThan1000}
               setThumbnail={setThumbnail}
             />
           </VStack>

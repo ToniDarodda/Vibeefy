@@ -148,6 +148,7 @@ export function Playbar({
               <Stack spacing={5} h={'100%'} w={'80%'}>
                 <Progress
                   colorScheme="orange"
+                  cursor={'pointer'}
                   size="md"
                   value={
                     duration
