@@ -1,4 +1,8 @@
-import { CreatePlaylist, PlaylistType } from '../interfaces/playlist';
+import {
+  CreatePlaylist,
+  PlaylistSong,
+  PlaylistType,
+} from '../interfaces/playlist';
 import { Fetch } from '../utils/axios';
 
 class PlaylistService {
@@ -14,6 +18,23 @@ class PlaylistService {
       await Fetch.get<PlaylistType[]>(`/playlist/by-user/me`);
 
     return playlists;
+  }
+
+  async addSongToPlaylist(
+    name: string,
+    songId: string,
+    playlistId: string,
+    songDuration: number,
+  ): Promise<PlaylistSong> {
+    console.log(playlistId, songId, songDuration);
+    const { data: addedSong }: { data: PlaylistSong } =
+      await Fetch.post<PlaylistSong>(`playlist/${playlistId}/songs`, {
+        name,
+        songId,
+        songDuration,
+      });
+
+    return addedSong;
   }
 }
 

@@ -2,50 +2,52 @@ import { Response } from 'express';
 
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Patch,
   Post,
   Res,
+  UseInterceptors,
 } from '@nestjs/common';
-import { UserCreate, UserLogin, UserPatch } from '../dto/base.dto';
-import { User } from 'src/entities/user/entity';
-import { UserService } from '../service/user.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthToken } from 'src/decorators/auth.decorator';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
+
 import { DecodedUserToken } from 'src/utils/jwt.util';
-import { QueryFailedError } from 'typeorm';
+import { AuthToken } from 'src/decorators/auth.decorator';
+import { User } from 'src/entities/user/entity';
+import { UserCreate, UserLogin, UserPatch } from '../dto/base.dto';
+import { UserService } from '../service/user.service';
 
 @ApiTags('User')
 @Controller('user')
+@ApiUnauthorizedResponse({ description: 'Token malformed or invalid' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  @ApiOperation({ summary: 'Create user' })
+  @ApiOkResponse({ description: 'Create user seccessfully' })
+  @ApiUnprocessableEntityResponse({
+    description: 'The entity is unprocessable',
+  })
   async createUser(
     @Res({ passthrough: true }) res: Response,
     @Body() data: UserCreate,
   ): Promise<void> {
-    try {
-      const { ACCESS_TOKEN, COOKIE_TOKEN_NAME } = process.env;
+    const { ACCESS_TOKEN, COOKIE_TOKEN_NAME } = process.env;
 
-      const accessToken = await this.userService.createUser(data);
+    const accessToken = await this.userService.createUser(data);
 
-      res.cookie(COOKIE_TOKEN_NAME, accessToken, {
-        expires: new Date(Date.now() + parseInt(ACCESS_TOKEN, 10)),
-      });
-    } catch (err) {
-      if (err instanceof QueryFailedError) {
-        throw new HttpException('Email already taken!', HttpStatus.BAD_REQUEST);
-      } else {
-        throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
-      }
-    }
+    res.cookie(COOKIE_TOKEN_NAME, accessToken, {
+      expires: new Date(Date.now() + parseInt(ACCESS_TOKEN, 10)),
+    });
   }
 
   @Post('login')
@@ -65,12 +67,14 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: 'Get user by id' })
+  @UseInterceptors(ClassSerializerInterceptor)
   getUserById(@AuthToken() { userId }: DecodedUserToken): Promise<User> {
     return this.userService.getUser(userId);
   }
 
   @Get(':userMail/mail')
   @ApiOperation({ summary: 'Get user by mail' })
+  @UseInterceptors(ClassSerializerInterceptor)
   getUserByMail(@Param('userMail') userMail: string): Promise<User> {
     return this.userService.getUserByEmail(userMail);
   }

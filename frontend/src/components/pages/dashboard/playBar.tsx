@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect, useRef, useState } from 'react';
 import {
   HStack,
   Text,
@@ -10,65 +11,55 @@ import {
   SliderThumb,
   Progress,
   Stack,
+  Spinner,
 } from '@chakra-ui/react';
 
-import { formatTime } from '../../utils/formatTime';
-import { SearchResponse } from '../../interfaces/search';
 import { PlaybarMobile } from './playBarMobile';
+import { SearchResponse } from '../../../interfaces/search';
+import { formatTime } from '../../../utils/formatTime';
+import { useAudioPlayerContext } from '../../../contexts/playerContext';
 
 interface PlaybarInterface {
-  seek: number;
-  duration: number;
-  thumbnail: string;
   isListening: boolean;
-  listeningSong: string;
-  listeningImage?: string;
   isLargerThan1000: boolean;
-  togglePlayPause: () => void;
-  setLink: (s: string) => void;
-  setTime: (x: number) => void;
-  setVolume: (b: number) => void;
-  setIsSearching: (x: boolean) => void;
-  setSongPlaying: (s: string) => void;
   searchValue: SearchResponse[] | undefined;
+
+  togglePlayPause: () => void;
+  setIsSearching: (b: boolean) => void;
 }
 
 export function Playbar({
-  seek,
-  setTime,
-  setLink,
-  duration,
-  setVolume,
-  thumbnail,
   searchValue,
   isListening,
-  listeningSong,
   setIsSearching,
-  setSongPlaying,
-  togglePlayPause,
   isLargerThan1000,
 }: PlaybarInterface) {
+  const {
+    duration,
+    setVolume,
+    togglePlayPause,
+    seek,
+    setTime,
+    currentSong,
+    playNext,
+    playPrev,
+    isPlaying,
+  } = useAudioPlayerContext();
+
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [sliderValue, setSliderValue] = useState<number>(30);
 
-  const handleBarChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const progressBar = document.querySelector('.css-1u9udmx');
-    const computedStyle = window.getComputedStyle(progressBar!);
-    const widthComputed = computedStyle.width.split('px')[0];
-    const result =
-      ((e.clientX - (window.innerWidth - +widthComputed) / 2) * 100) /
-      +widthComputed;
-    setTime((result / 100) * duration);
-  };
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
-  const handleNextPrev = () => {
-    const nextRandomMusic = Math.floor(Math.random() * 20);
-    if (searchValue![nextRandomMusic].title !== listeningSong) {
-      setLink(searchValue![nextRandomMusic].link);
-      setSongPlaying(searchValue![nextRandomMusic].title);
-    } else {
-      handleNextPrev();
-    }
+  const handleBarChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const progressBar = progressBarRef.current;
+    if (!progressBar) return;
+
+    const rect = progressBar.getBoundingClientRect();
+    const widthComputed = rect.width;
+    const result = ((e.clientX - rect.left) * 100) / widthComputed;
+
+    setTime((result / 100) * duration!);
   };
 
   useEffect(() => {
@@ -105,9 +96,9 @@ export function Playbar({
           background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
         >
           <HStack flex={1} gap={'20px'}>
-            <Image src={thumbnail} boxSize={'60px'} />
+            <Image src={currentSong?.thumbnails} boxSize={'60px'} />
             <VStack alignItems={'flex-start'}>
-              <Text color={'#ffffff'}>{listeningSong}</Text>
+              <Text color={'#ffffff'}>{currentSong?.title}</Text>
               <Text color={'#ffffff62'}>Saison 2</Text>
             </VStack>
             <Image src="/like.png" boxSize={'16px'} cursor={'pointer'} />
@@ -119,22 +110,27 @@ export function Playbar({
                 src="/nextl.png"
                 cursor={'pointer'}
                 boxSize={'20px'}
-                onClick={handleNextPrev}
+                onClick={playPrev}
               />
-              <Image
-                src={isPaused ? 'pause2.png' : '/pause.png'}
-                cursor={'pointer'}
-                boxSize={'38px'}
-                onClick={() => {
-                  togglePlayPause();
-                  setIsPaused(!isPaused);
-                }}
-              />
+              {!isPlaying && currentSong?.videoId && !isPaused && (
+                <Spinner boxSize={'38px'} color="#ffffff" />
+              )}
+              {(isPlaying || isPaused) && (
+                <Image
+                  src={isPaused ? 'pause2.png' : '/pause.png'}
+                  cursor={'pointer'}
+                  boxSize={'38px'}
+                  onClick={() => {
+                    togglePlayPause();
+                    setIsPaused(!isPaused);
+                  }}
+                />
+              )}
               <Image
                 src="/nextr.png"
                 cursor={'pointer'}
                 boxSize={'20px'}
-                onClick={handleNextPrev}
+                onClick={playNext}
               />
             </HStack>
             <HStack
@@ -148,6 +144,7 @@ export function Playbar({
               </Text>
               <Stack spacing={5} h={'100%'} w={'80%'}>
                 <Progress
+                  ref={progressBarRef}
                   colorScheme="orange"
                   cursor={'pointer'}
                   size="md"
@@ -161,7 +158,7 @@ export function Playbar({
                 />
               </Stack>
               <Text color={'#ffffff'} textAlign={'center'}>
-                {formatTime(Math.round(duration))}
+                {formatTime(Math.round(duration!))}
               </Text>
             </HStack>
           </VStack>
@@ -196,14 +193,14 @@ export function Playbar({
         </HStack>
       )}
       <PlaybarMobile
-        thumbnail={thumbnail}
         isPaused={isPaused}
-        listeningSong={listeningSong}
-        isLargerThan1000={isLargerThan1000}
-        handleNextPrev={handleNextPrev}
-        togglePlayPause={togglePlayPause}
-        setIsPaused={setIsPaused}
         setIsSearching={setIsSearching}
+        setIsPaused={setIsPaused}
+        listeningSong={currentSong?.title ?? ''}
+        playNext={playNext}
+        togglePlayPause={togglePlayPause}
+        thumbnail={currentSong?.thumbnails ?? ''}
+        isLargerThan1000={isLargerThan1000}
       ></PlaybarMobile>
     </>
   );

@@ -1,15 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ArtistService } from './app.service';
-import { UserController } from './app.controller';
-import { UserModule } from './modules/user/user.module';
+import { ConfigModule } from '@nestjs/config';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from './ormconfig';
-import { ConfigModule } from '@nestjs/config';
-import { PlaylistModule } from './modules/playlist/playlist.module';
-import { LovedSongModule } from './modules/lovedSong/lovedSong.module';
 
-const modules = [UserModule, PlaylistModule, LovedSongModule];
+import { LovedSongModule } from './modules/lovedSong/lovedSong.module';
+import { PlaylistModule } from './modules/playlist/playlist.module';
+import { UserModule } from './modules/user/user.module';
+import { MicroServiceModule } from './modules/artist-manager/artist-manager.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
+const { ARTISTHOST, ARTISTPORT } = process.env;
+
+const modules = [
+  UserModule,
+  PlaylistModule,
+  LovedSongModule,
+  MicroServiceModule,
+];
 
 @Module({
   imports: [
@@ -18,8 +26,8 @@ const modules = [UserModule, PlaylistModule, LovedSongModule];
         name: 'MUSIC_ARTIST_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: '127.0.0.1',
-          port: 3001,
+          host: ARTISTHOST,
+          port: +ARTISTPORT,
         },
       },
     ]),
@@ -27,7 +35,5 @@ const modules = [UserModule, PlaylistModule, LovedSongModule];
     ConfigModule.forRoot(),
     ...modules,
   ],
-  providers: [ArtistService],
-  controllers: [UserController],
 })
 export class AppModule {}

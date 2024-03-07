@@ -1,5 +1,11 @@
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class UserBaseDTO {
   @ApiProperty({
@@ -20,7 +26,7 @@ export class UserBaseDTO {
   pseudo: string;
 
   @ApiProperty({
-    example: 'toni.da.rodda.dev@gmail.pro@gmail.com',
+    example: 'toni.da.rodda.dev@gmail.com',
     description: 'Email of user',
   })
   @IsNotEmpty()
@@ -29,12 +35,11 @@ export class UserBaseDTO {
   email: string;
 
   @ApiProperty({
-    example: 'toni.da.rodda.dev@gmail.pro@gmail.com',
+    example: '2024-03-02',
     description: 'Email of user',
   })
   @IsNotEmpty()
-  @IsString()
-  @IsEmail()
+  @IsDateString()
   dateOfBirth: string;
 
   @ApiProperty({

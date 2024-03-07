@@ -11,12 +11,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { LovedSongService } from '../service/lovedSong.service';
-import { LovedSongCreate } from '../dto/base.dto';
+import { QueryFailedError } from 'typeorm';
+
 import { LovedSong } from 'src/entities/lovedSong/entity';
 import { AuthToken } from 'src/decorators/auth.decorator';
 import { DecodedUserToken } from 'src/utils/jwt.util';
-import { QueryFailedError } from 'typeorm';
+import { LovedSongService } from '../service/lovedSong.service';
+import { LovedSongCreate } from '../dto/base.dto';
 
 @ApiTags('LovedSong')
 @Controller('love-song')

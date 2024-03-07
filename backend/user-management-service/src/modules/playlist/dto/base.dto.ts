@@ -1,5 +1,11 @@
 import { ApiProperty, OmitType, PickType } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 class BasePlaylistDto {
   @ApiProperty({
@@ -45,6 +51,21 @@ class BasePLaylistSongDTO {
   @IsNotEmpty()
   @IsString()
   songId: string;
+
+  @ApiProperty({
+    example: 'Go',
+    description: 'Song id',
+  })
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @ApiProperty({
+    example: '166',
+    description: 'Song id',
+  })
+  @IsNumber()
+  songDuration: number;
 }
 
 export class PlaylistSongCreate extends OmitType(BasePLaylistSongDTO, ['id']) {}

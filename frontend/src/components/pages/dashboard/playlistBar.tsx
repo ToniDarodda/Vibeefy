@@ -1,19 +1,27 @@
 import { useState } from 'react';
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 
-import { PlaylistType } from '../../interfaces/playlist';
-import { useGetPlaylist } from '../../query/playlist';
 import { ModalPlaylistOpen } from './modal/playlistOpen';
 import { ModalPlaylistOption } from './modal/playlistOption';
+import { PlaylistType } from '../../../interfaces/playlist';
+import { AlbumInterface } from '../../../interfaces/artist';
 
 interface PlaylistBarInterface {
   isLargardThan1000: boolean;
+  playlists: PlaylistType[] | undefined;
   setIsSearching: (b: boolean) => void;
+  setPlaylistView: (b: boolean) => void;
+  setSelectedAlbumOrSong: React.Dispatch<
+    React.SetStateAction<AlbumInterface | PlaylistType | undefined>
+  >;
 }
 
 export function PlaylistBar({
-  isLargardThan1000,
+  playlists,
   setIsSearching,
+  setPlaylistView,
+  isLargardThan1000,
+  setSelectedAlbumOrSong,
 }: PlaylistBarInterface) {
   const [isModalPlaylistOpen, setModalPlaylistOpen] = useState<boolean>(false);
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
@@ -22,8 +30,6 @@ export function PlaylistBar({
     clientX: number;
     clientY: number;
   }>({ clientX: 0, clientY: 0 });
-
-  const { data: playlists } = useGetPlaylist();
 
   return (
     <VStack flex={1} h={'100%'} display={isLargardThan1000 ? 'normal' : 'none'}>
@@ -126,6 +132,10 @@ export function PlaylistBar({
                       alignItems={'center'}
                       justifyContent={'flex-start'}
                       gap={'40px'}
+                      onClick={() => {
+                        setSelectedAlbumOrSong(playlist);
+                        setPlaylistView(true);
+                      }}
                     >
                       <VStack
                         w={'60px'}
@@ -149,9 +159,6 @@ export function PlaylistBar({
                           });
 
                           setModalPlaylistOptionOpen(true);
-                          console.log(
-                            `Right-clicked on playlist: ${playlist.name}`,
-                          );
                         }}
                       >
                         {playlist.name}

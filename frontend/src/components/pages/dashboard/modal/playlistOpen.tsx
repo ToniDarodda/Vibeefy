@@ -1,6 +1,5 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
-
-import { useCreatePlaylist } from '../../../query/playlist';
+import { useCreatePlaylist } from '../../../../query/playlist';
 
 interface PlaylistOpenInterface {
   isModalPlaylistOpen: boolean;

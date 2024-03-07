@@ -33,6 +33,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@types/cookie-parser": "^1.4.6",
     "@types/jsonwebtoken": "^9.0.5",
+    "aws-sdk": "^2.1569.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",

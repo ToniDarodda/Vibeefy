@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LovedSong, LovedSongToSong } from 'src/entities/lovedSong/entity';
 import { Repository } from 'typeorm';
+
+import { LovedSong, LovedSongToSong } from 'src/entities/lovedSong/entity';
 import { LovedSongCreate } from '../dto/base.dto';
 
 @Injectable()

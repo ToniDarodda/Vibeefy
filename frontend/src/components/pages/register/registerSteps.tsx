@@ -12,10 +12,10 @@ import { EmailStep } from './steps/emailStep';
 import { BaseStep } from './steps/baseStep';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useCreateUser } from '../../query/user';
-import PasswordInput from '../input/passwordInput';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useCreateUser } from '../../../query/user';
+import PasswordInput from '../../input/passwordInput';
 
 enum RegisterFlow {
   EMAIL = 0,

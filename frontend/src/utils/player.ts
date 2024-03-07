@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Howl } from 'howler';
 
 interface UseAudioPlayerOptions {
-  url: string;
+  url: string | undefined;
+  onSongEnd: () => void;
 }
 
-export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
+export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   const playerRef = useRef<Howl | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isFinish, setIsFinish] = useState(true);
   const [seek, setSeek] = useState<number>(0);
   const [duration, setDuration] = useState<number | undefined>(0);
 
@@ -15,20 +17,25 @@ export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
     if (playerRef.current) {
       playerRef.current.unload();
     }
+    if (url === undefined) return;
     const howlPlayer = new Howl({
       src: [url],
-      format: ['mp3'],
-      autoplay: true,
+      format: ['wav'],
+      autoplay: false,
       loop: false,
       html5: true,
       preload: true,
       onplay: () => {
         setIsPlaying(true);
+        setIsFinish(false);
         setDuration(howlPlayer.duration());
       },
       onpause: () => setIsPlaying(false),
       onstop: () => setIsPlaying(false),
-      onend: () => setIsPlaying(false),
+      onend: () => {
+        setIsFinish(true);
+        onSongEnd();
+      },
     });
 
     playerRef.current = howlPlayer;
@@ -41,8 +48,12 @@ export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
   };
 
   const togglePlayPause = () => {
-    if (playerRef.current) {
-      isPlaying ? playerRef.current.pause() : playerRef.current.play();
+    if (!playerRef.current) return;
+
+    if (isPlaying) {
+      playerRef.current.pause();
+    } else {
+      playerRef.current.play();
     }
   };
 
@@ -83,6 +94,7 @@ export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
     pause,
     setTime,
     duration,
+    isFinish,
     isPlaying,
     setVolume,
     setDuration,

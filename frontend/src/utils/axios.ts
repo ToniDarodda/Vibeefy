@@ -15,3 +15,11 @@ export const FetchScrawler: AxiosInstance = axios.create({
     'Request timeout there is maybe a problem with the server!',
   withCredentials: true,
 });
+
+export const FetchS3: AxiosInstance = axios.create({
+  baseURL: 'http://localhost:3005',
+  timeout: 5000,
+  timeoutErrorMessage:
+    'Request timeout there is maybe a problem with the server!',
+  withCredentials: true,
+});

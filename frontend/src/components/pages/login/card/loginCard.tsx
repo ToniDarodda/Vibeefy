@@ -14,8 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
-
-import { useLoginUser } from '../../../query/user';
+import { useLoginUser } from '../../../../query/user';
 
 type Inputs = {
   email: string;

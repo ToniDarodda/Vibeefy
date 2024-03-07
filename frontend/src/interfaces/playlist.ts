@@ -1,3 +1,10 @@
+export interface PlaylistSong {
+  id: string;
+  songId: string;
+  songName: string;
+  songDuration: number;
+}
+
 export interface BasePlaylistInterface {
   id: string;
 
@@ -5,12 +12,14 @@ export interface BasePlaylistInterface {
 
   isPublic?: boolean;
 
-  songId: string;
+  songId: string[];
 
   sharedToUser: string;
+
+  playlistSongs: PlaylistSong[];
 }
 
-export type PlaylistType = Omit<BasePlaylistInterface, 'id'>;
+export type PlaylistType = BasePlaylistInterface;
 
 export type CreatePlaylist = Pick<BasePlaylistInterface, 'name' | 'isPublic'>;
 

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Login, Register, Loading, Dashboard } from './pages';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AudioPlayerProvider } from './contexts/playerContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,7 +41,9 @@ root.render(
   <React.StrictMode>
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AudioPlayerProvider>
+          <RouterProvider router={router} />
+        </AudioPlayerProvider>
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,
