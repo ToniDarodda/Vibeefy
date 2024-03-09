@@ -12,25 +12,31 @@ import {
   Progress,
   Stack,
   Spinner,
+  Icon,
 } from '@chakra-ui/react';
+import { MdOutlineQueueMusic, MdOutlinePlaylistPlay } from 'react-icons/md';
 
 import { PlaybarMobile } from './playBarMobile';
-import { SearchResponse } from '../../../interfaces/search';
-import { formatTime } from '../../../utils/formatTime';
-import { useAudioPlayerContext } from '../../../contexts/playerContext';
+import { useAudioPlayerContext } from '../../../contexts';
+import { SearchResponse } from '../../../interfaces';
+import { formatTime } from '../../../utils';
 
 interface PlaybarInterface {
+  queueView: boolean;
   isListening: boolean;
   isLargerThan1000: boolean;
   searchValue: SearchResponse[] | undefined;
 
   togglePlayPause: () => void;
-  setIsSearching: (b: boolean) => void;
+  setQueueView: (tmp: boolean) => void;
+  setIsSearching: (tmp: boolean) => void;
 }
 
 export function Playbar({
+  queueView,
   searchValue,
   isListening,
+  setQueueView,
   setIsSearching,
   isLargerThan1000,
 }: PlaybarInterface) {
@@ -44,9 +50,10 @@ export function Playbar({
     playNext,
     playPrev,
     isPlaying,
+    isPaused,
+    setIsPaused,
   } = useAudioPlayerContext();
 
-  const [isPaused, setIsPaused] = useState<boolean>(false);
   const [sliderValue, setSliderValue] = useState<number>(30);
 
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -90,15 +97,14 @@ export function Playbar({
           w={'100%'}
           h={'80px'}
           borderRadius={'8px'}
-          backgroundColor={'#3d3d3d'}
           justifyContent={'space-between'}
           padding={'20px'}
-          background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
+          background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
         >
           <HStack flex={1} gap={'20px'}>
             <Image src={currentSong?.thumbnails} boxSize={'60px'} />
             <VStack alignItems={'flex-start'}>
-              <Text color={'#ffffff'}>{currentSong?.title}</Text>
+              <Text>{currentSong?.title}</Text>
               <Text color={'#ffffff62'}>Saison 2</Text>
             </VStack>
             <Image src="/like.png" boxSize={'16px'} cursor={'pointer'} />
@@ -117,7 +123,7 @@ export function Playbar({
               )}
               {(isPlaying || isPaused) && (
                 <Image
-                  src={isPaused ? 'pause2.png' : '/pause.png'}
+                  src={!isPlaying ? 'pause2.png' : '/pause.png'}
                   cursor={'pointer'}
                   boxSize={'38px'}
                   onClick={() => {
@@ -139,15 +145,14 @@ export function Playbar({
               justifyContent={'center'}
               alignItems={'center'}
             >
-              <Text color={'#ffffff'} textAlign={'center'}>
+              <Text textAlign={'center'}>
                 {`${formatTime(Math.round(seek))}`}
               </Text>
               <Stack spacing={5} h={'100%'} w={'80%'}>
                 <Progress
-                  ref={progressBarRef}
-                  colorScheme="orange"
                   cursor={'pointer'}
                   size="md"
+                  ref={progressBarRef}
                   value={
                     duration
                       ? (Math.round(seek) * 100) / duration
@@ -157,7 +162,7 @@ export function Playbar({
                   borderRadius={'8px'}
                 />
               </Stack>
-              <Text color={'#ffffff'} textAlign={'center'}>
+              <Text textAlign={'center'}>
                 {formatTime(Math.round(duration!))}
               </Text>
             </HStack>
@@ -167,12 +172,26 @@ export function Playbar({
             flex={1}
             alignItems={'center'}
             justifyContent={'flex-end'}
-            gap={sliderValue === 0 ? '20px' : '20px'}
+            gap={sliderValue === 0 ? '30px' : '20px'}
           >
-            <Image
-              src={sliderValue === 0 ? 'volume-mute.png' : '/volume.png'}
-              boxSize={sliderValue === 0 ? '24px' : '30px'}
-            />
+            <HStack gap={'40px'}>
+              <Icon
+                boxSize={'40px'}
+                cursor={'pointer'}
+                color={'#8d8d8d'}
+                as={!queueView ? MdOutlineQueueMusic : MdOutlinePlaylistPlay}
+                _hover={{
+                  color: '#ffffff',
+                }}
+                onClick={() => {
+                  setQueueView(!queueView);
+                }}
+              />
+              <Image
+                src={sliderValue === 0 ? 'volume-mute.png' : '/volume.png'}
+                boxSize={sliderValue === 0 ? '24px' : '30px'}
+              />
+            </HStack>
 
             <Slider
               w={'50%'}

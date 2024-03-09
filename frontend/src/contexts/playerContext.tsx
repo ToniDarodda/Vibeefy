@@ -8,6 +8,8 @@ import React, {
 import { useAudioPlayer } from '../utils/player';
 import { SongInterface } from '../interfaces/artist';
 import { linkService } from '../services/link';
+import { PlaylistSong } from '../interfaces';
+import { songService } from '../services/song';
 
 interface S3LinkCache {
   [videoId: string]: string;
@@ -16,16 +18,23 @@ interface S3LinkCache {
 interface AudioPlayerContextType {
   seek: number;
   isFinish: boolean;
+  isPaused: boolean;
   currentSong?: SongInterface & { link?: string };
   isPlaying: boolean;
   duration?: number;
+  queue: (SongInterface & {
+    link?: string | undefined;
+  })[];
   pause: () => void;
   reStart: () => void;
   togglePlayPause: () => void;
+  setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
   setTime: (time: number) => void;
   setVolume: (volume: number) => void;
   addToQueue: (song: SongInterface) => void;
   setCurrentSong: (song: SongInterface) => void;
+  addPlaylistToQueue: (songs: PlaylistSong[]) => void;
+
   playNext: () => void;
   playPrev?: () => void;
 }
@@ -34,6 +43,8 @@ const defaultValue: AudioPlayerContextType = {
   seek: 0,
   isFinish: true,
   isPlaying: false,
+  isPaused: false,
+  queue: [],
   pause: () => {},
   reStart: () => {},
   togglePlayPause: () => {},
@@ -41,7 +52,9 @@ const defaultValue: AudioPlayerContextType = {
   setVolume: () => {},
   addToQueue: () => {},
   setCurrentSong: () => {},
+  addPlaylistToQueue: () => {},
   playNext: () => {},
+  setIsPaused: () => {},
 };
 
 const AudioPlayerContext = createContext<AudioPlayerContextType>(defaultValue);
@@ -57,12 +70,13 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     SongInterface & { link?: string }
   >();
   const [queue, setQueue] = useState<(SongInterface & { link?: string })[]>([]);
+  const [playlistQueue, setPlaylistQueue] = useState<
+    (SongInterface & { link?: string })[]
+  >([]);
   const s3LinkCache: S3LinkCache = {};
 
   const addToQueue = async (song: SongInterface) => {
     if (!s3LinkCache[song.videoId]) {
-      // const { data: s3Link } = useS3Link(song.videoId);
-
       const link = await linkService.getLinkFromS3(song.videoId);
       s3LinkCache[song.videoId] = link!;
     }
@@ -73,16 +87,44 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     ]);
   };
 
+  const addPlaylistToQueue = async (songs: PlaylistSong[]) => {
+    const results = await Promise.all(
+      songs.map(async (song: PlaylistSong) => {
+        const realSong = await songService.getPlaylist(song.songId);
+        if (!s3LinkCache[realSong.videoId]) {
+          const link = await linkService.getLinkFromS3(realSong.videoId);
+          s3LinkCache[realSong.videoId] = link;
+        }
+        return { ...realSong, link: s3LinkCache[realSong.videoId] };
+      }),
+    );
+
+    setPlaylistQueue(results);
+  };
+
   const playNext = () => {
-    setQueue((prevQueue) => {
-      const queueCopy = [...prevQueue];
-      const nextSong = queueCopy.shift();
+    setQueue((currentQueue) => {
+      if (currentQueue.length > 0) {
+        const nextQueue = [...currentQueue];
+        const nextSong = nextQueue.shift();
 
-      if (nextSong) {
         setCurrentSong(nextSong);
+        return nextQueue;
+      } else {
+        return currentQueue;
       }
+    });
 
-      return queueCopy;
+    setPlaylistQueue((currentPlaylistQueue) => {
+      if (currentPlaylistQueue.length > 0 && queue.length === 0) {
+        const nextPlaylistQueue = [...currentPlaylistQueue];
+        const nextSong = nextPlaylistQueue.shift();
+
+        setCurrentSong(nextSong);
+        return nextPlaylistQueue;
+      } else {
+        return currentPlaylistQueue;
+      }
     });
   };
 
@@ -95,9 +137,8 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     const getLink = async () => {
       if (currentSong && !currentSong.link) {
         const fetchLink = async () => {
-          // const { data: s3Link } = useS3Link(currentSong.videoId);
-
           const link = await linkService.getLinkFromS3(currentSong.videoId);
+
           setCurrentSong({ ...currentSong, link });
         };
         fetchLink();
@@ -106,12 +147,19 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     getLink();
   }, [currentSong]);
 
+  useEffect(() => {
+    console.log(queue);
+  }, [queue]);
+
   const value = {
     ...playerControls,
     queue,
     playNext,
     addToQueue,
     currentSong,
+    addPlaylistToQueue,
+    setPlaylistQueue,
+    playlistQueue,
     setCurrentSong: (song: SongInterface) => setCurrentSong(song),
   };
 

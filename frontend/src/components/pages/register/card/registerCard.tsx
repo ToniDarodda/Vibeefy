@@ -1,6 +1,6 @@
 import { VStack, HStack, Text } from '@chakra-ui/react';
-
 import { useNavigate } from 'react-router-dom';
+
 import { RegisterStep } from '../registerSteps';
 
 export function RegisterCard() {
@@ -34,11 +34,8 @@ export function RegisterCard() {
         />
 
         <VStack flexDirection={'row'} gap={'10px'} onClick={redirectLogin}>
-          <Text color={'#ffffff'} cursor={'pointer'}>
-            Already have an account?
-          </Text>
+          <Text cursor={'pointer'}>Already have an account?</Text>
           <Text
-            color={'#ffffff'}
             as={'u'}
             cursor={'pointer'}
             fontWeight={'bold'}

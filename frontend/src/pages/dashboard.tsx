@@ -17,6 +17,8 @@ export function Dashboard() {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isListening, setIsListening] = useState<boolean>(false);
   const [playlistView, setPlaylistView] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [queueView, setQueueView] = useState<boolean>(false);
 
   const [selectedAlbumOrSong, setSelectedAlbumOrSong] = useState<
     AlbumInterface | PlaylistType
@@ -24,7 +26,7 @@ export function Dashboard() {
 
   const [search, setSearch] = useState<string>('');
 
-  const { data: albums } = useGetAlbum(search, 30, 0); // change to increase page
+  const { data: albums } = useGetAlbum(search, 30, 0);
 
   const { data: playlists } = useGetPlaylist();
 
@@ -47,7 +49,7 @@ export function Dashboard() {
   const { togglePlayPause } = useAudioPlayerContext();
 
   return (
-    <VStack h={'100vh'} backgroundColor={'#1E1E1E'}>
+    <VStack h={'100vh'} backgroundColor={'#000000'}>
       <VStack w={'100%'} h={'100%'} padding={'8px'}>
         <VStack
           flex={1}
@@ -62,8 +64,7 @@ export function Dashboard() {
             h={'100%'}
             overflow={'auto'}
             borderRadius={'8px'}
-            backgroundColor={'#2b2b2b'}
-            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
+            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
           >
             {playlistView ? (
               <PlaylistBoard
@@ -86,6 +87,7 @@ export function Dashboard() {
           </VStack>
           <PlaylistBar
             playlists={playlists}
+            queueView={queueView}
             setIsSearching={setIsSearching}
             setPlaylistView={setPlaylistView}
             isLargardThan1000={isLargardThan1000}
@@ -93,6 +95,8 @@ export function Dashboard() {
           />
         </VStack>
         <Playbar
+          queueView={queueView}
+          setQueueView={setQueueView}
           isListening={isListening}
           searchValue={searchValue}
           setIsSearching={setIsSearching}

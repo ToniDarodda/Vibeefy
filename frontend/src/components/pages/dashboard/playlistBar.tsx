@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+import { VStack, HStack, Text, Image, Icon } from '@chakra-ui/react';
 
 import { ModalPlaylistOpen } from './modal/playlistOpen';
 import { ModalPlaylistOption } from './modal/playlistOption';
-import { PlaylistType } from '../../../interfaces/playlist';
-import { AlbumInterface } from '../../../interfaces/artist';
+import { PlaylistType, AlbumInterface } from '../../../interfaces';
+import { MdHome, MdSearch } from 'react-icons/md';
+import { useAudioPlayerContext } from '../../../contexts';
+import { formatTime } from '../../../utils';
 
 interface PlaylistBarInterface {
+  queueView: boolean;
   isLargardThan1000: boolean;
   playlists: PlaylistType[] | undefined;
+
   setIsSearching: (b: boolean) => void;
-  setPlaylistView: (b: boolean) => void;
+  setPlaylistView: (tmp: boolean) => void;
   setSelectedAlbumOrSong: React.Dispatch<
     React.SetStateAction<AlbumInterface | PlaylistType | undefined>
   >;
@@ -18,11 +22,16 @@ interface PlaylistBarInterface {
 
 export function PlaylistBar({
   playlists,
+  queueView,
   setIsSearching,
   setPlaylistView,
   isLargardThan1000,
   setSelectedAlbumOrSong,
 }: PlaylistBarInterface) {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  const { queue } = useAudioPlayerContext();
+
   const [isModalPlaylistOpen, setModalPlaylistOpen] = useState<boolean>(false);
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
@@ -36,12 +45,11 @@ export function PlaylistBar({
       {isLargardThan1000 && (
         <VStack w={'100%'} h={'100%'} flex={1} borderRadius={'8px'}>
           <VStack
-            flex={1}
             w={'100%'}
             borderRadius={'8px'}
             backgroundColor={'#2b2b2b'}
-            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
-            padding={'24px'}
+            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
+            padding={'12px'}
             alignItems={'flex-start'}
             gap={'20px'}
           >
@@ -53,14 +61,14 @@ export function PlaylistBar({
               cursor={'pointer'}
               borderRadius={'8px'}
               onClick={() => setIsSearching(false)}
-              _hover={{
-                backgroundColor: '#3d3d3d',
-              }}
             >
-              <Image src="/home.png" boxSize={'28px'} />
-              <Text color={'#ffffff'} fontSize={'18px'}>
-                Home
-              </Text>
+              <Icon
+                as={MdHome}
+                color={'#535353'}
+                boxSize={'30px'}
+                _hover={{ color: '#ffffff' }}
+              />
+              <Text fontSize={'16px'}>Home</Text>
             </HStack>
             <HStack
               w={'100%'}
@@ -69,15 +77,19 @@ export function PlaylistBar({
               h={'50px'}
               padding={'12px'}
               borderRadius={'8px'}
-              _hover={{
-                backgroundColor: '#3d3d3d',
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onClick={() => {
+                setIsSearching(true);
+                setPlaylistView(false);
               }}
-              onClick={() => setIsSearching(true)}
             >
-              <Image src="/loop.png" boxSize={'28px'} />
-              <Text color={'#ffffff'} fontSize={'18px'}>
-                Search
-              </Text>
+              <Icon
+                as={MdSearch}
+                color={isHovered ? '#ffffff' : '#535353'}
+                boxSize={'32px'}
+              />
+              <Text fontSize={'16px'}>Search</Text>
             </HStack>
           </VStack>
           <VStack
@@ -85,8 +97,8 @@ export function PlaylistBar({
             w={'100%'}
             borderRadius={'8px'}
             backgroundColor={'#2b2b2b'}
-            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
-            padding={'24px'}
+            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
+            padding={'0px 12px 0px'}
             onContextMenu={(e) => {
               e.preventDefault();
               setModalPlaylistOptionOpen(false);
@@ -105,7 +117,6 @@ export function PlaylistBar({
               playlistsLength={playlists?.length}
             />
             <HStack
-              h={'50px'}
               w={'100%'}
               gap={'20%'}
               padding={'12px'}
@@ -113,64 +124,85 @@ export function PlaylistBar({
               onClick={() => setIsSearching(true)}
             >
               <Image src="/pl.png" boxSize={'28px'} />
-              <Text color={'#ffffff'} fontSize={'18px'}>
-                Your library
+              <Text fontSize={'16px'}>
+                {queueView ? 'Your queue' : 'Your library'}
               </Text>
             </HStack>
-            <VStack
-              gap={'20px'}
-              overflow={'auto'}
-              w={'100%'}
-              h={'500px'}
-              onScroll={(e) => console.log(e)}
-            >
-              {playlists?.map((playlist: PlaylistType, idx: number) => {
-                return (
-                  <VStack key={idx} w={'100%'}>
-                    <HStack
-                      w={'100%'}
-                      alignItems={'center'}
-                      justifyContent={'flex-start'}
-                      gap={'40px'}
-                      onClick={() => {
-                        setSelectedAlbumOrSong(playlist);
-                        setPlaylistView(true);
-                      }}
-                    >
-                      <VStack
-                        w={'60px'}
-                        h={'60px'}
-                        justifyContent={'center'}
-                        backgroundColor={'#0000003e'}
-                        borderRadius={'8px'}
-                      >
-                        <Image src="/vinyl.png" boxSize={'50px'}></Image>
-                      </VStack>
-                      <Text
-                        key={idx}
-                        color={'#ffffff'}
-                        cursor={'pointer'}
-                        onContextMenu={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          setMouseCoord({
-                            clientX: e.clientX,
-                            clientY: e.clientY,
-                          });
-
-                          setModalPlaylistOptionOpen(true);
+            <VStack gap={'20px'} overflow={'scroll'} w={'100%'} maxH={'60%'}>
+              {!queueView ? (
+                playlists?.map((playlist: PlaylistType, idx: number) => {
+                  return (
+                    <VStack key={idx} w={'100%'}>
+                      <HStack
+                        w={'100%'}
+                        alignItems={'center'}
+                        justifyContent={'flex-start'}
+                        gap={'40px'}
+                        onClick={() => {
+                          setSelectedAlbumOrSong(playlist);
+                          setPlaylistView(true);
                         }}
                       >
-                        {playlist.name}
-                      </Text>
-                      <ModalPlaylistOption
-                        isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-                        mooseCoord={mooseCoord}
-                      />
-                    </HStack>
-                  </VStack>
-                );
-              })}
+                        <VStack
+                          w={'60px'}
+                          h={'60px'}
+                          justifyContent={'center'}
+                          backgroundColor={'#0000003e'}
+                          borderRadius={'8px'}
+                        >
+                          <Image src="/vinyl.png" boxSize={'50px'}></Image>
+                        </VStack>
+                        <Text
+                          key={idx}
+                          cursor={'pointer'}
+                          onContextMenu={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setMouseCoord({
+                              clientX: e.clientX,
+                              clientY: e.clientY,
+                            });
+
+                            setModalPlaylistOptionOpen(true);
+                          }}
+                          fontSize={'14px'}
+                        >
+                          {playlist.name}
+                        </Text>
+                        <ModalPlaylistOption
+                          isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
+                          mooseCoord={mooseCoord}
+                        />
+                      </HStack>
+                    </VStack>
+                  );
+                })
+              ) : (
+                <>
+                  {queue.map((q, idx) => {
+                    return (
+                      <HStack
+                        w={'100%'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                        padding={'10px'}
+                      >
+                        <Image
+                          src={q.thumbnails}
+                          boxSize={'40px'}
+                          borderRadius={'4px'}
+                        />
+                        <Text key={idx} cursor={'pointer'} fontSize={'14px'}>
+                          {q.title}
+                        </Text>
+                        <Text key={idx} cursor={'pointer'} fontSize={'14px'}>
+                          {formatTime(q.songDuration)}
+                        </Text>
+                      </HStack>
+                    );
+                  })}
+                </>
+              )}
             </VStack>
           </VStack>
         </VStack>

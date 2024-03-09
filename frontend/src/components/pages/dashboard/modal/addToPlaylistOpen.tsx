@@ -1,14 +1,14 @@
+import { useEffect, useRef, useState } from 'react';
 import { VStack, Text } from '@chakra-ui/react';
+import { UseMutateFunction } from '@tanstack/react-query';
 
+import { useAudioPlayerContext } from '../../../../contexts';
 import {
-  BasePlaylistInterface,
+  SongInterface,
   PlaylistSong,
   PlaylistType,
-} from '../../../../interfaces/playlist';
-import { useEffect, useRef, useState } from 'react';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { SongInterface } from '../../../../interfaces/artist';
-import { useAudioPlayerContext } from '../../../../contexts/playerContext';
+  BasePlaylistInterface,
+} from '../../../../interfaces';
 
 interface PlaylistOpenInterface {
   isModalAddPlaylistOpen: boolean;
@@ -104,7 +104,6 @@ export function ModalAddPlaylistOpen({
               cursor={'pointer'}
             >
               <Text
-                color={'#ffffff'}
                 onClick={handleClickPlaylist}
                 _hover={{
                   textColor: '#a6a4a4',
@@ -113,7 +112,6 @@ export function ModalAddPlaylistOpen({
                 Add to existing playlist
               </Text>
               <Text
-                color={'#ffffff'}
                 _hover={{
                   textColor: '#a6a4a4',
                 }}
@@ -138,7 +136,6 @@ export function ModalAddPlaylistOpen({
               {playlists?.map((playlist: BasePlaylistInterface) => {
                 return (
                   <Text
-                    color={'#ffffff'}
                     _hover={{
                       textColor: '#a6a4a4',
                     }}

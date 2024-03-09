@@ -27,6 +27,11 @@ export class ArtistManagerController {
     return this.userService.getAlbumByNameInfo(name, takeNumber, skipNumber);
   }
 
+  @Get('songs/:songId')
+  async getSongById(@Param('songId') songId: string) {
+    return this.userService.getSongByIdInfo(songId);
+  }
+
   @Get('songs-info/:albumId')
   async getSongsInfo(@Param('albumId') artistId: string) {
     return this.userService.getAlbumInfo(artistId);

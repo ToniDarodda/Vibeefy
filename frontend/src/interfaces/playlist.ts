@@ -3,6 +3,7 @@ export interface PlaylistSong {
   songId: string;
   songName: string;
   songDuration: number;
+  thumbnails: string;
 }
 
 export interface BasePlaylistInterface {

@@ -14,7 +14,8 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
-import { useLoginUser } from '../../../../query/user';
+
+import { useLoginUser } from '../../../../query';
 
 type Inputs = {
   email: string;
@@ -82,15 +83,13 @@ export function LoginCard({ title }: CardInterface) {
         flexDirection={'column'}
         gap={'30px'}
       >
-        <Text fontSize={'4xl'} as={'b'} color={'#ffffff'}>
+        <Text fontSize={'4xl'} as={'b'}>
           {title}
         </Text>
         <VStack borderBottom={'1px solid #4E4E4E'} w={'100%'} />
 
         <VStack w={'100%'} alignItems={'center'}>
-          <Text fontSize={'xl'} color={'#ffffff'}>
-            Email or username
-          </Text>
+          <Text fontSize={'xl'}>Email or username</Text>
           <Input
             w={{
               base: '300px',
@@ -99,7 +98,6 @@ export function LoginCard({ title }: CardInterface) {
             }}
             h={'70px'}
             type="email"
-            color={'#ffffff'}
             focusBorderColor="#000000"
             placeholder="Enter your information..."
             _hover={{ border: '2px solid #ffffff' }}
@@ -108,9 +106,7 @@ export function LoginCard({ title }: CardInterface) {
             {...register('email', { required: 'Ce champ est obligatoire' })}
           />
 
-          <Text fontSize={'xl'} color={'#ffffff'}>
-            Password
-          </Text>
+          <Text fontSize={'xl'}>Password</Text>
 
           <InputGroup alignItems={'center'} justifyContent={'center'}>
             <Input
@@ -152,9 +148,7 @@ export function LoginCard({ title }: CardInterface) {
 
         <VStack flexDirection={'row'}>
           <Switch colorScheme="orange" />
-          <Text fontSize={'md'} color={'#ffffff'}>
-            Remember me?
-          </Text>
+          <Text fontSize={'md'}>Remember me?</Text>
         </VStack>
 
         <Button
@@ -172,7 +166,6 @@ export function LoginCard({ title }: CardInterface) {
           Login
         </Button>
         <Text
-          color={'#ffffff'}
           as={'u'}
           cursor={'pointer'}
           fontWeight={'bold'}
@@ -183,7 +176,6 @@ export function LoginCard({ title }: CardInterface) {
         <VStack borderBottom={'1px solid #4E4E4E'} w={'60%'} />
         <VStack flexDirection={'row'} gap={'10px'} onClick={redirectRegister}>
           <Text
-            color={'#ffffff'}
             cursor={'pointer'}
             fontSize={{
               base: '12px',
@@ -194,7 +186,6 @@ export function LoginCard({ title }: CardInterface) {
             Don't have an account yet?
           </Text>
           <Text
-            color={'#ffffff'}
             as={'u'}
             cursor={'pointer'}
             fontWeight={'bold'}

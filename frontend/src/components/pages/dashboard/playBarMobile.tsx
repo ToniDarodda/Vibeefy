@@ -37,7 +37,7 @@ export function PlaybarMobile({
           >
             <Image src={thumbnail} boxSize={'50px'} />
             <VStack alignItems={'flex-start'} gap={'4px'} marginRight={'8px'}>
-              <Text color={'#ffffff'}>{listeningSong}</Text>
+              <Text>{listeningSong}</Text>
               <Text color={'#ffffff8a'}>Saison 2</Text>
             </VStack>
 

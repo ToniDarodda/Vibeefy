@@ -9,6 +9,7 @@ interface UseAudioPlayerOptions {
 export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   const playerRef = useRef<Howl | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [isFinish, setIsFinish] = useState(true);
   const [seek, setSeek] = useState<number>(0);
   const [duration, setDuration] = useState<number | undefined>(0);
@@ -28,12 +29,17 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
       onplay: () => {
         setIsPlaying(true);
         setIsFinish(false);
+        setIsPaused(false);
         setDuration(howlPlayer.duration());
       },
-      onpause: () => setIsPlaying(false),
+      onpause: () => {
+        setIsPlaying(false);
+        setIsPaused(true);
+      },
       onstop: () => setIsPlaying(false),
       onend: () => {
         setIsFinish(true);
+        setIsPlaying(false);
         onSongEnd();
       },
     });
@@ -93,10 +99,12 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
     seek,
     pause,
     setTime,
+    isPaused,
     duration,
     isFinish,
     isPlaying,
     setVolume,
+    setIsPaused,
     setDuration,
     togglePlayPause,
     reStart: reStart,

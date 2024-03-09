@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 
 import { SearchBar } from './searchBar';
-import { SearchResponse } from '../../../interfaces/search';
-import { useGetAlbum } from '../../../query/album';
-import { useState } from 'react';
-import { AlbumInterface, SongInterface } from '../../../interfaces/artist';
-import { BasePlaylistInterface } from '../../../interfaces/playlist';
+import {
+  AlbumInterface,
+  SearchResponse,
+  BasePlaylistInterface,
+} from '../../../interfaces';
 
 interface AlbumBoardInterface {
   albums: AlbumInterface[] | undefined;
@@ -45,11 +44,13 @@ export function AlbumBoard({
               h={{ base: '120px', sm: '150px', md: '200px' }}
               cursor={'pointer'}
               borderRadius={'8px'}
-              backgroundColor={'#4e4e4e4e'}
-              boxShadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
               alignItems={'center'}
               justifyContent={'space-around'}
               padding={'4px'}
+              _hover={{
+                backgroundColor: '#3d3d3d33',
+                textColor: '#ffffff',
+              }}
               onClick={() => {
                 setSelectedAlbumOrSong(data);
                 setPlaylistView(true);
@@ -59,20 +60,22 @@ export function AlbumBoard({
                 src={data.thumbnails}
                 alt={data.title}
                 borderRadius={'8px'}
-                boxSize={{ base: '40px', sm: '60px', md: '120px' }}
+                boxSize={{ base: '40px', sm: '60px', md: '140px' }}
               />
               <Text
-                color={'#ffffff'}
                 overflow={'hidden'}
                 textAlign={'center'}
                 fontSize={'12px'}
+                padding={'0px 0px 0px 24px'}
+                alignSelf={'flex-start'}
               >
                 {data.artist.name}
               </Text>
               <Text
-                color={'#ffffff'}
                 overflow={'hidden'}
                 textAlign={'center'}
+                padding={'0px 0px 0px 24px'}
+                alignSelf={'flex-start'}
                 fontSize={'14px'}
               >
                 {data.title}

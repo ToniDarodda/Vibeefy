@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from 'react';
 import {
   VStack,
   Input,
@@ -8,12 +8,12 @@ import {
   Button,
   useToast,
 } from '@chakra-ui/react';
-import { EmailStep } from './steps/emailStep';
-import { BaseStep } from './steps/baseStep';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { EmailStep } from './steps/emailStep';
+import { BaseStep } from './steps/baseStep';
 import { useCreateUser } from '../../../query/user';
 import PasswordInput from '../../input/passwordInput';
 
@@ -108,9 +108,7 @@ export function RegisterStep() {
       {registerFlow === RegisterFlow.EMAIL && (
         <EmailStep>
           <VStack alignItems={'flex-start'} gap={'20px'}>
-            <Text fontSize={'xl'} color={'#ffffff'}>
-              Email or username
-            </Text>
+            <Text fontSize={'xl'}>Email or username</Text>
             <Input
               w={{
                 base: '300px',
@@ -119,7 +117,6 @@ export function RegisterStep() {
               }}
               h={'70px'}
               type="email"
-              color={'#ffffff'}
               focusBorderColor="#000000"
               placeholder="Enter your information..."
               marginBottom={errors.email?.message ? '10px' : '184px'}
@@ -153,9 +150,7 @@ export function RegisterStep() {
               md: '500px',
             }}
           >
-            <Text fontSize={'xl'} color={'#ffffff'}>
-              Password
-            </Text>
+            <Text fontSize={'xl'}>Password</Text>
             <PasswordInput
               {...register('password', {
                 required: 'Ce champ est obligatoire',
@@ -164,9 +159,7 @@ export function RegisterStep() {
             <Text color="red.500" alignSelf={'center'} as={'b'}>
               {errors.password?.message}
             </Text>
-            <Text fontSize={'xl'} color={'#ffffff'}>
-              Re-type password
-            </Text>
+            <Text fontSize={'xl'}>Re-type password</Text>
             <PasswordInput
               placeHolder="Enter your password again..."
               {...register('rePassword', {
@@ -196,9 +189,7 @@ export function RegisterStep() {
               md: '500px',
             }}
           >
-            <Text fontSize={'xl'} color={'#ffffff'}>
-              Name
-            </Text>
+            <Text fontSize={'xl'}>Name</Text>
             <Input
               w={{
                 base: '300px',
@@ -207,7 +198,6 @@ export function RegisterStep() {
               }}
               h={'70px'}
               type="name"
-              color={'#ffffff'}
               focusBorderColor="#000000"
               placeholder="Enter your information..."
               _hover={{ border: '2px solid #ffffff' }}
@@ -217,9 +207,7 @@ export function RegisterStep() {
             <Text color="red.500" alignSelf={'center'} as={'b'}>
               {errors.pseudo?.message}
             </Text>
-            <Text fontSize={'xl'} color={'#ffffff'}>
-              Date of birth
-            </Text>
+            <Text fontSize={'xl'}>Date of birth</Text>
             <Input
               w={{
                 base: '300px',
@@ -271,7 +259,6 @@ export function RegisterStep() {
             <HStack h={'60px'} gap={'30px'}>
               <Checkbox size={'lg'} colorScheme="orange" border={'orange'} />
               <Text
-                color={'#ffffff'}
                 fontSize={{
                   base: '12px',
                   sm: '14px',
@@ -291,11 +278,11 @@ export function RegisterStep() {
             }}
             alignSelf={'center'}
           >
-            <Text color={'#ffffff'}>
+            <Text>
               By clicking on sign-up, you agree to Vibeefy's Terms and
               Conditions of Use.
             </Text>
-            <Text color={'#ffffff'}>
+            <Text>
               To learn more about how Vibeefy collects, uses, shares and
               protects your personal data, please see Vibeefy's Privacy Policy.
             </Text>
