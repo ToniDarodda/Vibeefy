@@ -1,6 +1,6 @@
 import { VStack } from '@chakra-ui/react';
-import { RegisterCard } from '../components/pages/register/card/registerCard';
-import { Navbar } from '../components/navbar/navbar';
+import { RegisterCard } from '../components/Register/Card/registerCard';
+import { Navbar } from '../components/Shared/Navbar/navbar';
 
 export function Register() {
   return (

@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
-import { HStack, Input } from '@chakra-ui/react';
+import { HStack, Input, Icon, VStack } from '@chakra-ui/react';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 interface SearchBarInterface {
   isSearching: boolean;
@@ -20,7 +21,21 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
             position={'sticky'}
           >
-            <HStack width={'100%'} gap={'180px'} justifyContent={'center'}>
+            <HStack width={'100%'} justifyContent={'flex-start'}>
+              <VStack backgroundColor={'#191919'} borderRadius={'100px'}>
+                <Icon
+                  as={MdKeyboardArrowLeft}
+                  color={'#ffffff'}
+                  boxSize={'34px'}
+                />
+              </VStack>
+              <VStack backgroundColor={'#191919'} borderRadius={'100px'}>
+                <Icon
+                  as={MdKeyboardArrowRight}
+                  color={'#959595'}
+                  boxSize={'34px'}
+                />
+              </VStack>
               <Input
                 ref={ref}
                 autoFocus
@@ -29,16 +44,15 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
                 onChange={(e) => setSearch(e.target.value)}
                 justifySelf={'center'}
                 alignItems={'center'}
-                w={'500px'}
-                backgroundColor={'#3a3a3a'}
+                w={'400px'}
+                backgroundColor={'#1b1b1b'}
                 transition="width 1s, height 1s"
                 _placeholder={{
-                  color: '#ffffffc1',
+                  color: '#c7c7c7c1',
                 }}
                 focusBorderColor="1px solid transparent"
                 _focus={{
                   border: '1px solid #ffffff',
-                  w: '600px',
                 }}
                 placeholder="Browse your favorite music..."
                 border={'1px solid transparent'}

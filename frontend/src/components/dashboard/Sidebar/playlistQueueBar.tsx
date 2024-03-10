@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { VStack, HStack, Text, Image, Icon } from '@chakra-ui/react';
 
-import { ModalPlaylistOpen } from './modal/playlistOpen';
-import { ModalPlaylistOption } from './modal/playlistOption';
+import { ModalPlaylistOpen } from '../Modal/playlistOpen';
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
 import { useAudioPlayerContext } from '../../../contexts';
-import { formatTime } from '../../../utils';
+import { QueueView } from './queueBarView';
+import { PlaylistBarView } from './playlistBarView';
 
 interface PlaylistBarInterface {
   queueView: boolean;
@@ -130,78 +130,17 @@ export function PlaylistBar({
             </HStack>
             <VStack gap={'20px'} overflow={'scroll'} w={'100%'} maxH={'60%'}>
               {!queueView ? (
-                playlists?.map((playlist: PlaylistType, idx: number) => {
-                  return (
-                    <VStack key={idx} w={'100%'}>
-                      <HStack
-                        w={'100%'}
-                        alignItems={'center'}
-                        justifyContent={'flex-start'}
-                        gap={'40px'}
-                        onClick={() => {
-                          setSelectedAlbumOrSong(playlist);
-                          setPlaylistView(true);
-                        }}
-                      >
-                        <VStack
-                          w={'60px'}
-                          h={'60px'}
-                          justifyContent={'center'}
-                          backgroundColor={'#0000003e'}
-                          borderRadius={'8px'}
-                        >
-                          <Image src="/vinyl.png" boxSize={'50px'}></Image>
-                        </VStack>
-                        <Text
-                          key={idx}
-                          cursor={'pointer'}
-                          onContextMenu={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            setMouseCoord({
-                              clientX: e.clientX,
-                              clientY: e.clientY,
-                            });
-
-                            setModalPlaylistOptionOpen(true);
-                          }}
-                          fontSize={'14px'}
-                        >
-                          {playlist.name}
-                        </Text>
-                        <ModalPlaylistOption
-                          isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-                          mooseCoord={mooseCoord}
-                        />
-                      </HStack>
-                    </VStack>
-                  );
-                })
+                <PlaylistBarView
+                  mooseCoord={mooseCoord}
+                  playlists={playlists ?? []}
+                  isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
+                  setSelectedAlbumOrSong={setSelectedAlbumOrSong}
+                  setPlaylistView={setPlaylistView}
+                  setMouseCoord={setMouseCoord}
+                  setModalPlaylistOptionOpen={setModalPlaylistOptionOpen}
+                />
               ) : (
-                <>
-                  {queue.map((q, idx) => {
-                    return (
-                      <HStack
-                        w={'100%'}
-                        alignItems={'center'}
-                        justifyContent={'space-between'}
-                        padding={'10px'}
-                      >
-                        <Image
-                          src={q.thumbnails}
-                          boxSize={'40px'}
-                          borderRadius={'4px'}
-                        />
-                        <Text key={idx} cursor={'pointer'} fontSize={'14px'}>
-                          {q.title}
-                        </Text>
-                        <Text key={idx} cursor={'pointer'} fontSize={'14px'}>
-                          {formatTime(q.songDuration)}
-                        </Text>
-                      </HStack>
-                    );
-                  })}
-                </>
+                <QueueView queue={queue} />
               )}
             </VStack>
           </VStack>

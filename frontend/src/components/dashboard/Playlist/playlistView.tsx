@@ -1,17 +1,19 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { HStack, Text, Image } from '@chakra-ui/react';
+
 import {
   BasePlaylistInterface,
   PlaylistSong,
   SongInterface,
-} from '../../../../interfaces';
-import { formatTime } from '../../../../utils';
-import { useGetSong } from '../../../../query/song';
-import { useAudioPlayerContext } from '../../../../contexts';
+} from '../../../interfaces';
+import { formatTime } from '../../../utils';
+import { useGetSong } from '../../../query/song';
+import { useAudioPlayerContext } from '../../../contexts';
 
 interface PlaylistViewInterface {
   hoveredIndex: number;
   selectedAlbumOrSong: BasePlaylistInterface;
+
   setIsListening: (tmp: boolean) => void;
   setCurrentSong: (song: SongInterface) => void;
   setHoveredIndex: (value: SetStateAction<number>) => void;
@@ -56,7 +58,7 @@ export function PlaylistView({
             onClick={() => {
               addPlaylistToQueue(selectedAlbumOrSong.playlistSongs);
               setClickedSong(song);
-            }} // Set the clicked song here
+            }}
           >
             {hoveredIndex === index && (
               <Image src="/pause2.png" boxSize={'12px'} />

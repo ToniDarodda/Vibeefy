@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { VStack, Text } from '@chakra-ui/react';
 import { UseMutateFunction } from '@tanstack/react-query';
 
-import { useAudioPlayerContext } from '../../../../contexts';
+import { useAudioPlayerContext } from '../../../contexts';
 import {
   SongInterface,
   PlaylistSong,
   PlaylistType,
   BasePlaylistInterface,
-} from '../../../../interfaces';
+} from '../../../interfaces';
 
 interface PlaylistOpenInterface {
   isModalAddPlaylistOpen: boolean;

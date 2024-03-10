@@ -7,7 +7,7 @@ export function Navbar() {
         <Box>
           <Image src="/logo1.png" boxSize="40px" objectFit="cover"></Image>
         </Box>
-        <Text fontSize="4xl" as="b">
+        <Text fontSize="4xl" as="b" color={'#000000'}>
           Vibeefy
         </Text>
       </HStack>

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 
-import { useLoginUser } from '../../../../query';
+import { useLoginUser } from '../../query';
 
 type Inputs = {
   email: string;

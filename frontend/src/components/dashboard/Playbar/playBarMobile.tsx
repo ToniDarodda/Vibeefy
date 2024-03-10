@@ -5,10 +5,11 @@ interface PlayBarMobileInterface {
   isPaused: boolean;
   listeningSong: string;
   isLargerThan1000: boolean;
+
+  playNext: () => void;
   togglePlayPause: () => void;
   setIsPaused: (b: boolean) => void;
   setIsSearching: (b: boolean) => void;
-  playNext: () => void;
 }
 
 export function PlaybarMobile({
@@ -16,9 +17,9 @@ export function PlaybarMobile({
   thumbnail,
   setIsPaused,
   listeningSong,
-  isLargerThan1000,
-  togglePlayPause,
   setIsSearching,
+  togglePlayPause,
+  isLargerThan1000,
   playNext,
 }: PlayBarMobileInterface) {
   return (

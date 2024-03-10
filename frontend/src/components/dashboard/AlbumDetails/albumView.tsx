@@ -1,8 +1,8 @@
 import React from 'react';
 import { HStack, Text, Image } from '@chakra-ui/react';
 
-import { SongInterface, AlbumInterface } from '../../../../interfaces';
-import { formatTime } from '../../../../utils';
+import { SongInterface, AlbumInterface } from '../../../interfaces';
+import { formatTime } from '../../../utils';
 
 interface AlbumViewInterface {
   setHoveredIndex: React.Dispatch<React.SetStateAction<number>>;

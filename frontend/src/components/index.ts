@@ -1,13 +1,10 @@
-export * from './input/passwordInput';
+export * from './Shared/Input/passwordInput';
 
-export * from './pages/login/card/loginCard';
+export * from './Card/loginCard';
 
-export * from './navbar/navbar';
+export * from './Shared/Navbar/navbar';
 
-export * from './pages/register/card/registerCard';
-export * from './pages/register/registerSteps';
-export * from './pages/register/steps/baseStep';
-export * from './pages/register/steps/emailStep';
+export * from './Register/Card/registerCard';
 
-export * from './pages/dashboard/playBar';
-export * from './pages/dashboard/searchBar';
+export * from './dashboard/Playbar/playBar';
+export * from './dashboard/searchBar';

@@ -2,22 +2,22 @@
 import { useState } from 'react';
 import { VStack, Text, Image, HStack } from '@chakra-ui/react';
 
-import { ModalAddPlaylistOpen } from './modal/addToPlaylistOpen';
-import { AlbumView } from './view/albumView';
-import { PlaylistView } from './view/playlistView';
-import { ReducedAlbumBarView } from './rView/reducedAlbumBarView';
-import { AlbumBarView } from './view/albumBarView';
+import { ModalAddPlaylistOpen } from './Modal/addToPlaylistOpen';
+import { AlbumView } from './AlbumDetails/albumView';
+import { PlaylistView } from './Playlist/playlistView';
+import { ReducedAlbumBarView } from './Albumbar/reducedAlbumBarView';
+import { AlbumBarView } from './Albumbar/albumBarView';
 
-import { useAudioPlayerContext } from '../../../contexts';
+import { useAudioPlayerContext } from '../../contexts';
 import {
   SearchResponse,
   PlaylistType,
   AlbumInterface,
   SongInterface,
-} from '../../../interfaces';
-import { useAddSongToPlaylist } from '../../../query';
+} from '../../interfaces';
+import { useAddSongToPlaylist } from '../../query';
 
-interface PlaylistBoard {
+interface ChooseBarViewInterface {
   details: SearchResponse | null;
   playlists: PlaylistType[] | undefined;
   selectedAlbumOrSong: AlbumInterface | PlaylistType | undefined;
@@ -26,13 +26,13 @@ interface PlaylistBoard {
   setPlaylistView: (tmp: boolean) => void;
 }
 
-export function PlaylistBoard({
+export function SelectionPanelView({
   details,
   playlists,
   setIsListening,
   setPlaylistView,
   selectedAlbumOrSong,
-}: PlaylistBoard) {
+}: ChooseBarViewInterface) {
   const [reducedView, setReducedView] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [clickedSong, setClickedSong] = useState<SongInterface>();
@@ -69,7 +69,7 @@ export function PlaylistBoard({
         padding={reducedView ? '12px' : '24px'}
         alignItems={reducedView ? 'center' : 'flex-start'}
         borderBottom={'1px solid #3d3d3d'}
-        background="linear-gradient(360deg, #3d3d3d84 1%, #f0c19c 100%)"
+        background="linear-gradient(184deg, rgba(89,79,66,1) 0%, rgba(54,32,5,1) 100%)"
         height={reducedView ? '80px' : '260px'}
         transition="0.2s ease-out"
       >
@@ -101,9 +101,12 @@ export function PlaylistBoard({
           w={'100%'}
           borderBottom={'1px solid #ffffff34'}
           justifyContent={'space-between'}
-          padding={'24px'}
+          padding={'12px'}
         >
-          <Text color={'#ffffff34'}># Title</Text>
+          <HStack gap={'20px'} flex={1}>
+            <Text color={'#a3a3a3'}>#</Text>
+            <Text color={'#a3a3a3'}>Title</Text>
+          </HStack>
           <Image src="/clock.png" boxSize={'20px'} />
         </HStack>
         {isModalAddPlaylistQueueOpen && (

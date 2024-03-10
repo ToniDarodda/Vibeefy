@@ -52,6 +52,7 @@ export function Playbar({
     isPlaying,
     isPaused,
     setIsPaused,
+    isFinish,
   } = useAudioPlayerContext();
 
   const [sliderValue, setSliderValue] = useState<number>(30);
@@ -176,7 +177,7 @@ export function Playbar({
           >
             <HStack gap={'40px'}>
               <Icon
-                boxSize={'40px'}
+                boxSize={'30px'}
                 cursor={'pointer'}
                 color={'#8d8d8d'}
                 as={!queueView ? MdOutlineQueueMusic : MdOutlinePlaylistPlay}
@@ -204,7 +205,7 @@ export function Playbar({
               }}
             >
               <SliderTrack>
-                <SliderFilledTrack />
+                <SliderFilledTrack boxSize={'30px'} />
               </SliderTrack>
               <SliderThumb boxSize={'10px'} borderColor={'orange'} />
             </Slider>

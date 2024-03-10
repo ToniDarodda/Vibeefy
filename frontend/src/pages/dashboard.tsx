@@ -3,21 +3,20 @@ import { VStack, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchResponse } from '../interfaces/search';
 import { useGetSearch } from '../query/search';
-import { AlbumBoard } from '../components/pages/dashboard/albumBoard';
-import { Playbar } from '../components/pages/dashboard/playBar';
-import { PlaylistBar } from '../components/pages/dashboard/playlistBar';
+import { SearchView } from '../components/dashboard/Search/view';
+import { Playbar } from '../components/dashboard/Playbar/playBar';
+import { PlaylistBar } from '../components/dashboard/Sidebar/playlistQueueBar';
 import { AlbumInterface } from '../interfaces/artist';
 import { PlaylistType } from '../interfaces/playlist';
-import { PlaylistBoard } from '../components/pages/dashboard/playlistBoard';
+import { SelectionPanelView } from '../components/dashboard/selectionPanelView';
 import { useGetAlbum } from '../query/album';
 import { useGetPlaylist } from '../query/playlist';
 import { useAudioPlayerContext } from '../contexts/playerContext';
 
 export function Dashboard() {
-  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(true);
   const [isListening, setIsListening] = useState<boolean>(false);
   const [playlistView, setPlaylistView] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [queueView, setQueueView] = useState<boolean>(false);
 
   const [selectedAlbumOrSong, setSelectedAlbumOrSong] = useState<
@@ -27,6 +26,8 @@ export function Dashboard() {
   const [search, setSearch] = useState<string>('');
 
   const { data: albums } = useGetAlbum(search, 30, 0);
+
+  console.log(albums);
 
   const { data: playlists } = useGetPlaylist();
 
@@ -67,7 +68,7 @@ export function Dashboard() {
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
           >
             {playlistView ? (
-              <PlaylistBoard
+              <SelectionPanelView
                 playlists={playlists}
                 details={selectedSearchValue}
                 setIsListening={setIsListening}
@@ -75,7 +76,8 @@ export function Dashboard() {
                 selectedAlbumOrSong={selectedAlbumOrSong as AlbumInterface}
               />
             ) : (
-              <AlbumBoard
+              <SearchView
+                search={search}
                 albums={albums}
                 setSearch={setSearch}
                 isSearching={isSearching}

@@ -1,6 +1,6 @@
 import { HStack, Tooltip, Image, Text } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
+import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
 
 interface ReducedAlbumBarViewInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
