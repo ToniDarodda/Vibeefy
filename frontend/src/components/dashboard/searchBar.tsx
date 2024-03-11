@@ -1,9 +1,14 @@
 import { forwardRef } from 'react';
 import { HStack, Input, Icon, VStack } from '@chakra-ui/react';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdAccountCircle,
+} from 'react-icons/md';
 
 interface SearchBarInterface {
   isSearching: boolean;
+
   setSearch: (b: string) => void;
 }
 
@@ -42,11 +47,8 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
                 color={'#ffffff'}
                 {...rest}
                 onChange={(e) => setSearch(e.target.value)}
-                justifySelf={'center'}
-                alignItems={'center'}
                 w={'400px'}
                 backgroundColor={'#1b1b1b'}
-                transition="width 1s, height 1s"
                 _placeholder={{
                   color: '#c7c7c7c1',
                 }}
@@ -61,6 +63,15 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
                 }}
               />
             </HStack>
+            <Icon
+              as={MdAccountCircle}
+              color={'#868686'}
+              boxSize={'30px'}
+              cursor={'pointer'}
+              _hover={{
+                color: '#ffffff',
+              }}
+            />
           </HStack>
         )}
       </>

@@ -2,16 +2,15 @@ import { useState } from 'react';
 import { VStack, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchResponse } from '../interfaces/search';
-import { useGetSearch } from '../query/search';
-import { SearchView } from '../components/dashboard/Search/view';
-import { Playbar } from '../components/dashboard/Playbar/playBar';
-import { PlaylistBar } from '../components/dashboard/Sidebar/playlistQueueBar';
+import { SearchView } from '../components/Dashboard/Search/view';
+import { Playbar } from '../components/Dashboard/Playbar/playBar';
+import { PlaylistBar } from '../components/Dashboard/Sidebar/playlistQueueBar';
 import { AlbumInterface } from '../interfaces/artist';
 import { PlaylistType } from '../interfaces/playlist';
-import { SelectionPanelView } from '../components/dashboard/selectionPanelView';
-import { useGetAlbum } from '../query/album';
+import { SelectionPanelView } from '../components/Dashboard/selectionPanelView';
 import { useGetPlaylist } from '../query/playlist';
 import { useAudioPlayerContext } from '../contexts/playerContext';
+import { useGetSearch } from '../query';
 
 export function Dashboard() {
   const [isSearching, setIsSearching] = useState<boolean>(true);
@@ -23,12 +22,6 @@ export function Dashboard() {
     AlbumInterface | PlaylistType
   >();
 
-  const [search, setSearch] = useState<string>('');
-
-  const { data: albums } = useGetAlbum(search, 30, 0);
-
-  console.log(albums);
-
   const { data: playlists } = useGetPlaylist();
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
@@ -38,7 +31,7 @@ export function Dashboard() {
     useState<SearchResponse | null>(null);
 
   const { data: searchValue } = useGetSearch({
-    query: search,
+    query: 'search', // search value from the input top,
     filter: 'songs',
   }) as { data: SearchResponse[] | undefined };
 
@@ -50,7 +43,11 @@ export function Dashboard() {
   const { togglePlayPause } = useAudioPlayerContext();
 
   return (
-    <VStack h={'100vh'} backgroundColor={'#000000'}>
+    <VStack
+      h={'100vh'}
+      backgroundColor={'#000000'}
+      onContextMenu={(e) => e.stopPropagation()}
+    >
       <VStack w={'100%'} h={'100%'} padding={'8px'}>
         <VStack
           flex={1}
@@ -77,9 +74,6 @@ export function Dashboard() {
               />
             ) : (
               <SearchView
-                search={search}
-                albums={albums}
-                setSearch={setSearch}
                 isSearching={isSearching}
                 searchValue={searchValue}
                 setPlaylistView={setPlaylistView}

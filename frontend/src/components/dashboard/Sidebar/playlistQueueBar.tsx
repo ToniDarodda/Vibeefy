@@ -128,7 +128,7 @@ export function PlaylistBar({
                 {queueView ? 'Your queue' : 'Your library'}
               </Text>
             </HStack>
-            <VStack gap={'20px'} overflow={'scroll'} w={'100%'} maxH={'60%'}>
+            <VStack gap={'20px'} overflow={'scroll'} w={'100%'} maxW={'100%'}>
               {!queueView ? (
                 <PlaylistBarView
                   mooseCoord={mooseCoord}

@@ -1,10 +1,12 @@
-import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 import {
   AlbumInterface,
   BasePlaylistInterface,
   PlaylistType,
 } from '../../../interfaces';
 import { ModalPlaylistOption } from '../Modal/playlistOption';
+import { MdLibraryMusic } from 'react-icons/md';
+import { useEffect, useRef } from 'react';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -38,55 +40,71 @@ export function PlaylistBarView({
   isModalPlaylistOptionOpen,
   setModalPlaylistOptionOpen,
 }: PlaylistBarViewInterface) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setModalPlaylistOptionOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <>
+    <HStack
+      h={'560px'}
+      w={'260px'}
+      flexWrap={'wrap'}
+      justifyContent={'space-around'}
+      ref={modalRef}
+    >
       {playlists?.map((playlist: PlaylistType, idx: number) => {
         return (
-          <VStack key={idx} w={'100%'}>
-            <HStack
-              w={'100%'}
-              alignItems={'center'}
-              justifyContent={'flex-start'}
-              gap={'40px'}
-              onClick={() => {
-                setSelectedAlbumOrSong(playlist);
-                setPlaylistView(true);
-              }}
-            >
-              <VStack
-                w={'60px'}
-                h={'60px'}
-                justifyContent={'center'}
-                backgroundColor={'#0000003e'}
-                borderRadius={'8px'}
-              >
-                <Image src="/vinyl.png" boxSize={'50px'}></Image>
-              </VStack>
-              <Text
-                key={idx}
-                cursor={'pointer'}
-                onContextMenu={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  setMouseCoord({
-                    clientX: e.clientX,
-                    clientY: e.clientY,
-                  });
+          <VStack
+            w={'40%'}
+            h={'100px'}
+            key={idx}
+            backgroundColor={'#161616'}
+            borderRadius={'4px'}
+            cursor={'pointer'}
+            justifyContent={'center'}
+            _hover={{
+              backgroundColor: '#2d2d2d',
+            }}
+            onContextMenu={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setMouseCoord({
+                clientX: e.clientX,
+                clientY: e.clientY,
+              });
 
-                  setModalPlaylistOptionOpen(true);
-                }}
-                fontSize={'14px'}
-              >
-                {playlist.name}
-              </Text>
-              <ModalPlaylistOption
-                isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-                mooseCoord={mooseCoord}
-              />
-            </HStack>
+              setModalPlaylistOptionOpen(true);
+            }}
+            onClick={() => {
+              setSelectedAlbumOrSong(playlist);
+              setPlaylistView(true);
+            }}
+          >
+            <Icon as={MdLibraryMusic} color={'#9d9d9d'} boxSize={'60px'}></Icon>
+            <Text>{playlist.name}</Text>
+            <ModalPlaylistOption
+              setMouseCoord={setMouseCoord}
+              isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
+              mooseCoord={mooseCoord}
+            />
           </VStack>
         );
       })}
-    </>
+    </HStack>
   );
 }

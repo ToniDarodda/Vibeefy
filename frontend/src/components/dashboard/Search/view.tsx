@@ -11,28 +11,28 @@ import { TopResultSearch } from './topResultSearch';
 import { SongSearch } from './songSearch';
 import { ArtistSearch } from './artistSearch';
 import { AlbumSearch } from './albumSearch';
+import { useState } from 'react';
+import { useGetAlbum } from '../../../query';
 
 interface SearchViewInterface {
-  search: string;
   isSearching: boolean;
-  albums: AlbumInterface[] | undefined;
   searchValue: SearchResponse[] | undefined;
   setSelectedAlbumOrSong: React.Dispatch<
     React.SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
   >;
 
-  setSearch: (b: string) => void;
   setPlaylistView: (b: boolean) => void;
 }
 
 export function SearchView({
-  search,
-  albums,
-  setSearch,
   isSearching,
   setPlaylistView,
   setSelectedAlbumOrSong,
 }: SearchViewInterface) {
+  const [search, setSearch] = useState<string>('');
+
+  const { data: albums } = useGetAlbum(search, 30, 0);
+
   return (
     <VStack flex={1} w={'100%'}>
       <SearchBar isSearching={isSearching} setSearch={setSearch} />

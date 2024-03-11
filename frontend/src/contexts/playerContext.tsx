@@ -147,10 +147,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     getLink();
   }, [currentSong]);
 
-  useEffect(() => {
-    console.log(queue);
-  }, [queue]);
-
   const value = {
     ...playerControls,
     queue,

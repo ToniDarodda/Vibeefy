@@ -87,7 +87,6 @@ export function ModalAddPlaylistOpen({
     <>
       {isModalAddPlaylistOpen && (
         <VStack
-          ref={modalRef}
           position={'absolute'}
           top={mooseCoord.clientY}
           left={mooseCoord.clientX}
@@ -132,6 +131,7 @@ export function ModalAddPlaylistOpen({
               alignContent={'center'}
               borderRadius={'8px'}
               cursor={'pointer'}
+              ref={modalRef}
             >
               {playlists?.map((playlist: BasePlaylistInterface) => {
                 return (

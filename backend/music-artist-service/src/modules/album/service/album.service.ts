@@ -24,14 +24,14 @@ export class AlbumService {
   async getAlbumByName(title: string, take = 20, skip = 0): Promise<Album[]> {
     return this.albumRepository
       .createQueryBuilder('album')
-      .leftJoinAndSelect('album.songs', 'songs') // Joindre les chansons de l'album
-      .leftJoinAndSelect('album.artist', 'artist') // Joindre l'artiste de l'album
-      .where('album.title ILIKE :title', { title: `%${title}%` }) // Recherche insensible à la casse par titre d'album
-      .orWhere('artist.name ILIKE :name', { name: `%${title}%` }) // Recherche insensible à la casse par nom d'artiste
-      .orderBy('album.title', 'ASC') // Trier les albums par titre
-      .take(take) // Limiter le nombre de résultats
-      .skip(skip) // Passer un certain nombre de résultats
-      .getMany(); // Récupérer les albums
+      .leftJoinAndSelect('album.songs', 'songs')
+      .leftJoinAndSelect('album.artist', 'artist')
+      .where('album.title ILIKE :title', { title: `%${title}%` })
+      .orWhere('artist.name ILIKE :name', { name: `%${title}%` })
+      .orderBy('album.year', 'DESC')
+      .take(take)
+      .skip(skip)
+      .getMany();
   }
 
   async getAlbumByArtistId(artistId: string): Promise<Album[]> {

@@ -2,6 +2,7 @@ export interface AlbumInterface {
   id: string;
   title: string;
   thumbnails: string;
+  year: string;
   description?: string;
   albumId: string;
   songs: SongInterface[];

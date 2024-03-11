@@ -26,7 +26,6 @@ class PlaylistService {
     playlistId: string,
     songDuration: number,
   ): Promise<PlaylistSong> {
-    console.log(playlistId, songId, songDuration);
     const { data: addedSong }: { data: PlaylistSong } =
       await Fetch.post<PlaylistSong>(`playlist/${playlistId}/songs`, {
         name,

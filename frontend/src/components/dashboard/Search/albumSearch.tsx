@@ -24,7 +24,7 @@ export function AlbumSearch({
         Albums
       </Text>
       <HStack w={'100%'} overflow={'scroll'} gap={'40px'}>
-        {albums?.map((album: AlbumInterface, index: number) => {
+        {albums.map((album: AlbumInterface, index: number) => {
           return (
             <VStack
               w={'auto'}
@@ -47,11 +47,9 @@ export function AlbumSearch({
                 boxSize={'200px'}
                 minW={'200px'}
                 objectFit="cover"
-              ></Image>
-              <Text overflow={'hidden'}>
-                {album.title.includes('(')
-                  ? truncateText(album.title.split('(')[0], 20)
-                  : album.title}
+              />
+              <Text overflow={'hidden'} maxW={'200px'}>
+                {truncateText(album.title.split('(')[0], 20)}
               </Text>
               <Text color={'#ababab'}>{album.artist.name}</Text>
             </VStack>

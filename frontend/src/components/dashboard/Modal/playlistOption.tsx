@@ -1,29 +1,56 @@
-import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
+import { useRef } from 'react';
+import { FaPencilAlt } from 'react-icons/fa';
+import { MdDelete, MdAddToQueue } from 'react-icons/md';
 
 interface PlaylistOption {
   isModalPlaylistOptionOpen: boolean;
   mooseCoord: { clientX: number; clientY: number };
+  setMouseCoord: (
+    value: React.SetStateAction<{
+      clientX: number;
+      clientY: number;
+    }>,
+  ) => void;
 }
 
 export function ModalPlaylistOption({
   mooseCoord,
   isModalPlaylistOptionOpen,
 }: PlaylistOption) {
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  const calculateModalCoordX = (clientX: number) => {
+    const { innerWidth: width } = window;
+    const componentSize = componentRef.current?.offsetWidth ?? 0;
+    if (clientX + componentSize > width) {
+      return clientX - componentSize;
+    }
+    return clientX;
+  };
+
   return (
     <>
       {isModalPlaylistOptionOpen && (
         <VStack
           position={'absolute'}
           top={mooseCoord.clientY}
-          left={mooseCoord.clientX}
+          left={calculateModalCoordX(mooseCoord.clientX)}
         >
           <VStack
-            backgroundColor={'#2d2d2d'}
-            padding={'16px'}
+            backgroundColor={'#121212'}
+            border={'1px solid #82828267'}
+            ref={componentRef}
+            gap={'12px'}
+            alignItems={'flex-start'}
+            padding={'20px'}
             borderRadius={'8px'}
           >
-            <HStack _hover={{ color: '#ffffff', cursor: 'pointer' }}>
-              <Image src="/plus.png" boxSize={'12px'}></Image>
+            <HStack
+              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              gap={'12px'}
+            >
+              <Icon as={FaPencilAlt} color={'#c8c8c89c'} />
               <Text
                 color={'#ffffff9c'}
                 fontSize={'14px'}
@@ -33,8 +60,11 @@ export function ModalPlaylistOption({
                 Update playlist
               </Text>
             </HStack>
-            <HStack _hover={{ color: '#ffffff', cursor: 'pointer' }}>
-              <Image src="/plus.png" boxSize={'12px'}></Image>
+            <HStack
+              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              gap={'12px'}
+            >
+              <Icon as={MdDelete} color={'#c8c8c89c'} />
               <Text
                 color={'#ffffff9c'}
                 fontSize={'14px'}
@@ -42,6 +72,21 @@ export function ModalPlaylistOption({
                 onClick={() => ''}
               >
                 Delete playlist
+              </Text>
+            </HStack>
+            <VStack w={'100%'} borderBottom={'1px solid #82828267'} />
+            <HStack
+              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              gap={'12px'}
+            >
+              <Icon as={MdAddToQueue} color={'#c8c8c89c'} />
+              <Text
+                color={'#ffffff9c'}
+                fontSize={'14px'}
+                _hover={{ color: '#ffffff' }}
+                onClick={() => ''}
+              >
+                Add to queue
               </Text>
             </HStack>
           </VStack>
