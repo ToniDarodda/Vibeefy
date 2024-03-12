@@ -39,14 +39,14 @@ const customTheme = extendTheme({
     Progress: {
       baseStyle: {
         filledTrack: {
-          bg: '#f0c19c',
+          bg: '#f68f32',
         },
       },
     },
     Slider: {
       baseStyle: {
         filledTrack: {
-          bg: '#f0c19c',
+          bg: '#f68f32',
         },
       },
     },

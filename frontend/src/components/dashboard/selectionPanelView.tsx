@@ -69,8 +69,8 @@ export function SelectionPanelView({
         padding={reducedView ? '12px' : '24px'}
         alignItems={reducedView ? 'center' : 'flex-start'}
         borderBottom={'1px solid #3d3d3d'}
-        background="linear-gradient(184deg, rgba(89,79,66,1) 0%, rgba(54,32,5,1) 100%)"
-        height={reducedView ? '120px' : '260px'}
+        background="linear-gradient(190deg, #b3752396 0%, #131313 100%)"
+        height={reducedView ? '80px' : '260px'}
         transition="0.2s ease-out"
       >
         {reducedView && (

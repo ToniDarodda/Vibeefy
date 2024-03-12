@@ -1,12 +1,13 @@
+import { useEffect, useRef } from 'react';
+import { MdLibraryMusic } from 'react-icons/md';
 import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
+
 import {
   AlbumInterface,
   BasePlaylistInterface,
   PlaylistType,
 } from '../../../interfaces';
 import { ModalPlaylistOption } from '../Modal/playlistOption';
-import { MdLibraryMusic } from 'react-icons/md';
-import { useEffect, useRef } from 'react';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -70,15 +71,14 @@ export function PlaylistBarView({
       {playlists?.map((playlist: PlaylistType, idx: number) => {
         return (
           <VStack
+            key={idx}
             w={'40%'}
             h={'100px'}
-            key={idx}
-            backgroundColor={'#161616'}
-            borderRadius={'4px'}
             cursor={'pointer'}
+            borderRadius={'4px'}
             justifyContent={'center'}
             _hover={{
-              backgroundColor: '#2d2d2d',
+              backgroundColor: '#161616',
             }}
             onContextMenu={(e) => {
               e.stopPropagation();
@@ -95,8 +95,8 @@ export function PlaylistBarView({
               setPlaylistView(true);
             }}
           >
-            <Icon as={MdLibraryMusic} color={'#9d9d9d'} boxSize={'60px'}></Icon>
-            <Text>{playlist.name}</Text>
+            <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'60px'} />
+            <Text color={'#adadad'}>{playlist.name}</Text>
             <ModalPlaylistOption
               setMouseCoord={setMouseCoord}
               isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}

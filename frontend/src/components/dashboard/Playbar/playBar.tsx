@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import {
   HStack,
   Text,
@@ -15,11 +15,19 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { MdOutlineQueueMusic, MdOutlinePlaylistPlay } from 'react-icons/md';
+import { FaCirclePlay } from 'react-icons/fa6';
+import { FaCirclePause } from 'react-icons/fa6';
+import { MdOutlineSkipPrevious, MdOutlineSkipNext } from 'react-icons/md';
 
 import { PlaybarMobile } from './playBarMobile';
 import { useAudioPlayerContext } from '../../../contexts';
-import { SearchResponse } from '../../../interfaces';
+import {
+  AlbumInterface,
+  BasePlaylistInterface,
+  SearchResponse,
+} from '../../../interfaces';
 import { formatTime } from '../../../utils';
+import { useGetAlbum } from '../../../query';
 
 interface PlaybarInterface {
   queueView: boolean;
@@ -27,6 +35,10 @@ interface PlaybarInterface {
   isLargerThan1000: boolean;
   searchValue: SearchResponse[] | undefined;
 
+  setSelectedAlbumOrSong: Dispatch<
+    SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
+  >;
+  setPlaylistView: Dispatch<SetStateAction<boolean>>;
   togglePlayPause: () => void;
   setQueueView: (tmp: boolean) => void;
   setIsSearching: (tmp: boolean) => void;
@@ -38,7 +50,9 @@ export function Playbar({
   isListening,
   setQueueView,
   setIsSearching,
+  setPlaylistView,
   isLargerThan1000,
+  setSelectedAlbumOrSong,
 }: PlaybarInterface) {
   const {
     duration,
@@ -57,7 +71,11 @@ export function Playbar({
 
   const [sliderValue, setSliderValue] = useState<number>(30);
 
+  const [likedSong, setLikedSong] = useState<boolean>(false);
+
   const progressBarRef = useRef<HTMLDivElement>(null);
+
+  const { data: albums } = useGetAlbum(currentSong?.albumName ?? '', 1, 0);
 
   const handleBarChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const progressBar = progressBarRef.current;
@@ -91,6 +109,7 @@ export function Playbar({
     };
   }, [togglePlayPause]);
 
+  console.log(isPaused, isPlaying, isFinish);
   return (
     <>
       {isListening && isLargerThan1000 && (
@@ -105,39 +124,78 @@ export function Playbar({
           <HStack flex={1} gap={'20px'}>
             <Image src={currentSong?.thumbnails} boxSize={'60px'} />
             <VStack alignItems={'flex-start'}>
-              <Text>{currentSong?.title}</Text>
-              <Text color={'#ffffff62'}>Saison 2</Text>
+              <Text
+                cursor={'pointer'}
+                onClick={() => {
+                  if (albums) setSelectedAlbumOrSong(albums[0]);
+                  setPlaylistView(true);
+                }}
+              >
+                {currentSong?.title}
+              </Text>
+              <Text
+                color={'#ffffff62'}
+                cursor={'pointer'}
+                onClick={() => {
+                  if (albums) setSelectedAlbumOrSong(albums[0]);
+
+                  setPlaylistView(true);
+                }}
+              >
+                {currentSong?.albumName}
+              </Text>
             </VStack>
-            <Image src="/like.png" boxSize={'16px'} cursor={'pointer'} />
+            <Image
+              src={likedSong ? '/heart.png' : '/like.png'}
+              boxSize={'16px'}
+              cursor={'pointer'}
+              onClick={() => {
+                setLikedSong(!likedSong);
+              }}
+            />
           </HStack>
 
           <VStack flex={3} gap={'20px'}>
             <HStack gap={'60px'}>
-              <Image
-                src="/nextl.png"
+              <Icon
+                as={MdOutlineSkipPrevious}
                 cursor={'pointer'}
-                boxSize={'20px'}
+                boxSize={'34px'}
                 onClick={playPrev}
+                color={'#8b8b8b'}
+                _hover={{
+                  color: '#ffffff',
+                }}
               />
-              {!isPlaying && currentSong?.videoId && !isPaused && (
+              {!isPlaying && !isPaused && !isFinish && (
                 <Spinner boxSize={'38px'} color="#ffffff" />
               )}
-              {(isPlaying || isPaused) && (
-                <Image
-                  src={!isPlaying ? 'pause2.png' : '/pause.png'}
+              {(isPlaying || isPaused || isFinish) && (
+                <Icon
+                  as={!isPlaying ? FaCirclePlay : FaCirclePause}
                   cursor={'pointer'}
                   boxSize={'38px'}
+                  color="#ffffff"
                   onClick={() => {
                     togglePlayPause();
                     setIsPaused(!isPaused);
                   }}
+                  borderRadius={'100px'}
+                  _hover={{
+                    color: '#fe9333',
+                    backgroundColor: '#ffffff',
+                  }}
                 />
               )}
-              <Image
-                src="/nextr.png"
+              <Icon
+                as={MdOutlineSkipNext}
                 cursor={'pointer'}
-                boxSize={'20px'}
+                boxSize={'34px'}
                 onClick={playNext}
+                color={'#8b8b8b'}
+                _hover={{
+                  color: '#ffffff',
+                }}
               />
             </HStack>
             <HStack
@@ -169,46 +227,48 @@ export function Playbar({
             </HStack>
           </VStack>
 
-          <HStack
-            flex={1}
-            alignItems={'center'}
-            justifyContent={'flex-end'}
-            gap={sliderValue === 0 ? '30px' : '20px'}
-          >
-            <HStack gap={'40px'}>
-              <Icon
-                boxSize={'30px'}
-                cursor={'pointer'}
-                color={'#8d8d8d'}
-                as={!queueView ? MdOutlineQueueMusic : MdOutlinePlaylistPlay}
-                _hover={{
-                  color: '#ffffff',
+          <HStack flex={1} alignItems={'center'} justifyContent={'flex-end'}>
+            <HStack w={'100%'} justifyContent={'flex-end'} gap={'12px'}>
+              <HStack gap={'40px'}>
+                <Icon
+                  boxSize={'30px'}
+                  cursor={'pointer'}
+                  color={'#8d8d8d'}
+                  as={!queueView ? MdOutlineQueueMusic : MdOutlinePlaylistPlay}
+                  _hover={{
+                    color: '#ffffff',
+                  }}
+                  onClick={() => {
+                    setQueueView(!queueView);
+                  }}
+                />
+                <Image
+                  src={sliderValue === 0 ? 'volume-mute.png' : '/volume.png'}
+                  boxSize={sliderValue === 0 ? '24px' : '26px'}
+                  cursor={'pointer'}
+                  onClick={() => {
+                    setSliderValue((prev) => (prev === 0 ? 30 : 0));
+                    setVolume(sliderValue);
+                  }}
+                />
+              </HStack>
+              <Slider
+                w={'50%'}
+                aria-label="slider-ex-1"
+                defaultValue={sliderValue}
+                value={sliderValue}
+                colorScheme="orange"
+                onChange={(e) => {
+                  setVolume(e);
+                  setSliderValue(e);
                 }}
-                onClick={() => {
-                  setQueueView(!queueView);
-                }}
-              />
-              <Image
-                src={sliderValue === 0 ? 'volume-mute.png' : '/volume.png'}
-                boxSize={sliderValue === 0 ? '24px' : '30px'}
-              />
+              >
+                <SliderTrack>
+                  <SliderFilledTrack boxSize={'30px'} />
+                </SliderTrack>
+                <SliderThumb boxSize={'10px'} borderColor={'orange'} />
+              </Slider>
             </HStack>
-
-            <Slider
-              w={'50%'}
-              aria-label="slider-ex-1"
-              defaultValue={sliderValue}
-              colorScheme="orange"
-              onChange={(e) => {
-                setVolume(e);
-                setSliderValue(e);
-              }}
-            >
-              <SliderTrack>
-                <SliderFilledTrack boxSize={'30px'} />
-              </SliderTrack>
-              <SliderThumb boxSize={'10px'} borderColor={'orange'} />
-            </Slider>
           </HStack>
         </HStack>
       )}

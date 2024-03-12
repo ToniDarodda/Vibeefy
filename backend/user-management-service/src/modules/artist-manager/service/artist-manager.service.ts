@@ -10,6 +10,10 @@ export class ArtistManagerService {
     return this.client.send({ cmd: 'get_artist_by_id' }, { id: artistId });
   }
 
+  async getArtist(take = 20, skip?: number) {
+    return this.client.send({ cmd: 'get_artist' }, { take, skip });
+  }
+
   async getAlbumInfo(albumId: string) {
     return this.client.send({ cmd: 'get_album_by_id' }, { id: albumId });
   }

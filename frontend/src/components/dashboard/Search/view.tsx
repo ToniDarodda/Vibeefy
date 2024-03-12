@@ -1,4 +1,6 @@
-import { VStack, HStack } from '@chakra-ui/react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 
 import { SearchBar } from '../searchBar';
 import {
@@ -11,33 +13,42 @@ import { TopResultSearch } from './topResultSearch';
 import { SongSearch } from './songSearch';
 import { ArtistSearch } from './artistSearch';
 import { AlbumSearch } from './albumSearch';
-import { useState } from 'react';
 import { useGetAlbum } from '../../../query';
 
 interface SearchViewInterface {
+  search: string;
   isSearching: boolean;
   searchValue: SearchResponse[] | undefined;
-  setSelectedAlbumOrSong: React.Dispatch<
-    React.SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
+  setSelectedAlbumOrSong: Dispatch<
+    SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
   >;
 
+  setSearch: Dispatch<SetStateAction<string>>;
   setPlaylistView: (b: boolean) => void;
 }
 
 export function SearchView({
+  search,
+  setSearch,
+  searchValue,
   isSearching,
   setPlaylistView,
   setSelectedAlbumOrSong,
 }: SearchViewInterface) {
-  const [search, setSearch] = useState<string>('');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [loadedArtistsCount, setLoadedArtistsCount] = useState<number>(20);
 
-  const { data: albums } = useGetAlbum(search, 30, 0);
+  const { data: albums } = useGetAlbum(search, loadedArtistsCount, 0);
 
   return (
-    <VStack flex={1} w={'100%'}>
-      <SearchBar isSearching={isSearching} setSearch={setSearch} />
+    <VStack h={'100%'} w={'100%'}>
+      <SearchBar
+        isSearching={isSearching}
+        setSearch={setSearch}
+        search={search}
+      />
       <HStack
-        flex={1}
+        h={'100%'}
         marginTop={'20px'}
         w={'100%'}
         gap={'20px'}
@@ -57,6 +68,54 @@ export function SearchView({
               setPlaylistView={setPlaylistView}
               setSelectedAlbumOrSong={setSelectedAlbumOrSong}
             />
+          </VStack>
+        )}
+        {search === '' && (
+          <VStack
+            w={'100%'}
+            h={'100%'}
+            ref={containerRef}
+            padding={'24px'}
+            marginTop={'20px'}
+            overflow={'scroll'}
+            gap={'20px'}
+          >
+            <HStack
+              w={'100%'}
+              h={'100%'}
+              flexWrap={'wrap'}
+              gap={'30px'}
+              justifyContent={'center'}
+            >
+              {albums
+                ?.filter(
+                  (album, index, self) =>
+                    index ===
+                    self.findIndex((t) => t.artist.name === album.artist.name),
+                )
+                .map((album: AlbumInterface, index) => {
+                  return (
+                    <VStack
+                      key={index}
+                      w={'auto'}
+                      h={'auto'}
+                      cursor={'pointer'}
+                      _hover={{
+                        backgroundColor: '#191919',
+                      }}
+                      borderRadius={'8px'}
+                      padding={'12px'}
+                    >
+                      <Image
+                        src={album.thumbnails}
+                        boxSize={'200px'}
+                        borderRadius={'4px'}
+                      />
+                      <Text>{album.artist.name}</Text>
+                    </VStack>
+                  );
+                })}
+            </HStack>
           </VStack>
         )}
       </HStack>

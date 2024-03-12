@@ -8,12 +8,13 @@ import {
 
 interface SearchBarInterface {
   isSearching: boolean;
+  search: string;
 
   setSearch: (b: string) => void;
 }
 
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
-  ({ isSearching, setSearch, ...rest }, ref) => {
+  ({ isSearching, setSearch, search, ...rest }, ref) => {
     return (
       <>
         {isSearching && (
@@ -46,6 +47,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
                 autoFocus
                 color={'#ffffff'}
                 {...rest}
+                defaultValue={search}
                 onChange={(e) => setSearch(e.target.value)}
                 w={'400px'}
                 backgroundColor={'#1b1b1b'}

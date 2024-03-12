@@ -35,6 +35,7 @@ export function PlaylistView({
     if (data) {
       setCurrentSong({
         ...data,
+        albumName: selectedAlbumOrSong.name,
       });
       setIsListening(true);
     }

@@ -45,7 +45,7 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
           onMouseLeave={() => setHoveredIndex(-1)}
           onClick={() => {
             setIsListening(true);
-            setCurrentSong({ ...song });
+            setCurrentSong({ ...song, albumName: selectedAlbumOrSong.title });
           }}
           onContextMenu={(e) => {
             e.preventDefault();

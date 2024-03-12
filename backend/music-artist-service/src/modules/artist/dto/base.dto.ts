@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Length,
+} from 'class-validator';
 
 import { ApiProperty, PickType } from '@nestjs/swagger';
 
@@ -20,6 +27,21 @@ export class ArtistBaseDTO {
   @IsNotEmpty()
   @Length(1, 100)
   name: string;
+  @ApiProperty({
+    example: 'Kerchak',
+    description: 'Pseudo of the Artist',
+  })
+  @IsNumber()
+  @IsOptional()
+  take: number;
+
+  @ApiProperty({
+    example: 'Kerchak',
+    description: 'Pseudo of the Artist',
+  })
+  @IsNumber()
+  @IsOptional()
+  skip?: number;
 
   @ApiProperty({
     example: 'https://google.com/kerchak',
@@ -33,3 +55,5 @@ export class ArtistBaseDTO {
 export class ArtistGetById extends PickType(ArtistBaseDTO, ['id']) {}
 
 export class ArtistGetByPseudo extends PickType(ArtistBaseDTO, ['name']) {}
+
+export class ArtistGet extends PickType(ArtistBaseDTO, ['skip', 'take']) {}

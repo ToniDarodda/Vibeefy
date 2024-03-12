@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { VStack, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchResponse } from '../interfaces/search';
@@ -17,6 +17,7 @@ export function Dashboard() {
   const [isListening, setIsListening] = useState<boolean>(false);
   const [playlistView, setPlaylistView] = useState<boolean>(false);
   const [queueView, setQueueView] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
 
   const [selectedAlbumOrSong, setSelectedAlbumOrSong] = useState<
     AlbumInterface | PlaylistType
@@ -39,6 +40,10 @@ export function Dashboard() {
   //   link,
   //   download: false,
   // }) as { data: DownloadSongResponse | undefined };
+
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
 
   const { togglePlayPause } = useAudioPlayerContext();
 
@@ -75,6 +80,8 @@ export function Dashboard() {
             ) : (
               <SearchView
                 isSearching={isSearching}
+                setSearch={setSearch}
+                search={search}
                 searchValue={searchValue}
                 setPlaylistView={setPlaylistView}
                 setSelectedAlbumOrSong={setSelectedAlbumOrSong}
@@ -97,7 +104,9 @@ export function Dashboard() {
           searchValue={searchValue}
           setIsSearching={setIsSearching}
           togglePlayPause={togglePlayPause}
+          setPlaylistView={setPlaylistView}
           isLargerThan1000={isLargardThan1000}
+          setSelectedAlbumOrSong={setSelectedAlbumOrSong}
         />
       </VStack>
     </VStack>

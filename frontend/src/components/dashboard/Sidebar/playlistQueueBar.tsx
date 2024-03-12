@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { VStack, HStack, Text, Image, Icon } from '@chakra-ui/react';
+import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 
 import { ModalPlaylistOpen } from '../Modal/playlistOpen';
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
@@ -7,6 +7,8 @@ import { MdHome, MdSearch } from 'react-icons/md';
 import { useAudioPlayerContext } from '../../../contexts';
 import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
+import { MdQueue } from 'react-icons/md';
+import { IoLibrarySharp } from 'react-icons/io5';
 
 interface PlaylistBarInterface {
   queueView: boolean;
@@ -123,7 +125,11 @@ export function PlaylistBar({
               borderRadius={'8px'}
               onClick={() => setIsSearching(true)}
             >
-              <Image src="/pl.png" boxSize={'28px'} />
+              <Icon
+                as={queueView ? MdQueue : IoLibrarySharp}
+                boxSize={'28px'}
+                color={'#535353'}
+              />
               <Text fontSize={'16px'}>
                 {queueView ? 'Your queue' : 'Your library'}
               </Text>

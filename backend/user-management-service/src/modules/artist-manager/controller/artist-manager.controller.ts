@@ -9,6 +9,10 @@ export class ArtistManagerController {
   async getArtistInfo(@Param('artistId') artistId: string) {
     return this.userService.getArtistInfo(artistId);
   }
+  @Get('artist-info')
+  async getArtist(@Query('take') take: string, @Query('skip') skip: string) {
+    return this.userService.getArtist(+take, +skip);
+  }
 
   @Get('album-info/:albumId')
   async getAlbumInfo(@Param('albumId') artistId: string) {
