@@ -78,6 +78,19 @@ export function Playbar({
 
   const { data: albums } = useGetAlbum(currentSong?.albumName ?? '', 1, 0);
 
+  const [previousVolume, setPreviousVolume] = useState(sliderValue);
+
+  const handleVolumeIconClick = () => {
+    if (sliderValue !== 0) {
+      setPreviousVolume(sliderValue);
+      setSliderValue(0);
+      setVolume(0);
+    } else {
+      setSliderValue(previousVolume);
+      setVolume(previousVolume);
+    }
+  };
+
   const handleBarChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const progressBar = progressBarRef.current;
     if (!progressBar) return;
@@ -245,10 +258,7 @@ export function Playbar({
                   src={sliderValue === 0 ? 'volume-mute.png' : '/volume.png'}
                   boxSize={sliderValue === 0 ? '24px' : '26px'}
                   cursor={'pointer'}
-                  onClick={() => {
-                    setSliderValue((prev) => (prev === 0 ? 30 : 0));
-                    setVolume(sliderValue);
-                  }}
+                  onClick={handleVolumeIconClick}
                 />
               </HStack>
               <Slider
