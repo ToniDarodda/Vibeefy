@@ -14,6 +14,9 @@ export class Artist extends Common {
   @Column('varchar', { name: 'description', nullable: true })
   description?: string;
 
+  @Column('varchar', { name: 'profile_picture', nullable: true })
+  profilePicture?: string;
+
   @Column('varchar', { name: 'artist_youtube_id', nullable: true })
   artistYoutubeId: string;
 

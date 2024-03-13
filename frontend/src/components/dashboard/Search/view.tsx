@@ -109,7 +109,7 @@ export function SearchView({
                       <Image
                         src={album.thumbnails}
                         boxSize={'200px'}
-                        borderRadius={'4px'}
+                        borderRadius={'100px'}
                       />
                       <Text>{album.artist.name}</Text>
                     </VStack>

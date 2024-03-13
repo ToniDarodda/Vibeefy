@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { VStack, Text } from '@chakra-ui/react';
+import { VStack, Text, HStack, Icon } from '@chakra-ui/react';
 import { UseMutateFunction } from '@tanstack/react-query';
 
 import { useAudioPlayerContext } from '../../../contexts';
@@ -9,6 +9,7 @@ import {
   PlaylistType,
   BasePlaylistInterface,
 } from '../../../interfaces';
+import { MdAddToQueue } from 'react-icons/md';
 
 interface PlaylistOpenInterface {
   isModalAddPlaylistOpen: boolean;
@@ -94,25 +95,29 @@ export function ModalAddPlaylistOpen({
           {!createPlaylistClicked && (
             <VStack
               w={'250px'}
-              h={'60px'}
+              h={'90px'}
               padding={'12px'}
-              backgroundColor={'#252525'}
+              backgroundColor={'#121212'}
+              border={'1px solid #82828267'}
               justifyContent={'center'}
               alignContent={'center'}
               borderRadius={'8px'}
               cursor={'pointer'}
+              gap={'20px'}
             >
               <Text
                 onClick={handleClickPlaylist}
+                color={'#ffffff9c'}
                 _hover={{
-                  textColor: '#a6a4a4',
+                  textColor: '#ffffff',
                 }}
               >
                 Add to existing playlist
               </Text>
               <Text
+                color={'#ffffff9c'}
                 _hover={{
-                  textColor: '#a6a4a4',
+                  textColor: '#ffffff',
                 }}
                 onClick={handleClickQueue}
               >
@@ -123,26 +128,39 @@ export function ModalAddPlaylistOpen({
           {createPlaylistClicked && (
             <VStack
               w={'250px'}
-              gap={'20px'}
-              h={'auto'}
+              h={'200px'}
               padding={'12px'}
-              backgroundColor={'#252525'}
-              justifyContent={'center'}
-              alignContent={'center'}
+              overflow={'scroll'}
+              backgroundColor={'#121212'}
+              border={'1px solid #82828267'}
               borderRadius={'8px'}
+              gap={'12px'}
               cursor={'pointer'}
               ref={modalRef}
             >
               {playlists?.map((playlist: BasePlaylistInterface) => {
                 return (
-                  <Text
-                    _hover={{
-                      textColor: '#a6a4a4',
-                    }}
-                    onClick={() => handleAddSongToPlaylist(playlist.id)}
+                  <HStack
+                    alignItems={'center'}
+                    w={'100%'}
+                    justifyContent={'space-evenly'}
                   >
-                    {playlist.name}
-                  </Text>
+                    <Icon
+                      as={MdAddToQueue}
+                      color={'#c8c8c89c'}
+                      boxSize={'20px'}
+                    />
+
+                    <Text
+                      w={'100px'}
+                      _hover={{
+                        textColor: '#a6a4a4',
+                      }}
+                      onClick={() => handleAddSongToPlaylist(playlist.id)}
+                    >
+                      {playlist.name}
+                    </Text>
+                  </HStack>
                 );
               })}
             </VStack>

@@ -37,7 +37,11 @@ export class LinkService {
       throw new HttpException('File does not exist', HttpStatus.BAD_REQUEST);
     }
 
-    const params = { Bucket: this.bucketName, Key: objectKey, Expires: 60 * 5 };
+    const params = {
+      Bucket: this.bucketName,
+      Key: objectKey,
+      Expires: 60 * 60 * 10,
+    };
     return await this.s3.getSignedUrlPromise('getObject', params);
   }
 }

@@ -28,6 +28,7 @@ import {
 } from '../../../interfaces';
 import { formatTime } from '../../../utils';
 import { useGetAlbum } from '../../../query';
+import { truncateText } from '../../../utils/truncatText';
 
 interface PlaybarInterface {
   queueView: boolean;
@@ -109,7 +110,6 @@ export function Playbar({
     };
   }, [togglePlayPause]);
 
-  console.log(isPaused, isPlaying, isFinish);
   return (
     <>
       {isListening && isLargerThan1000 && (
@@ -131,7 +131,7 @@ export function Playbar({
                   setPlaylistView(true);
                 }}
               >
-                {currentSong?.title}
+                {truncateText(currentSong?.title ?? '', 19)}
               </Text>
               <Text
                 color={'#ffffff62'}
@@ -142,7 +142,7 @@ export function Playbar({
                   setPlaylistView(true);
                 }}
               >
-                {currentSong?.albumName}
+                {truncateText(currentSong?.albumName?.split('(')[0] ?? '', 20)}
               </Text>
             </VStack>
             <Image
@@ -214,7 +214,7 @@ export function Playbar({
                   ref={progressBarRef}
                   value={
                     duration
-                      ? (Math.round(seek) * 100) / duration
+                      ? (Math.round(seek + 1) * 100) / duration
                       : (Math.round(seek) * 100) / 180
                   }
                   onClick={handleBarChange}
@@ -222,7 +222,7 @@ export function Playbar({
                 />
               </Stack>
               <Text textAlign={'center'}>
-                {formatTime(Math.round(duration!))}
+                {formatTime(Math.round(duration ? duration : 160))}
               </Text>
             </HStack>
           </VStack>

@@ -103,9 +103,9 @@ export function PlaylistBar({
             padding={'0px 12px 0px'}
             onContextMenu={(e) => {
               e.preventDefault();
-              setModalPlaylistOptionOpen(false);
-              setModalPlaylistOpen(true);
-              setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
+              // setModalPlaylistOptionOpen(false);
+              // setModalPlaylistOpen(true);
+              // setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
             }}
             contextMenu={'preventDefault'}
             onClick={() => {
@@ -134,7 +134,13 @@ export function PlaylistBar({
                 {queueView ? 'Your queue' : 'Your library'}
               </Text>
             </HStack>
-            <VStack gap={'20px'} overflow={'scroll'} w={'100%'} maxW={'100%'}>
+            <VStack
+              gap={'0px'}
+              overflow={'scroll'}
+              w={'100%'}
+              maxW={'100%'}
+              height={'100%'}
+            >
               {!queueView ? (
                 <PlaylistBarView
                   mooseCoord={mooseCoord}
@@ -146,7 +152,11 @@ export function PlaylistBar({
                   setModalPlaylistOptionOpen={setModalPlaylistOptionOpen}
                 />
               ) : (
-                <QueueView queue={queue} />
+                <QueueView
+                  queue={queue}
+                  setPlaylistView={setPlaylistView}
+                  setSelectedAlbumOrSong={setSelectedAlbumOrSong}
+                />
               )}
             </VStack>
           </VStack>
