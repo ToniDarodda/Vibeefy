@@ -1,5 +1,6 @@
 import { HStack, VStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface } from '../../../interfaces';
+import { MakePictureLarger } from '../../../utils/formatPicture';
 
 interface ArtistSearchInterface {
   albums: AlbumInterface[];
@@ -31,7 +32,7 @@ export function ArtistSearch({ albums }: ArtistSearchInterface) {
                 }}
               >
                 <Image
-                  src={filteredAlbum.thumbnails}
+                  src={MakePictureLarger(filteredAlbum)}
                   boxSize={'200px'}
                   borderRadius={'100px'}
                   minW={'200px'}

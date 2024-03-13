@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { VStack, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchResponse } from '../interfaces/search';
@@ -40,10 +40,6 @@ export function Dashboard() {
   //   link,
   //   download: false,
   // }) as { data: DownloadSongResponse | undefined };
-
-  useEffect(() => {
-    console.log(search);
-  }, [search]);
 
   const { togglePlayPause } = useAudioPlayerContext();
 

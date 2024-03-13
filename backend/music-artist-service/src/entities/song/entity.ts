@@ -11,6 +11,9 @@ export class Song extends Common {
   @Column('int', { name: 'song_duration' })
   songDuration: number;
 
+  @Column('int', { name: 'track_number', nullable: true })
+  trackNumber: number;
+
   @Column('varchar')
   thumbnails: string;
 

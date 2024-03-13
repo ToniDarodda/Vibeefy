@@ -15,6 +15,7 @@ export interface SongInterface {
   songDuration: number;
   thumbnails: string;
   videoId: string;
+  trackNumber?: number;
   albumName?: string;
 }
 
@@ -23,5 +24,6 @@ interface ArtistInterface {
   name: string;
   thumbnails: string | null;
   description: string | null;
+  profilePicture: string;
   artistYoutubeId: string;
 }

@@ -1,5 +1,6 @@
 import { VStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface } from '../../../interfaces';
+import { MakePictureLarger } from '../../../utils/formatPicture';
 
 interface TopResultSearchInterface {
   albums: AlbumInterface[];
@@ -7,7 +8,6 @@ interface TopResultSearchInterface {
 
 export function TopResultSearch({ albums }: TopResultSearchInterface) {
   const artistName = albums?.[0]?.artist?.name ?? '';
-  const albumThumbnail = albums?.[0]?.thumbnails ?? '/vinyl.png';
 
   return (
     <VStack flex={1} justifyContent={'flex-start'} alignItems={'flex-start'}>
@@ -26,7 +26,11 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
           backgroundColor: '#2d2d2d',
         }}
       >
-        <Image src={albumThumbnail} boxSize={'100px'} borderRadius={'100px'} />
+        <Image
+          src={MakePictureLarger(albums[0])}
+          boxSize={'100px'}
+          borderRadius={'100px'}
+        />
         <Text fontSize={'24px'} as={'b'}>
           {artistName}
         </Text>

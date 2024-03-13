@@ -31,46 +31,50 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
 }) => {
   return (
     <>
-      {selectedAlbumOrSong?.songs.map((song, songIndex) => (
-        <HStack
-          key={songIndex}
-          padding={'12px'}
-          w={'100%'}
-          justifyContent={'space-between'}
-          borderRadius={'4px'}
-          _hover={{
-            backgroundColor: '#ffffff1d',
-          }}
-          onMouseEnter={() => setHoveredIndex(songIndex)}
-          onMouseLeave={() => setHoveredIndex(-1)}
-          onClick={() => {
-            setIsListening(true);
-            setCurrentSong({ ...song, albumName: selectedAlbumOrSong.title });
-          }}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            setMouseCoord({
-              clientX: e.clientX,
-              clientY: e.clientY,
-            });
-            setClickedSong({ ...song, albumName: selectedAlbumOrSong.title });
-            setIsModalAddPlaylistQueueOpen(true);
-          }}
-        >
-          <HStack gap={'20px'}>
-            {hoveredIndex === songIndex && (
-              <Image src="/pause2.png" boxSize={'12px'} />
-            )}
-            {hoveredIndex !== songIndex && (
-              <Text color={'#6a6a6a'}>{`${songIndex + 1}.`}</Text>
-            )}
-            <Text color={hoveredIndex === songIndex ? '#ffffff' : '#ffffffab'}>
-              {song.title}
-            </Text>
+      {selectedAlbumOrSong?.songs
+        .sort((a, b) => (a?.trackNumber ?? 10) - (b?.trackNumber ?? 10))
+        .map((song, songIndex) => (
+          <HStack
+            key={songIndex}
+            padding={'12px'}
+            w={'100%'}
+            justifyContent={'space-between'}
+            borderRadius={'4px'}
+            _hover={{
+              backgroundColor: '#ffffff1d',
+            }}
+            onMouseEnter={() => setHoveredIndex(songIndex)}
+            onMouseLeave={() => setHoveredIndex(-1)}
+            onClick={() => {
+              setIsListening(true);
+              setCurrentSong({ ...song, albumName: selectedAlbumOrSong.title });
+            }}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              setMouseCoord({
+                clientX: e.clientX,
+                clientY: e.clientY,
+              });
+              setClickedSong({ ...song, albumName: selectedAlbumOrSong.title });
+              setIsModalAddPlaylistQueueOpen(true);
+            }}
+          >
+            <HStack gap={'20px'}>
+              {hoveredIndex === songIndex && (
+                <Image src="/pause2.png" boxSize={'12px'} />
+              )}
+              {hoveredIndex !== songIndex && (
+                <Text color={'#6a6a6a'}>{`${songIndex + 1}.`}</Text>
+              )}
+              <Text
+                color={hoveredIndex === songIndex ? '#ffffff' : '#ffffffab'}
+              >
+                {song.title}
+              </Text>
+            </HStack>
+            <Text color={'#7b7b7b'}>{formatTime(song.songDuration)}</Text>
           </HStack>
-          <Text color={'#7b7b7b'}>{formatTime(song.songDuration)}</Text>
-        </HStack>
-      ))}
+        ))}
     </>
   );
 };

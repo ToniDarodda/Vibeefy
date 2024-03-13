@@ -1,4 +1,5 @@
 import { HStack, VStack, Text, Image } from '@chakra-ui/react';
+
 import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
 
@@ -23,7 +24,12 @@ export function AlbumSearch({
       <Text alignSelf={'flex-start'} fontSize={'20px'} as={'b'}>
         Albums
       </Text>
-      <HStack w={'100%'} overflow={'scroll'} gap={'40px'}>
+      <HStack
+        w={'100%'}
+        overflow={'scroll'}
+        gap={'40px'}
+        padding={'0px 0px 12px 0px'}
+      >
         {albums.map((album: AlbumInterface, index: number) => {
           return (
             <VStack

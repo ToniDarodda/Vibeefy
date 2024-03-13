@@ -14,6 +14,7 @@ import { SongSearch } from './songSearch';
 import { ArtistSearch } from './artistSearch';
 import { AlbumSearch } from './albumSearch';
 import { useGetAlbum } from '../../../query';
+import { MakePictureLarger } from '../../../utils/formatPicture';
 
 interface SearchViewInterface {
   search: string;
@@ -107,7 +108,7 @@ export function SearchView({
                       padding={'12px'}
                     >
                       <Image
-                        src={album.thumbnails}
+                        src={MakePictureLarger(album)}
                         boxSize={'200px'}
                         borderRadius={'100px'}
                       />

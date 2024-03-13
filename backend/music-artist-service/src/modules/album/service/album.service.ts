@@ -28,7 +28,9 @@ export class AlbumService {
       .leftJoinAndSelect('album.artist', 'artist')
       .where('album.title ILIKE :title', { title: `%${title}%` })
       .orWhere('artist.name ILIKE :name', { name: `%${title}%` })
-      .orderBy('album.year', 'DESC')
+      .orderBy({
+        'album.year': 'DESC',
+      })
       .take(take)
       .skip(skip)
       .getMany();
