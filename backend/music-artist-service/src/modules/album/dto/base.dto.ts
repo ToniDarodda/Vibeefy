@@ -1,5 +1,12 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  Length,
+} from 'class-validator';
 
 export class AlbumBaseDTO {
   @ApiProperty({
@@ -37,6 +44,20 @@ export class AlbumBaseDTO {
   description: string;
 
   @ApiProperty({
+    example: 'French rapper',
+    description: 'Description of the artist',
+  })
+  @IsNumber()
+  take?: number;
+
+  @ApiProperty({
+    example: 'French rapper',
+    description: 'Description of the artist',
+  })
+  @IsNumber()
+  skip?: number;
+
+  @ApiProperty({
     example: '04-04-2024',
     description: 'Release date of the album',
   })
@@ -47,4 +68,8 @@ export class AlbumBaseDTO {
 
 export class AlbumGetById extends PickType(AlbumBaseDTO, ['id']) {}
 
-export class AlbumGetByName extends PickType(AlbumBaseDTO, ['name']) {}
+export class AlbumGetByName extends PickType(AlbumBaseDTO, [
+  'name',
+  'take',
+  'skip',
+]) {}

@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Howl } from 'howler';
 
 interface UseAudioPlayerOptions {
-  url: string;
+  url: string | undefined;
+  onSongEnd: () => void;
 }
 
-export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
+export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   const playerRef = useRef<Howl | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isFinish, setIsFinish] = useState(true);
   const [seek, setSeek] = useState<number>(0);
   const [duration, setDuration] = useState<number | undefined>(0);
 
@@ -15,20 +18,32 @@ export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
     if (playerRef.current) {
       playerRef.current.unload();
     }
+    if (url === undefined) return;
     const howlPlayer = new Howl({
       src: [url],
-      format: ['mp3'],
-      autoplay: true,
+      format: ['wav'],
+      autoplay: false,
       loop: false,
       html5: true,
       preload: true,
-      onplay: () => {
-        setIsPlaying(true);
+      onload: () => {
         setDuration(howlPlayer.duration());
       },
-      onpause: () => setIsPlaying(false),
+      onplay: () => {
+        setIsPlaying(true);
+        setIsFinish(false);
+        setIsPaused(false);
+      },
+      onpause: () => {
+        setIsPlaying(false);
+        setIsPaused(true);
+      },
       onstop: () => setIsPlaying(false),
-      onend: () => setIsPlaying(false),
+      onend: () => {
+        setIsFinish(true);
+        setIsPlaying(false);
+        onSongEnd();
+      },
     });
 
     playerRef.current = howlPlayer;
@@ -36,34 +51,38 @@ export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
     playerRef.current.play();
   }, [url]);
 
-  const pause = () => {
+  const pause = useCallback(() => {
     playerRef.current?.pause();
-  };
+  }, []);
 
-  const togglePlayPause = () => {
-    if (playerRef.current) {
-      isPlaying ? playerRef.current.pause() : playerRef.current.play();
+  const togglePlayPause = useCallback(() => {
+    if (!playerRef.current) return;
+
+    if (isPlaying) {
+      playerRef.current.pause();
+    } else {
+      playerRef.current.play();
     }
-  };
+  }, [isPlaying]);
 
-  const setVolume = (volume: number) => {
+  const setVolume = useCallback((volume: number) => {
     playerRef.current?.volume(volume / 100);
-  };
+  }, []);
 
-  const reStart = () => {
+  const reStart = useCallback(() => {
     if (playerRef.current) {
       playerRef.current.stop();
       playerRef.current.play();
       setSeek(0);
     }
-  };
+  }, []);
 
-  const setTime = (time: number) => {
+  const setTime = useCallback((time: number) => {
     if (playerRef.current) {
       playerRef.current.seek(time);
       setSeek(time);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (playerRef.current && isPlaying) {
@@ -82,9 +101,12 @@ export const useAudioPlayer = ({ url }: UseAudioPlayerOptions) => {
     seek,
     pause,
     setTime,
+    isPaused,
     duration,
+    isFinish,
     isPlaying,
     setVolume,
+    setIsPaused,
     setDuration,
     togglePlayPause,
     reStart: reStart,

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Login, Register, Loading, Dashboard } from './pages';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AudioPlayerProvider } from './contexts/playerContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,14 +34,40 @@ const router = createBrowserRouter([
   },
 ]);
 
+const customTheme = extendTheme({
+  components: {
+    Progress: {
+      baseStyle: {
+        filledTrack: {
+          bg: '#f68f32',
+        },
+      },
+    },
+    Slider: {
+      baseStyle: {
+        filledTrack: {
+          bg: '#f68f32',
+        },
+      },
+    },
+    Text: {
+      baseStyle: {
+        color: '#ffffff',
+      },
+    },
+  },
+});
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AudioPlayerProvider>
+          <RouterProvider router={router} />
+        </AudioPlayerProvider>
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,

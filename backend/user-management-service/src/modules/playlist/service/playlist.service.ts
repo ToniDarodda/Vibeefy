@@ -7,7 +7,7 @@ import {
   PlaylistPatch,
   PlaylistSongCreate,
 } from '../dto/base.dto';
-import { ArtistService } from 'src/app.service';
+import { ArtistManagerService } from 'src/modules/artist-manager/service/artist-manager.service';
 
 @Injectable()
 export class PlaylistService {
@@ -16,7 +16,7 @@ export class PlaylistService {
     private readonly playlistRepository: Repository<Playlist>,
     @InjectRepository(PlaylistSong)
     private readonly playlistSongRepository: Repository<PlaylistSong>,
-    private readonly artistService: ArtistService,
+    private readonly artistManagerRepostory: ArtistManagerService,
   ) {}
 
   createPlaylist(
@@ -82,13 +82,15 @@ export class PlaylistService {
 
   async addSongToPlaylist(
     playlistId: string,
-    data: PlaylistSongCreate,
+    { name, songId, songDuration }: PlaylistSongCreate,
   ): Promise<PlaylistSong> {
     await this.getPlaylistById(playlistId);
 
     const playlistSong = await this.playlistSongRepository.save(
       this.playlistSongRepository.create({
-        ...data,
+        songName: name,
+        songId,
+        songDuration,
         playlist: {
           id: playlistId,
         },
@@ -102,7 +104,9 @@ export class PlaylistService {
     albumId: string,
     playlistId: string,
   ): Promise<PlaylistSong[]> {
-    const playListSong = await this.artistService.getSongsInfo(albumId);
+    const playListSong = await this.artistManagerRepostory.getSongsInfo(
+      albumId,
+    );
 
     await this.getPlaylistById(playlistId);
 

@@ -15,6 +15,12 @@ export class PlaylistSong extends Common {
   @Column('varchar', { name: 'song_id' })
   songId: string;
 
+  @Column('varchar', { name: 'name', nullable: true })
+  songName: string;
+
+  @Column('int', { name: 'song_duration', nullable: true })
+  songDuration: number;
+
   @ManyToOne(() => Playlist, (playlist) => playlist.playlistSongs)
   @JoinColumn({ name: 'playlist_id' })
   playlist: Relation<Playlist>;

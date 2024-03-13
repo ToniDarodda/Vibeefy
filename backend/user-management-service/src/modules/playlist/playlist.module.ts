@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
 import { PlaylistController } from './controller/playlist.controller';
 import { PlaylistService } from './service/playlist.service';
-import { ArtistService } from 'src/app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ArtistManagerController } from '../artist-manager/controller/artist-manager.controller';
+import { ArtistManagerService } from '../artist-manager/service/artist-manager.service';
 
 @Module({
   imports: [
@@ -21,6 +23,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     TypeOrmModule.forFeature([Playlist, PlaylistSong]),
   ],
   controllers: [PlaylistController],
-  providers: [PlaylistService, ArtistService],
+  providers: [PlaylistService, ArtistManagerController, ArtistManagerService],
 })
 export class PlaylistModule {}

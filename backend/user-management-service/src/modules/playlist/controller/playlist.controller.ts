@@ -8,6 +8,8 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
@@ -27,6 +29,7 @@ export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
   @Post()
+  @UseInterceptors(ClassSerializerInterceptor)
   createPlaylistForUser(
     @Body() playlistData: PlaylistCreate,
     @AuthToken() { userId }: DecodedUserToken,
@@ -35,6 +38,7 @@ export class PlaylistController {
   }
 
   @Post(':playlistId/songs')
+  @UseInterceptors(ClassSerializerInterceptor)
   async addSongToPlaylist(
     @Param('playlistId') playlistId: string,
     @Body() songData: PlaylistSongCreate,
@@ -54,6 +58,7 @@ export class PlaylistController {
   }
 
   @Post(':playlistId/album/:albumId')
+  @UseInterceptors(ClassSerializerInterceptor)
   async addAlbumToPlaylist(
     @Param('playlistId') playlistId: string,
     @Param('albumId') albumId: string,
@@ -73,6 +78,7 @@ export class PlaylistController {
   }
 
   @Get(':playlistId')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getPlaylistById(
     @Param('playlistId') playlistId: string,
   ): Promise<Playlist> {
@@ -89,6 +95,7 @@ export class PlaylistController {
   }
 
   @Get('by-user/me')
+  @UseInterceptors(ClassSerializerInterceptor)
   async findPlaylistsByUserId(
     @AuthToken() { userId }: DecodedUserToken,
   ): Promise<Playlist[]> {
@@ -96,6 +103,7 @@ export class PlaylistController {
   }
 
   @Get('by-name/:name')
+  @UseInterceptors(ClassSerializerInterceptor)
   findPlaylistsByName(@Param('name') name: string): Promise<Playlist> {
     return this.playlistService.getPlaylistByName(name);
   }

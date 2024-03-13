@@ -45,12 +45,7 @@ export function Loading() {
     >
       <VStack flexDirection={'row'}>
         <Image src="/clogo.png" boxSize={'50px'}></Image>
-        <Text
-          color={'#ffffff'}
-          fontSize={'60px'}
-          transition={'ease-in-out'}
-          as={'b'}
-        >
+        <Text fontSize={'60px'} transition={'ease-in-out'} as={'b'}>
           {text}
         </Text>
       </VStack>

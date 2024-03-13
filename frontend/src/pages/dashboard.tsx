@@ -1,40 +1,54 @@
 import { useState } from 'react';
 import { VStack, useMediaQuery } from '@chakra-ui/react';
 
-import { Playbar } from '../components';
-import { PlaylistBar } from '../components/dashboard/playlistBar';
-import { AlbumBoard } from '../components/dashboard/albumBoard';
-import { SearchResponse, DownloadSongResponse } from '../interfaces/search';
-import { useGetSearch, useDownloadSong } from '../query/search';
-import { useAudioPlayer } from '../utils/player';
+import { SearchResponse } from '../interfaces/search';
+import { SearchView } from '../components/Dashboard/Search/view';
+import { Playbar } from '../components/Dashboard/Playbar/playBar';
+import { PlaylistBar } from '../components/Dashboard/Sidebar/playlistQueueBar';
+import { AlbumInterface } from '../interfaces/artist';
+import { PlaylistType } from '../interfaces/playlist';
+import { SelectionPanelView } from '../components/Dashboard/selectionPanelView';
+import { useGetPlaylist } from '../query/playlist';
+import { useAudioPlayerContext } from '../contexts/playerContext';
+import { useGetSearch } from '../query';
 
 export function Dashboard() {
-  const [isListening, setIsListening] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState<boolean>(true);
-  const [songPlaying, setSongPlaying] = useState<string>('');
-  const [link, setLink] = useState<string>('');
-  const [thumbnail, setThumbnail] = useState<string>('');
+  const [isListening, setIsListening] = useState<boolean>(false);
+  const [playlistView, setPlaylistView] = useState<boolean>(false);
+  const [queueView, setQueueView] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
+
+  const [selectedAlbumOrSong, setSelectedAlbumOrSong] = useState<
+    AlbumInterface | PlaylistType
+  >();
+
+  const { data: playlists } = useGetPlaylist();
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedSearchValue, setSelectedSearchValue] =
+    useState<SearchResponse | null>(null);
+
   const { data: searchValue } = useGetSearch({
-    query: search,
+    query: 'search', // search value from the input top,
     filter: 'songs',
   }) as { data: SearchResponse[] | undefined };
 
-  const { data: linkValue } = useDownloadSong({
-    link,
-    download: false,
-  }) as { data: DownloadSongResponse | undefined };
+  // const { data: linkValue } = useDownloadSong({
+  //   link,
+  //   download: false,
+  // }) as { data: DownloadSongResponse | undefined };
 
-  const { duration, setVolume, togglePlayPause, seek, setTime } =
-    useAudioPlayer({
-      url: linkValue?.stream_url ?? '',
-    });
+  const { togglePlayPause } = useAudioPlayerContext();
 
   return (
-    <VStack h={'100vh'} backgroundColor={'#1E1E1E'}>
+    <VStack
+      h={'100vh'}
+      backgroundColor={'#000000'}
+      onContextMenu={(e) => e.stopPropagation()}
+    >
       <VStack w={'100%'} h={'100%'} padding={'8px'}>
         <VStack
           flex={1}
@@ -49,38 +63,46 @@ export function Dashboard() {
             h={'100%'}
             overflow={'auto'}
             borderRadius={'8px'}
-            backgroundColor={'#2b2b2b'}
-            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
+            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
           >
-            <AlbumBoard
-              setLink={setLink}
-              setSearch={setSearch}
-              searchValue={searchValue}
-              isSearching={isSearching}
-              setIsListening={setIsListening}
-              setSongPlaying={setSongPlaying}
-              setThumbnail={setThumbnail}
-            />
+            {playlistView ? (
+              <SelectionPanelView
+                playlists={playlists}
+                details={selectedSearchValue}
+                setIsListening={setIsListening}
+                setPlaylistView={setPlaylistView}
+                selectedAlbumOrSong={selectedAlbumOrSong as AlbumInterface}
+              />
+            ) : (
+              <SearchView
+                isSearching={isSearching}
+                setSearch={setSearch}
+                search={search}
+                searchValue={searchValue}
+                setPlaylistView={setPlaylistView}
+                setSelectedAlbumOrSong={setSelectedAlbumOrSong}
+              />
+            )}
           </VStack>
           <PlaylistBar
-            isLargardThan1000={isLargardThan1000}
+            playlists={playlists}
+            queueView={queueView}
             setIsSearching={setIsSearching}
+            setPlaylistView={setPlaylistView}
+            isLargardThan1000={isLargardThan1000}
+            setSelectedAlbumOrSong={setSelectedAlbumOrSong}
           />
         </VStack>
         <Playbar
-          seek={seek}
-          setTime={setTime}
-          setLink={setLink}
-          duration={duration!}
-          thumbnail={thumbnail}
-          setVolume={setVolume}
-          searchValue={searchValue}
+          queueView={queueView}
+          setQueueView={setQueueView}
           isListening={isListening}
-          listeningSong={songPlaying}
+          searchValue={searchValue}
           setIsSearching={setIsSearching}
-          setSongPlaying={setSongPlaying}
           togglePlayPause={togglePlayPause}
+          setPlaylistView={setPlaylistView}
           isLargerThan1000={isLargardThan1000}
+          setSelectedAlbumOrSong={setSelectedAlbumOrSong}
         />
       </VStack>
     </VStack>

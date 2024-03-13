@@ -26,4 +26,14 @@ export class ArtistService {
       },
     });
   }
+
+  async getAllArtistRandom(take: number, skip: number): Promise<Artist[]> {
+    return this.artistRepository.find({
+      order: {
+        name: 'ASC',
+      },
+      take,
+      skip,
+    });
+  }
 }
