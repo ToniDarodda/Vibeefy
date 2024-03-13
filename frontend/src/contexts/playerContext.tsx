@@ -33,7 +33,10 @@ interface AudioPlayerContextType {
   setVolume: (volume: number) => void;
   addToQueue: (song: SongInterface) => void;
   setCurrentSong: (song: SongInterface) => void;
-  addPlaylistToQueue: (songs: PlaylistSong[]) => void;
+  addPlaylistToQueue: (
+    songs: PlaylistSong[] | SongInterface[],
+    playlistName: string,
+  ) => void;
 
   playNext: () => void;
   playPrev?: () => void;
@@ -71,8 +74,10 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   >();
   const [queue, setQueue] = useState<(SongInterface & { link?: string })[]>([]);
   const [playlistQueue, setPlaylistQueue] = useState<
-    (SongInterface & { link?: string })[]
+    (SongInterface & { link?: string; playlistName?: string })[]
   >([]);
+  const [isQueueProcessed, setIsQueueProcessed] = useState(false);
+
   const s3LinkCache: S3LinkCache = {};
 
   const addToQueue = async (song: SongInterface) => {
@@ -87,15 +92,30 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     ]);
   };
 
-  const addPlaylistToQueue = async (songs: PlaylistSong[]) => {
+  const addPlaylistToQueue = async (
+    songs: PlaylistSong[] | SongInterface[],
+    playlistName?: string,
+  ) => {
+    console.log(songs, playlistName);
     const results = await Promise.all(
-      songs.map(async (song: PlaylistSong) => {
-        const realSong = await songService.getPlaylist(song.songId);
+      songs.map(async (song: PlaylistSong | SongInterface) => {
+        let realSong;
+        if ('songId' in song) {
+          realSong = await songService.getPlaylist(song.songId);
+        } else {
+          realSong = song;
+        }
+
         if (!s3LinkCache[realSong.videoId]) {
           const link = await linkService.getLinkFromS3(realSong.videoId);
           s3LinkCache[realSong.videoId] = link;
         }
-        return { ...realSong, link: s3LinkCache[realSong.videoId] };
+
+        return {
+          ...realSong,
+          albumName: playlistName,
+          link: s3LinkCache[realSong.videoId],
+        };
       }),
     );
 
@@ -103,29 +123,35 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   };
 
   const playNext = () => {
-    setQueue((currentQueue) => {
-      if (currentQueue.length > 0) {
-        const nextQueue = [...currentQueue];
-        const nextSong = nextQueue.shift();
+    if (queue.length > 0)
+      setQueue((currentQueue) => {
+        if (currentQueue.length > 0) {
+          const nextQueue = [...currentQueue];
+          const nextSong = nextQueue.shift();
 
-        setCurrentSong(nextSong);
-        return nextQueue;
-      } else {
-        return currentQueue;
-      }
-    });
+          setCurrentSong(nextSong);
+          setIsQueueProcessed(true);
 
-    setPlaylistQueue((currentPlaylistQueue) => {
-      if (currentPlaylistQueue.length > 0 && queue.length === 0) {
-        const nextPlaylistQueue = [...currentPlaylistQueue];
-        const nextSong = nextPlaylistQueue.shift();
+          return nextQueue;
+        } else {
+          return currentQueue;
+        }
+      });
 
-        setCurrentSong(nextSong);
-        return nextPlaylistQueue;
-      } else {
-        return currentPlaylistQueue;
-      }
-    });
+    if (!isQueueProcessed && queue.length === 0) {
+      setPlaylistQueue((currentPlaylistQueue) => {
+        if (currentPlaylistQueue.length > 0 && queue.length === 0) {
+          const nextPlaylistQueue = [...currentPlaylistQueue];
+          const nextSong = nextPlaylistQueue.shift();
+
+          setCurrentSong(nextSong);
+          return nextPlaylistQueue;
+        } else {
+          return currentPlaylistQueue;
+        }
+      });
+    }
+    setIsQueueProcessed(false);
   };
 
   const playerControls = useAudioPlayer({

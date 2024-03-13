@@ -91,11 +91,18 @@ export function Playbar({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const focusedElement = document.activeElement;
+
       if (event.target instanceof HTMLElement) {
         if (event.target.classList.contains('css-1uid2v1')) {
           return;
         }
       }
+
+      if (focusedElement && focusedElement.tagName === 'INPUT') {
+        return;
+      }
+
       if (event.code === 'Space') {
         event.preventDefault();
         togglePlayPause();
@@ -123,25 +130,17 @@ export function Playbar({
         >
           <HStack flex={1} gap={'20px'}>
             <Image src={currentSong?.thumbnails} boxSize={'60px'} />
-            <VStack alignItems={'flex-start'}>
-              <Text
-                cursor={'pointer'}
-                onClick={() => {
-                  if (albums) setSelectedAlbumOrSong(albums[0]);
-                  setPlaylistView(true);
-                }}
-              >
+            <VStack
+              alignItems={'flex-start'}
+              onClick={() => {
+                if (albums) setSelectedAlbumOrSong(albums[0]);
+                setPlaylistView(true);
+              }}
+            >
+              <Text cursor={'pointer'}>
                 {truncateText(currentSong?.title ?? '', 19)}
               </Text>
-              <Text
-                color={'#ffffff62'}
-                cursor={'pointer'}
-                onClick={() => {
-                  if (albums) setSelectedAlbumOrSong(albums[0]);
-
-                  setPlaylistView(true);
-                }}
-              >
+              <Text color={'#ffffff62'} cursor={'pointer'}>
                 {truncateText(currentSong?.albumName?.split('(')[0] ?? '', 20)}
               </Text>
             </VStack>

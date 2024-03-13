@@ -1,12 +1,15 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface, SongInterface } from '../../../interfaces';
 import { formatTime } from '../../../utils';
+import { useAudioPlayerContext } from '../../../contexts';
 
 interface SongSearchInterface {
   albums: AlbumInterface[];
 }
 
 export function SongSearch({ albums }: SongSearchInterface) {
+  const { setCurrentSong, currentSong, isPaused } = useAudioPlayerContext();
+
   return (
     <VStack flex={2} justifyContent={'flex-start'} alignItems={'flex-start'}>
       <Text fontSize={'20px'} as={'b'}>
@@ -31,12 +34,28 @@ export function SongSearch({ albums }: SongSearchInterface) {
                 key={index}
                 padding={'0px 12px 0px 12px'}
                 borderRadius={'4px'}
+                backgroundColor={currentSong?.id === song.id ? '#1e1e1e' : ''}
                 _hover={{
                   backgroundColor: '#1e1e1e',
                 }}
+                onClick={() => {
+                  setCurrentSong({
+                    ...song,
+                    albumName: album.title,
+                  });
+                }}
               >
                 <HStack>
-                  <Image src={song.thumbnails ?? ''} boxSize={'44px'} />
+                  <Image
+                    src={
+                      currentSong?.id === song.id
+                        ? isPaused
+                          ? 'pause.gif'
+                          : '/playing.gif'
+                        : song.thumbnails ?? ''
+                    }
+                    boxSize={'44px'}
+                  />
                   <VStack w={'200px'} alignItems={'flex-start'}>
                     <Text fontSize={'14px'}>
                       {song.title.includes('(')
