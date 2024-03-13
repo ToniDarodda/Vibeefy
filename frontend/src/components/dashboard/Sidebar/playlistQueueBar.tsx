@@ -9,6 +9,7 @@ import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
 import { IoLibrarySharp } from 'react-icons/io5';
+import { PlaylistView } from '../Playlist/playlistView';
 
 interface PlaylistBarInterface {
   queueView: boolean;
@@ -62,7 +63,10 @@ export function PlaylistBar({
               padding={'12px'}
               cursor={'pointer'}
               borderRadius={'8px'}
-              onClick={() => setIsSearching(false)}
+              onClick={() => {
+                if (!PlaylistView) setIsSearching(false);
+                setPlaylistView(false);
+              }}
             >
               <Icon
                 as={MdHome}
