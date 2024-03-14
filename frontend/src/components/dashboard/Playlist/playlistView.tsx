@@ -57,7 +57,13 @@ export function PlaylistView({
           <HStack
             gap={'20px'}
             onClick={() => {
-              addPlaylistToQueue(selectedAlbumOrSong.playlistSongs);
+              const filteredSongs = selectedAlbumOrSong.playlistSongs
+                .slice(index + 1)
+                .map((e) => {
+                  return { ...e, playlistName: selectedAlbumOrSong.name };
+                });
+
+              addPlaylistToQueue(filteredSongs, selectedAlbumOrSong.name);
               setClickedSong(song);
             }}
           >

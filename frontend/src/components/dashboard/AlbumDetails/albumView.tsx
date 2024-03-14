@@ -3,6 +3,7 @@ import { HStack, Text, Image } from '@chakra-ui/react';
 
 import { SongInterface, AlbumInterface } from '../../../interfaces';
 import { formatTime } from '../../../utils';
+import { useAudioPlayerContext } from '../../../contexts';
 
 interface AlbumViewInterface {
   setHoveredIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -29,6 +30,8 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
   selectedAlbumOrSong,
   setIsModalAddPlaylistQueueOpen,
 }) => {
+  const { addPlaylistToQueue } = useAudioPlayerContext();
+
   return (
     <>
       {selectedAlbumOrSong?.songs
@@ -48,6 +51,13 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
             onClick={() => {
               setIsListening(true);
               setCurrentSong({ ...song, albumName: selectedAlbumOrSong.title });
+
+              const filteredSongs = selectedAlbumOrSong.songs
+                .slice(songIndex + 1)
+                .map((e) => {
+                  return { ...e, playlistName: selectedAlbumOrSong.title };
+                });
+              addPlaylistToQueue(filteredSongs, selectedAlbumOrSong.title);
             }}
             onContextMenu={(e) => {
               e.preventDefault();

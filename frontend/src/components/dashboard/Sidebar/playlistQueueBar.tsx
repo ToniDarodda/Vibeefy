@@ -14,6 +14,7 @@ interface PlaylistBarInterface {
   queueView: boolean;
   isLargardThan1000: boolean;
   playlists: PlaylistType[] | undefined;
+  inputRef: React.RefObject<HTMLInputElement>;
 
   setIsSearching: (b: boolean) => void;
   setPlaylistView: (tmp: boolean) => void;
@@ -23,6 +24,7 @@ interface PlaylistBarInterface {
 }
 
 export function PlaylistBar({
+  inputRef,
   playlists,
   queueView,
   setIsSearching,
@@ -31,6 +33,7 @@ export function PlaylistBar({
   setSelectedAlbumOrSong,
 }: PlaylistBarInterface) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isHoveredLoop, setIsHoveredLoop] = useState(false);
 
   const { queue } = useAudioPlayerContext();
 
@@ -62,13 +65,17 @@ export function PlaylistBar({
               padding={'12px'}
               cursor={'pointer'}
               borderRadius={'8px'}
-              onClick={() => setIsSearching(false)}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onClick={() => {
+                setIsSearching(false);
+                setPlaylistView(false);
+              }}
             >
               <Icon
                 as={MdHome}
-                color={'#535353'}
                 boxSize={'30px'}
-                _hover={{ color: '#ffffff' }}
+                color={isHovered ? '#ffffff' : '#535353'}
               />
               <Text fontSize={'16px'}>Home</Text>
             </HStack>
@@ -79,16 +86,17 @@ export function PlaylistBar({
               h={'50px'}
               padding={'12px'}
               borderRadius={'8px'}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseEnter={() => setIsHoveredLoop(true)}
+              onMouseLeave={() => setIsHoveredLoop(false)}
               onClick={() => {
                 setIsSearching(true);
                 setPlaylistView(false);
+                inputRef.current?.focus();
               }}
             >
               <Icon
                 as={MdSearch}
-                color={isHovered ? '#ffffff' : '#535353'}
+                color={isHoveredLoop ? '#ffffff' : '#535353'}
                 boxSize={'32px'}
               />
               <Text fontSize={'16px'}>Search</Text>
@@ -103,9 +111,9 @@ export function PlaylistBar({
             padding={'0px 12px 0px'}
             onContextMenu={(e) => {
               e.preventDefault();
-              // setModalPlaylistOptionOpen(false);
-              // setModalPlaylistOpen(true);
-              // setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
+              setModalPlaylistOptionOpen(false);
+              setModalPlaylistOpen(true);
+              setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
             }}
             contextMenu={'preventDefault'}
             onClick={() => {

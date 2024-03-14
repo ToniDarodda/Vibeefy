@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 
 import { SearchBar } from '../searchBar';
@@ -23,6 +30,7 @@ interface SearchViewInterface {
   setSelectedAlbumOrSong: Dispatch<
     SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
   >;
+  inputRef: RefObject<HTMLInputElement>;
 
   setSearch: Dispatch<SetStateAction<string>>;
   setPlaylistView: (b: boolean) => void;
@@ -30,6 +38,7 @@ interface SearchViewInterface {
 
 export function SearchView({
   search,
+  inputRef,
   setSearch,
   searchValue,
   isSearching,
@@ -47,6 +56,7 @@ export function SearchView({
         isSearching={isSearching}
         setSearch={setSearch}
         search={search}
+        inputRef={inputRef}
       />
       <HStack
         h={'100%'}
@@ -100,7 +110,7 @@ export function SearchView({
                       key={index}
                       w={'auto'}
                       h={'auto'}
-                      cursor={'pointer'}
+                      cursor={'not-allowed'}
                       _hover={{
                         backgroundColor: '#191919',
                       }}

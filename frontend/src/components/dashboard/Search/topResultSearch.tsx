@@ -21,7 +21,7 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
         alignItems={'flex-start'}
         padding={'24px'}
         borderRadius={'8px'}
-        cursor={'pointer'}
+        cursor={'not-allowed'}
         _hover={{
           backgroundColor: '#2d2d2d',
         }}

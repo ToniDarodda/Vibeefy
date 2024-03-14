@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HStack, Image, Text, VStack } from '@chakra-ui/react';
 import {
   AlbumInterface,
@@ -27,7 +28,7 @@ export function QueueView({
   const { data: albums } = useGetAlbum(clickedAlbum?.albumName ?? '', 1, 0);
 
   useEffect(() => {
-    if (albums) setSelectedAlbumOrSong(albums[0]);
+    if (albums && clickedAlbum !== null) setSelectedAlbumOrSong(albums[0]);
   }, [clickedAlbum]);
 
   return (
@@ -35,18 +36,19 @@ export function QueueView({
       {queue.map((q, idx) => {
         return (
           <HStack
+            key={idx}
             w={'100%'}
             alignItems={'center'}
             padding={'10px'}
             onClick={() => {
-              setPlaylistView(true);
               setClickedAlbum(q);
+              setPlaylistView(true);
             }}
           >
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
             <VStack alignItems={'flex-start'}>
               <Text key={idx} cursor={'pointer'}>
-                {truncateText(q.title, 30)}
+                {truncateText(q.title.split('(')[0], 30)}
               </Text>
               <Text color={'#818181'}>{q.albumName?.split('(')[0]}</Text>
             </VStack>

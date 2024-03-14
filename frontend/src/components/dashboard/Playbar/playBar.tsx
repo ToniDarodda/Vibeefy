@@ -78,6 +78,19 @@ export function Playbar({
 
   const { data: albums } = useGetAlbum(currentSong?.albumName ?? '', 1, 0);
 
+  const [previousVolume, setPreviousVolume] = useState(sliderValue);
+
+  const handleVolumeIconClick = () => {
+    if (sliderValue !== 0) {
+      setPreviousVolume(sliderValue);
+      setSliderValue(0);
+      setVolume(0);
+    } else {
+      setSliderValue(previousVolume);
+      setVolume(previousVolume);
+    }
+  };
+
   const handleBarChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const progressBar = progressBarRef.current;
     if (!progressBar) return;
@@ -91,11 +104,18 @@ export function Playbar({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const focusedElement = document.activeElement;
+
       if (event.target instanceof HTMLElement) {
         if (event.target.classList.contains('css-1uid2v1')) {
           return;
         }
       }
+
+      if (focusedElement && focusedElement.tagName === 'INPUT') {
+        return;
+      }
+
       if (event.code === 'Space') {
         event.preventDefault();
         togglePlayPause();
@@ -123,25 +143,17 @@ export function Playbar({
         >
           <HStack flex={1} gap={'20px'}>
             <Image src={currentSong?.thumbnails} boxSize={'60px'} />
-            <VStack alignItems={'flex-start'}>
-              <Text
-                cursor={'pointer'}
-                onClick={() => {
-                  if (albums) setSelectedAlbumOrSong(albums[0]);
-                  setPlaylistView(true);
-                }}
-              >
+            <VStack
+              alignItems={'flex-start'}
+              onClick={() => {
+                if (albums) setSelectedAlbumOrSong(albums[0]);
+                setPlaylistView(true);
+              }}
+            >
+              <Text cursor={'pointer'}>
                 {truncateText(currentSong?.title ?? '', 19)}
               </Text>
-              <Text
-                color={'#ffffff62'}
-                cursor={'pointer'}
-                onClick={() => {
-                  if (albums) setSelectedAlbumOrSong(albums[0]);
-
-                  setPlaylistView(true);
-                }}
-              >
+              <Text color={'#ffffff62'} cursor={'pointer'}>
                 {truncateText(currentSong?.albumName?.split('(')[0] ?? '', 20)}
               </Text>
             </VStack>
@@ -156,11 +168,11 @@ export function Playbar({
           </HStack>
 
           <VStack flex={3} gap={'20px'}>
-            <HStack gap={'60px'}>
+            <HStack gap={'20px'}>
               <Icon
                 as={MdOutlineSkipPrevious}
                 cursor={'pointer'}
-                boxSize={'34px'}
+                boxSize={'30px'}
                 onClick={playPrev}
                 color={'#8b8b8b'}
                 _hover={{
@@ -174,7 +186,7 @@ export function Playbar({
                 <Icon
                   as={!isPlaying ? FaCirclePlay : FaCirclePause}
                   cursor={'pointer'}
-                  boxSize={'38px'}
+                  boxSize={'34px'}
                   color="#ffffff"
                   onClick={() => {
                     togglePlayPause();
@@ -190,7 +202,7 @@ export function Playbar({
               <Icon
                 as={MdOutlineSkipNext}
                 cursor={'pointer'}
-                boxSize={'34px'}
+                boxSize={'30px'}
                 onClick={playNext}
                 color={'#8b8b8b'}
                 _hover={{
@@ -200,14 +212,15 @@ export function Playbar({
             </HStack>
             <HStack
               w={'90%'}
-              h={'4px'}
+              h={'5px'}
               justifyContent={'center'}
               alignItems={'center'}
+              gap={'10px'}
             >
-              <Text textAlign={'center'}>
+              <Text textAlign={'center'} fontSize={'14px'}>
                 {`${formatTime(Math.round(seek))}`}
               </Text>
-              <Stack spacing={5} h={'100%'} w={'80%'}>
+              <Stack spacing={5} h={'4px'} w={'80%'}>
                 <Progress
                   cursor={'pointer'}
                   size="md"
@@ -221,7 +234,7 @@ export function Playbar({
                   borderRadius={'8px'}
                 />
               </Stack>
-              <Text textAlign={'center'}>
+              <Text textAlign={'center'} fontSize={'14px'}>
                 {formatTime(Math.round(duration ? duration : 160))}
               </Text>
             </HStack>
@@ -246,10 +259,7 @@ export function Playbar({
                   src={sliderValue === 0 ? 'volume-mute.png' : '/volume.png'}
                   boxSize={sliderValue === 0 ? '24px' : '26px'}
                   cursor={'pointer'}
-                  onClick={() => {
-                    setSliderValue((prev) => (prev === 0 ? 30 : 0));
-                    setVolume(sliderValue);
-                  }}
+                  onClick={handleVolumeIconClick}
                 />
               </HStack>
               <Slider

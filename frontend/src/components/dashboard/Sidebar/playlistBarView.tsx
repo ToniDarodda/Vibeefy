@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdLibraryMusic } from 'react-icons/md';
-import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
+import { HStack, Text, Icon, VStack } from '@chakra-ui/react';
 
 import {
   AlbumInterface,
@@ -41,6 +41,9 @@ export function PlaylistBarView({
   isModalPlaylistOptionOpen,
   setModalPlaylistOptionOpen,
 }: PlaylistBarViewInterface) {
+  const [selectedPlaylist, setSelectedPlaylist] =
+    useState<BasePlaylistInterface | null>(null);
+
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -61,28 +64,30 @@ export function PlaylistBarView({
   }, []);
 
   return (
-    <HStack
+    <VStack
       h={'560px'}
-      w={'260px'}
-      flexWrap={'wrap'}
-      justifyContent={'space-around'}
+      overflow={'scroll'}
+      w={'100%'}
       ref={modalRef}
+      gap={'18px'}
+      alignItems={'center'}
     >
       {playlists?.map((playlist: PlaylistType, idx: number) => {
         return (
-          <VStack
+          <HStack
             key={idx}
-            w={'40%'}
-            h={'100px'}
+            w={'100%'}
             cursor={'pointer'}
             borderRadius={'4px'}
-            justifyContent={'center'}
+            justifyContent={'flex-start'}
+            gap={'12px'}
             _hover={{
               backgroundColor: '#161616',
             }}
             onContextMenu={(e) => {
               e.stopPropagation();
               e.preventDefault();
+              setSelectedPlaylist(playlist);
               setMouseCoord({
                 clientX: e.clientX,
                 clientY: e.clientY,
@@ -92,19 +97,31 @@ export function PlaylistBarView({
             }}
             onClick={() => {
               setSelectedAlbumOrSong(playlist);
-              setPlaylistView(true);
+              if (!isModalPlaylistOptionOpen) setPlaylistView(true);
             }}
           >
-            <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'60px'} />
-            <Text color={'#adadad'}>{playlist.name}</Text>
+            <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'54px'} />
+            <VStack>
+              <Text color={'#c6c6c6'} as={'b'}>
+                {playlist.name}
+              </Text>
+              <Text
+                color={'#919191'}
+                fontSize={'14px'}
+                alignSelf={'flex-start'}
+              >
+                Me
+              </Text>
+            </VStack>
             <ModalPlaylistOption
+              selectedPl={selectedPlaylist!}
               setMouseCoord={setMouseCoord}
               isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
               mooseCoord={mooseCoord}
             />
-          </VStack>
+          </HStack>
         );
       })}
-    </HStack>
+    </VStack>
   );
 }

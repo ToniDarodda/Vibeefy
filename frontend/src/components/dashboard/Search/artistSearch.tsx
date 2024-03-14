@@ -24,7 +24,7 @@ export function ArtistSearch({ albums }: ArtistSearchInterface) {
               <VStack
                 w={'auto'}
                 key={index}
-                cursor={'pointer'}
+                cursor={'not-allowed'}
                 padding={'12px'}
                 borderRadius={'4px'}
                 _hover={{
