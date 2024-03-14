@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { VStack, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchResponse } from '../interfaces/search';
@@ -18,6 +18,8 @@ export function Dashboard() {
   const [playlistView, setPlaylistView] = useState<boolean>(false);
   const [queueView, setQueueView] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [selectedAlbumOrSong, setSelectedAlbumOrSong] = useState<
     AlbumInterface | PlaylistType
@@ -75,6 +77,7 @@ export function Dashboard() {
               />
             ) : (
               <SearchView
+                inputRef={inputRef}
                 isSearching={isSearching}
                 setSearch={setSearch}
                 search={search}
@@ -85,6 +88,7 @@ export function Dashboard() {
             )}
           </VStack>
           <PlaylistBar
+            inputRef={inputRef}
             playlists={playlists}
             queueView={queueView}
             setIsSearching={setIsSearching}

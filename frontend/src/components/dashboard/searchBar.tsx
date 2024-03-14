@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { RefObject, forwardRef, useEffect, useState } from 'react';
 import { HStack, Input, Icon, VStack } from '@chakra-ui/react';
 import {
   MdKeyboardArrowLeft,
@@ -9,12 +9,41 @@ import {
 interface SearchBarInterface {
   isSearching: boolean;
   search: string;
+  inputRef: RefObject<HTMLInputElement>;
 
   setSearch: (b: string) => void;
 }
 
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
-  ({ isSearching, setSearch, search, ...rest }, ref) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ isSearching, setSearch, search, inputRef, ...rest }, _ref) => {
+    const [inputValue, setInputValue] = useState<string>(search);
+    const [lastInput, setLastInput] = useState<string>('');
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        setSearch(inputValue);
+      }, 200);
+
+      return () => clearTimeout(timeoutId);
+    }, [inputValue, setSearch]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+    };
+
+    const handleResetSearch = () => {
+      setLastInput(search);
+      setSearch('');
+      setInputValue('');
+    };
+
+    const handleLastSearch = () => {
+      setInputValue(lastInput);
+      setSearch(lastInput);
+      setLastInput('');
+    };
+
     return (
       <>
         {isSearching && (
@@ -31,24 +60,26 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
               <VStack backgroundColor={'#191919'} borderRadius={'100px'}>
                 <Icon
                   as={MdKeyboardArrowLeft}
-                  color={'#ffffff'}
+                  color={inputValue.length > 0 ? '#ffffff' : '#959595'}
                   boxSize={'34px'}
+                  onClick={handleResetSearch}
                 />
               </VStack>
               <VStack backgroundColor={'#191919'} borderRadius={'100px'}>
                 <Icon
                   as={MdKeyboardArrowRight}
-                  color={'#959595'}
+                  color={lastInput.length > 0 ? '#ffffff' : '#959595'}
                   boxSize={'34px'}
+                  onClick={handleLastSearch}
                 />
               </VStack>
               <Input
-                ref={ref}
+                ref={inputRef}
                 autoFocus
                 color={'#ffffff'}
                 {...rest}
-                defaultValue={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={inputValue}
+                onChange={handleChange}
                 w={'400px'}
                 backgroundColor={'#1b1b1b'}
                 _placeholder={{

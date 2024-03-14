@@ -96,7 +96,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     songs: PlaylistSong[] | SongInterface[],
     playlistName?: string,
   ) => {
-    console.log(songs, playlistName);
     const results = await Promise.all(
       songs.map(async (song: PlaylistSong | SongInterface) => {
         let realSong;

@@ -2,10 +2,13 @@ import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdDelete, MdAddToQueue } from 'react-icons/md';
+import { useDeletePlaylist } from '../../../query';
+import { BasePlaylistInterface } from '../../../interfaces';
 
 interface PlaylistOption {
   isModalPlaylistOptionOpen: boolean;
   mooseCoord: { clientX: number; clientY: number };
+  selectedPl: BasePlaylistInterface;
   setMouseCoord: (
     value: React.SetStateAction<{
       clientX: number;
@@ -16,6 +19,7 @@ interface PlaylistOption {
 
 export function ModalPlaylistOption({
   mooseCoord,
+  selectedPl,
   isModalPlaylistOptionOpen,
 }: PlaylistOption) {
   const componentRef = useRef<HTMLDivElement>(null);
@@ -29,6 +33,13 @@ export function ModalPlaylistOption({
     return clientX;
   };
 
+  const { mutate: deletePlaylist } = useDeletePlaylist();
+
+  const handlePlaylistdelete = () => {
+    selectedPl.id;
+    deletePlaylist(selectedPl.id);
+  };
+
   return (
     <>
       {isModalPlaylistOptionOpen && (
@@ -36,6 +47,7 @@ export function ModalPlaylistOption({
           position={'absolute'}
           top={mooseCoord.clientY}
           left={calculateModalCoordX(mooseCoord.clientX)}
+          zIndex={'2'}
         >
           <VStack
             backgroundColor={'#121212'}
@@ -69,7 +81,7 @@ export function ModalPlaylistOption({
                 color={'#ffffff9c'}
                 fontSize={'14px'}
                 _hover={{ color: '#ffffff' }}
-                onClick={() => ''}
+                onClick={handlePlaylistdelete}
               >
                 Delete playlist
               </Text>

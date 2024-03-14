@@ -35,6 +35,10 @@ class PlaylistService {
 
     return addedSong;
   }
+
+  async deletePlaylist(playlistId: string): Promise<void> {
+    await Fetch.delete<void>(`playlist/${playlistId}`);
+  }
 }
 
 export const playlistService: PlaylistService = new PlaylistService();

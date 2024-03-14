@@ -168,11 +168,11 @@ export function Playbar({
           </HStack>
 
           <VStack flex={3} gap={'20px'}>
-            <HStack gap={'60px'}>
+            <HStack gap={'20px'}>
               <Icon
                 as={MdOutlineSkipPrevious}
                 cursor={'pointer'}
-                boxSize={'34px'}
+                boxSize={'30px'}
                 onClick={playPrev}
                 color={'#8b8b8b'}
                 _hover={{
@@ -186,7 +186,7 @@ export function Playbar({
                 <Icon
                   as={!isPlaying ? FaCirclePlay : FaCirclePause}
                   cursor={'pointer'}
-                  boxSize={'38px'}
+                  boxSize={'34px'}
                   color="#ffffff"
                   onClick={() => {
                     togglePlayPause();
@@ -202,7 +202,7 @@ export function Playbar({
               <Icon
                 as={MdOutlineSkipNext}
                 cursor={'pointer'}
-                boxSize={'34px'}
+                boxSize={'30px'}
                 onClick={playNext}
                 color={'#8b8b8b'}
                 _hover={{
@@ -212,14 +212,15 @@ export function Playbar({
             </HStack>
             <HStack
               w={'90%'}
-              h={'4px'}
+              h={'5px'}
               justifyContent={'center'}
               alignItems={'center'}
+              gap={'10px'}
             >
-              <Text textAlign={'center'}>
+              <Text textAlign={'center'} fontSize={'14px'}>
                 {`${formatTime(Math.round(seek))}`}
               </Text>
-              <Stack spacing={5} h={'100%'} w={'80%'}>
+              <Stack spacing={5} h={'4px'} w={'80%'}>
                 <Progress
                   cursor={'pointer'}
                   size="md"
@@ -233,7 +234,7 @@ export function Playbar({
                   borderRadius={'8px'}
                 />
               </Stack>
-              <Text textAlign={'center'}>
+              <Text textAlign={'center'} fontSize={'14px'}>
                 {formatTime(Math.round(duration ? duration : 160))}
               </Text>
             </HStack>
