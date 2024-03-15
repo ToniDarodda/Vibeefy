@@ -4,11 +4,13 @@ import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 import { ModalPlaylistOpen } from '../Modal/playlistOpen';
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
+
 import { useAudioPlayerContext } from '../../../contexts';
 import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
 import { IoLibrarySharp } from 'react-icons/io5';
+import { ModalPlaylistCode } from '../Modal/addPlaylistCode';
 
 interface PlaylistBarInterface {
   queueView: boolean;
@@ -141,6 +143,7 @@ export function PlaylistBar({
               <Text fontSize={'16px'}>
                 {queueView ? 'Your queue' : 'Your library'}
               </Text>
+              <ModalPlaylistCode />
             </HStack>
             <VStack
               gap={'0px'}
@@ -148,6 +151,7 @@ export function PlaylistBar({
               w={'100%'}
               maxW={'100%'}
               height={'100%'}
+              justifyContent={'space-between'}
             >
               {!queueView ? (
                 <PlaylistBarView
@@ -166,6 +170,12 @@ export function PlaylistBar({
                   setSelectedAlbumOrSong={setSelectedAlbumOrSong}
                 />
               )}
+              <VStack
+                w={'100%'}
+                h={'auto'}
+                alignItems={'flex-end'}
+                justifyContent={'flex-end'}
+              ></VStack>
             </VStack>
           </VStack>
         </VStack>

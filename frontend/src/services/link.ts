@@ -2,13 +2,18 @@ import { FetchS3 } from '../utils/axios';
 
 class LinkService {
   async getLinkFromS3(musicId: string): Promise<string> {
-    const formatedMusicPath = `${musicId}.wav`;
+    try {
+      const formatedMusicPath = `${musicId}.wav`;
+      console.log('try x', musicId);
 
-    const { data: s3Link }: { data: string } = await FetchS3.get<string>(
-      `/s3/signed-url/${formatedMusicPath}`,
-    );
+      const { data: s3Link }: { data: string } = await FetchS3.get<string>(
+        `/s3/signed-url/${formatedMusicPath}`,
+      );
 
-    return s3Link;
+      return s3Link;
+    } catch (err) {
+      return '';
+    }
   }
 }
 

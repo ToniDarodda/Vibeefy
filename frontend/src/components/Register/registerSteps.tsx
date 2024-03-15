@@ -72,7 +72,8 @@ export function RegisterStep() {
     }
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit: SubmitHandler<Inputs> = ({ rePassword, ...data }: Inputs) => {
     createUser(
       {
         data,

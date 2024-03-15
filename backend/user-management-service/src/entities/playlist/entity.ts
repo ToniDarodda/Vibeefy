@@ -6,6 +6,7 @@ import {
   ManyToMany,
   Relation,
   JoinColumn,
+  JoinTable,
 } from 'typeorm';
 import { Common } from '../common/entity';
 import { User } from '../user/entity';
@@ -34,6 +35,9 @@ export class Playlist extends Common {
   @Column('boolean', { name: 'public', default: false })
   isPublic?: boolean;
 
+  @Column('varchar', { name: 'share_code', nullable: true, unique: true })
+  shareCode?: string;
+
   @OneToMany(
     'PlaylistSong',
     (playlistSong: PlaylistSong) => playlistSong.playlist,
@@ -41,7 +45,8 @@ export class Playlist extends Common {
   playlistSongs: PlaylistSong[];
 
   @ManyToMany(() => User)
-  sharedToUser: User;
+  @JoinTable()
+  sharedToUser: User[];
 
   @ManyToOne(() => User, (user) => user.playlist)
   @JoinColumn({ name: 'user_id' })

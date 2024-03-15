@@ -7,6 +7,7 @@ import { PlaylistService } from './service/playlist.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ArtistManagerController } from '../artist-manager/controller/artist-manager.controller';
 import { ArtistManagerService } from '../artist-manager/service/artist-manager.service';
+import { User } from 'src/entities/user/entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ArtistManagerService } from '../artist-manager/service/artist-manager.s
         },
       },
     ]),
-    TypeOrmModule.forFeature([Playlist, PlaylistSong]),
+    TypeOrmModule.forFeature([Playlist, PlaylistSong, User]),
   ],
   controllers: [PlaylistController],
   providers: [PlaylistService, ArtistManagerController, ArtistManagerService],

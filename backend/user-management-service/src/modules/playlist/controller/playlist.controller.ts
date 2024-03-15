@@ -17,9 +17,11 @@ import {
   PlaylistCreate,
   PlaylistSongCreate,
   PlaylistPatch,
+  PlaylistCode,
+  PlaylistPublic,
 } from '../dto/base.dto';
 import { PlaylistService } from '../service/playlist.service';
-import { QueryFailedError } from 'typeorm';
+import { QueryFailedError, UpdateResult } from 'typeorm';
 import { AuthToken } from 'src/decorators/auth.decorator';
 import { DecodedUserToken } from 'src/utils/jwt.util';
 
@@ -35,6 +37,32 @@ export class PlaylistController {
     @AuthToken() { userId }: DecodedUserToken,
   ): Promise<Playlist> {
     return this.playlistService.createPlaylist(playlistData, userId);
+  }
+
+  @Post('/generate-code')
+  @UseInterceptors(ClassSerializerInterceptor)
+  generateCodeForPlaylist(
+    @Body() { id }: PlaylistPublic,
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<string> {
+    return this.playlistService.generateSharablePlaylistCode(userId, id);
+  }
+
+  @Post('/use-code')
+  @UseInterceptors(ClassSerializerInterceptor)
+  useGeneratedPlaylistCode(
+    @Body() { code }: PlaylistCode,
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<void> {
+    return this.playlistService.useGeneratedPlaylistCode(code, userId);
+  }
+  @Post('/make-public')
+  @UseInterceptors(ClassSerializerInterceptor)
+  makePlaylistPublic(
+    @Body() { id }: PlaylistPublic,
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<UpdateResult> {
+    return this.playlistService.makePlaylistPublic(userId, id);
   }
 
   @Post(':playlistId/songs')
@@ -77,6 +105,29 @@ export class PlaylistController {
     }
   }
 
+  @Get('/public')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getAllPublicPlaylist(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<Playlist[]> {
+    return await this.playlistService.getPublicPlaylist();
+  }
+
+  @Get('by-user/me')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async findPlaylistsByUserId(
+    @AuthToken() { userId }: DecodedUserToken,
+  ): Promise<Playlist[]> {
+    return await this.playlistService.getPlaylistByUserId(userId);
+  }
+
+  @Get('by-name/:name')
+  @UseInterceptors(ClassSerializerInterceptor)
+  findPlaylistsByName(@Param('name') name: string): Promise<Playlist> {
+    return this.playlistService.getPlaylistByName(name);
+  }
+
   @Get(':playlistId')
   @UseInterceptors(ClassSerializerInterceptor)
   async getPlaylistById(
@@ -92,20 +143,6 @@ export class PlaylistController {
         );
       else throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
-
-  @Get('by-user/me')
-  @UseInterceptors(ClassSerializerInterceptor)
-  async findPlaylistsByUserId(
-    @AuthToken() { userId }: DecodedUserToken,
-  ): Promise<Playlist[]> {
-    return await this.playlistService.getPlaylistByUserId(userId);
-  }
-
-  @Get('by-name/:name')
-  @UseInterceptors(ClassSerializerInterceptor)
-  findPlaylistsByName(@Param('name') name: string): Promise<Playlist> {
-    return this.playlistService.getPlaylistByName(name);
   }
 
   @Patch(':playlistId')

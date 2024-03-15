@@ -36,6 +36,7 @@ const router = createBrowserRouter([
 
 const customTheme = extendTheme({
   components: {
+    Toast: {},
     Progress: {
       baseStyle: {
         filledTrack: {

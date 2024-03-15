@@ -1,8 +1,8 @@
-import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { VStack, HStack, Text, Icon, useToast } from '@chakra-ui/react';
+import { useEffect, useRef } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
-import { MdDelete, MdAddToQueue } from 'react-icons/md';
-import { useDeletePlaylist } from '../../../query';
+import { MdDelete, MdAddToQueue, MdShare } from 'react-icons/md';
+import { useDeletePlaylist, useGenerateCode } from '../../../query';
 import { BasePlaylistInterface } from '../../../interfaces';
 
 interface PlaylistOption {
@@ -22,7 +22,14 @@ export function ModalPlaylistOption({
   selectedPl,
   isModalPlaylistOptionOpen,
 }: PlaylistOption) {
+  const toast = useToast({
+    containerStyle: {
+      marginBottom: '20px',
+    },
+  });
+
   const componentRef = useRef<HTMLDivElement>(null);
+  const { mutate: generateCode, data: generatedCode } = useGenerateCode();
 
   const calculateModalCoordX = (clientX: number) => {
     const { innerWidth: width } = window;
@@ -39,6 +46,32 @@ export function ModalPlaylistOption({
     selectedPl.id;
     deletePlaylist(selectedPl.id);
   };
+
+  const handlePlaylistShare = async () => {
+    generateCode(selectedPl.id);
+  };
+
+  useEffect(() => {
+    if (generatedCode === undefined) return;
+
+    const handleCodeChange = async () => {
+      try {
+        await navigator.clipboard.writeText(generatedCode!);
+        toast({
+          title: 'Code copied to clipboard.',
+          status: 'info',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom',
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    handleCodeChange();
+    console.log(generatedCode);
+  }, [generatedCode]);
 
   return (
     <>
@@ -84,6 +117,20 @@ export function ModalPlaylistOption({
                 onClick={handlePlaylistdelete}
               >
                 Delete playlist
+              </Text>
+            </HStack>
+            <HStack
+              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              gap={'12px'}
+            >
+              <Icon as={MdShare} color={'#c8c8c89c'} />
+              <Text
+                color={'#ffffff9c'}
+                fontSize={'14px'}
+                _hover={{ color: '#ffffff' }}
+                onClick={handlePlaylistShare}
+              >
+                Share playlist
               </Text>
             </HStack>
             <VStack w={'100%'} borderBottom={'1px solid #82828267'} />

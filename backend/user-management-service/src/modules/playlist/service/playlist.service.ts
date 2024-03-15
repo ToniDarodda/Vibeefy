@@ -1,17 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Playlist, PlaylistSong } from 'src/entities/playlist/entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import {
   PlaylistCreate,
   PlaylistPatch,
   PlaylistSongCreate,
 } from '../dto/base.dto';
 import { ArtistManagerService } from 'src/modules/artist-manager/service/artist-manager.service';
+import ShortUniqueId from 'short-unique-id';
+import { User } from 'src/entities/user/entity';
 
 @Injectable()
 export class PlaylistService {
   constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     @InjectRepository(Playlist)
     private readonly playlistRepository: Repository<Playlist>,
     @InjectRepository(PlaylistSong)
@@ -19,19 +23,105 @@ export class PlaylistService {
     private readonly artistManagerRepostory: ArtistManagerService,
   ) {}
 
-  createPlaylist(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    { name, isPublic }: PlaylistCreate,
+  async createPlaylist(
+    { name }: PlaylistCreate,
     userId: string,
   ): Promise<Playlist> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
     return this.playlistRepository.save(
       this.playlistRepository.create({
         name,
-        user: {
-          id: userId,
-        },
+        user,
       }),
     );
+  }
+
+  async generateSharablePlaylistCode(
+    userId: string,
+    playlistId: string,
+  ): Promise<string> {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id: playlistId, user: { id: userId } },
+    });
+
+    if (playlist.shareCode !== null) return playlist.shareCode;
+
+    const { randomUUID } = new ShortUniqueId({ length: 10 });
+    const sharableCode = randomUUID();
+
+    await this.playlistRepository.update(playlistId, {
+      user: {
+        id: userId,
+      },
+      shareCode: sharableCode,
+    });
+
+    return sharableCode;
+  }
+
+  async useGeneratedPlaylistCode(code: string, userId: string): Promise<void> {
+    const playlistToShare = await this.playlistRepository.findOne({
+      where: {
+        shareCode: code,
+      },
+    });
+
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (playlistToShare.sharedToUser === undefined) {
+      playlistToShare.sharedToUser = [];
+      await this.playlistRepository.save(playlistToShare);
+    }
+
+    if (playlistToShare && user) {
+      playlistToShare.sharedToUser.push(user);
+      await this.playlistRepository.save(playlistToShare);
+    }
+  }
+
+  async makePlaylistPublic(
+    userId: string,
+    playlistId: string,
+  ): Promise<UpdateResult> {
+    const playlist = await this.playlistRepository.findOne({
+      where: { id: playlistId, user: { id: userId } },
+      relations: {
+        user: true,
+        sharedToUser: true,
+      },
+    });
+
+    console.log(playlist);
+
+    if (!playlist || playlist === undefined || playlist === null)
+      throw new HttpException(
+        'You are not the owner of the playlist',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    return this.playlistRepository.update(playlistId, {
+      user: {
+        id: userId,
+      },
+      isPublic: true,
+    });
+  }
+
+  getPublicPlaylist(): Promise<Playlist[]> {
+    return this.playlistRepository.find({
+      where: {
+        isPublic: true,
+      },
+    });
   }
 
   getPlaylistById(playlistId: string): Promise<Playlist> {
@@ -51,17 +141,27 @@ export class PlaylistService {
     });
   }
 
-  getPlaylistByUserId(userId: string): Promise<Playlist[]> {
-    return this.playlistRepository.find({
-      where: {
-        user: {
-          id: userId,
-        },
-      },
-      relations: {
-        playlistSongs: true,
-      },
+  async getPlaylistByUserId(userId: string): Promise<Playlist[]> {
+    const queryBuilder = this.playlistRepository.createQueryBuilder('playlist');
+
+    queryBuilder.leftJoinAndSelect(
+      'playlist.user',
+      'user',
+      'user.id = :userId',
+      { userId },
+    );
+
+    queryBuilder.leftJoinAndSelect('playlist.sharedToUser', 'sharedUser');
+
+    queryBuilder.leftJoinAndSelect('playlist.playlistSongs', 'playlistSong');
+
+    queryBuilder.where('user.id = :userId OR sharedUser.id = :userId', {
+      userId,
     });
+
+    const playlists = await queryBuilder.getMany();
+
+    return playlists;
   }
 
   async patchPlaylistById(

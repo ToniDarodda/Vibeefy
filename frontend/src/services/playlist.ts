@@ -39,6 +39,14 @@ class PlaylistService {
   async deletePlaylist(playlistId: string): Promise<void> {
     await Fetch.delete<void>(`playlist/${playlistId}`);
   }
+
+  async generatePlaylistCode(playlistId: string): Promise<string> {
+    const { data: code }: { data: string } = await Fetch.post<string>(
+      `playlist/generate-code`,
+      { id: playlistId },
+    );
+    return code;
+  }
 }
 
 export const playlistService: PlaylistService = new PlaylistService();
