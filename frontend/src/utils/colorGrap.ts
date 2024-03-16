@@ -12,14 +12,14 @@ export const colorGrapper = (
       const colorThief = new ColorThief();
       try {
         const color = colorThief.getColor(img);
-        resolve(color); // Resolve the promise with the extracted color
+        resolve(color);
       } catch (e) {
-        reject(e); // Reject the promise if there's an error
+        reject(e);
       }
     };
 
     img.onerror = (e) => {
-      reject(e); // Reject the promise if there's an error loading the image
+      reject(e);
     };
   });
 };
