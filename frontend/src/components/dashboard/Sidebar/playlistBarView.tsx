@@ -8,6 +8,7 @@ import {
   PlaylistType,
 } from '../../../interfaces';
 import { ModalPlaylistOption } from '../Modal/playlistOption';
+import { useAudioPlayerContext } from '../../../contexts';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -44,6 +45,8 @@ export function PlaylistBarView({
   const [selectedPlaylist, setSelectedPlaylist] =
     useState<BasePlaylistInterface | null>(null);
 
+  const { isPlaying } = useAudioPlayerContext();
+
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,7 +68,7 @@ export function PlaylistBarView({
 
   return (
     <VStack
-      h={'560px'}
+      h={isPlaying ? '580px' : '660px'}
       overflow={'scroll'}
       w={'100%'}
       ref={modalRef}

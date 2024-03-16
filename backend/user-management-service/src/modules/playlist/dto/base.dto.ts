@@ -30,7 +30,7 @@ class BasePlaylistDto {
     description: 'Is the playlist public',
   })
   @IsOptional()
-  isPublic?: string;
+  isPublic: boolean;
 }
 
 class BasePLaylistSongDTO {
@@ -68,6 +68,15 @@ class BasePLaylistSongDTO {
   songDuration: number;
 }
 
+export class PlaylistCode {
+  @ApiProperty({
+    example: 'Xdwqr241',
+    description: 'code',
+  })
+  @IsString()
+  code: string;
+}
+
 export class PlaylistSongCreate extends OmitType(BasePLaylistSongDTO, ['id']) {}
 
 export class PlaylistSongDelete extends PickType(BasePLaylistSongDTO, [
@@ -75,6 +84,10 @@ export class PlaylistSongDelete extends PickType(BasePLaylistSongDTO, [
 ]) {}
 
 export class PlaylistCreate extends OmitType(BasePlaylistDto, ['id']) {}
+
+export class PlaylistShare extends PickType(BasePlaylistDto, ['id']) {}
+
+export class PlaylistPublic extends PickType(BasePlaylistDto, ['id']) {}
 
 export class PlaylistGetById extends PickType(BasePlaylistDto, ['id']) {}
 

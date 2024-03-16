@@ -8,5 +8,6 @@ export function useS3Link(songId: string) {
     queryKey: [QueryKeyGetLink, songId],
     queryFn: () => linkService.getLinkFromS3(songId),
     enabled: !!songId,
+    retry: 3,
   });
 }

@@ -76,7 +76,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   const [playlistQueue, setPlaylistQueue] = useState<
     (SongInterface & { link?: string; playlistName?: string })[]
   >([]);
-  const [isQueueProcessed, setIsQueueProcessed] = useState(false);
 
   const s3LinkCache: S3LinkCache = {};
 
@@ -122,35 +121,17 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   };
 
   const playNext = () => {
-    if (queue.length > 0)
-      setQueue((currentQueue) => {
-        if (currentQueue.length > 0) {
-          const nextQueue = [...currentQueue];
-          const nextSong = nextQueue.shift();
+    if (queue.length > 0) {
+      const [nextSong, ...remainingQueue] = queue;
 
-          setCurrentSong(nextSong);
-          setIsQueueProcessed(true);
+      setCurrentSong(nextSong);
+      setQueue(remainingQueue);
+    } else if (playlistQueue.length > 0) {
+      const [nextSong, ...remainingPlaylistQueue] = playlistQueue;
 
-          return nextQueue;
-        } else {
-          return currentQueue;
-        }
-      });
-
-    if (!isQueueProcessed && queue.length === 0) {
-      setPlaylistQueue((currentPlaylistQueue) => {
-        if (currentPlaylistQueue.length > 0 && queue.length === 0) {
-          const nextPlaylistQueue = [...currentPlaylistQueue];
-          const nextSong = nextPlaylistQueue.shift();
-
-          setCurrentSong(nextSong);
-          return nextPlaylistQueue;
-        } else {
-          return currentPlaylistQueue;
-        }
-      });
+      setCurrentSong(nextSong);
+      setPlaylistQueue(remainingPlaylistQueue);
     }
-    setIsQueueProcessed(false);
   };
 
   const playerControls = useAudioPlayer({

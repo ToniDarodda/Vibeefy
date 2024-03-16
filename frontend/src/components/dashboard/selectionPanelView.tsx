@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
-import { VStack, Text, Image, HStack } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { VStack, Text, Image, HStack, Skeleton } from '@chakra-ui/react';
 
 import { ModalAddPlaylistOpen } from './Modal/addToPlaylistOpen';
 import { AlbumView } from './AlbumDetails/albumView';
@@ -16,6 +16,8 @@ import {
   SongInterface,
 } from '../../interfaces';
 import { useAddSongToPlaylist } from '../../query';
+import { colorGrapper } from '../../utils/colorGrap';
+import { Loading } from '../../pages';
 
 interface ChooseBarViewInterface {
   details: SearchResponse | null;
@@ -38,6 +40,7 @@ export function SelectionPanelView({
   const [clickedSong, setClickedSong] = useState<SongInterface>();
   const [isModalAddPlaylistQueueOpen, setIsModalAddPlaylistQueueOpen] =
     useState<boolean>(false);
+  const [backgroundColor, setBackgroundColor] = useState<string>('#b3752396');
 
   const { setCurrentSong } = useAudioPlayerContext();
 
@@ -62,6 +65,24 @@ export function SelectionPanelView({
     }
   };
 
+  const selectColor = async () => {
+    if (isAlbumInterface(selectedAlbumOrSong)) {
+      const image = (selectedAlbumOrSong as AlbumInterface).thumbnails;
+      colorGrapper(image)
+        .then((dominantColor) => {
+          const color = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
+          setBackgroundColor(color);
+        })
+        .catch((error) => {
+          console.error('Error extracting color', error);
+        });
+    }
+  };
+
+  useEffect(() => {
+    selectColor();
+  }, [selectedAlbumOrSong]);
+
   return (
     <VStack w={'100%'} h={'100%'}>
       <HStack
@@ -69,7 +90,7 @@ export function SelectionPanelView({
         padding={reducedView ? '12px' : '24px'}
         alignItems={reducedView ? 'center' : 'flex-start'}
         borderBottom={'1px solid #3d3d3d'}
-        background="linear-gradient(190deg, #b3752396 0%, #131313 100%)"
+        background={`linear-gradient(190deg, ${backgroundColor} 0%, #131313 100%)`}
         height={reducedView ? '80px' : '260px'}
         transition="0.2s ease-out"
       >

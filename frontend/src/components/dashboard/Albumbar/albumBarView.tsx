@@ -1,6 +1,7 @@
 import { VStack, HStack, Tooltip, Text, Image } from '@chakra-ui/react';
 
 import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
+import { truncateText } from '../../../utils/truncatText';
 
 interface AlbumBarViewInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
@@ -54,8 +55,8 @@ export function AlbumBarView({
           >
             <Text fontSize={{ base: '30px', sm: '40px', md: '60px' }}>
               {isAlbumInterface(selectedAlbumOrSong)
-                ? selectedAlbumOrSong?.title
-                : selectedAlbumOrSong?.name}
+                ? truncateText(selectedAlbumOrSong?.title, 30)
+                : truncateText(selectedAlbumOrSong?.name ?? '', 30)}
             </Text>
             <Text color={'#ffffff7d'} h={'100%'}>
               {isAlbumInterface(selectedAlbumOrSong)

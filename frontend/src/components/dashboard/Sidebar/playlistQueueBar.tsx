@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 
-import { ModalPlaylistOpen } from '../Modal/playlistOpen';
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
+
 import { useAudioPlayerContext } from '../../../contexts';
 import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
 import { IoLibrarySharp } from 'react-icons/io5';
+import { ModalPlaylistCode } from '../Modal/addPlaylistCode';
 
 interface PlaylistBarInterface {
   queueView: boolean;
@@ -37,7 +38,6 @@ export function PlaylistBar({
 
   const { queue } = useAudioPlayerContext();
 
-  const [isModalPlaylistOpen, setModalPlaylistOpen] = useState<boolean>(false);
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
   const [mooseCoord, setMouseCoord] = useState<{
@@ -112,25 +112,19 @@ export function PlaylistBar({
             onContextMenu={(e) => {
               e.preventDefault();
               setModalPlaylistOptionOpen(false);
-              setModalPlaylistOpen(true);
               setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
             }}
             contextMenu={'preventDefault'}
             onClick={() => {
-              setModalPlaylistOpen(false);
               setModalPlaylistOptionOpen(false);
             }}
           >
-            <ModalPlaylistOpen
-              isModalPlaylistOpen={isModalPlaylistOpen}
-              mooseCoord={mooseCoord}
-              playlistsLength={playlists?.length}
-            />
             <HStack
               w={'100%'}
-              gap={'20%'}
-              padding={'12px'}
+              h={'70px'}
+              padding={'20px'}
               borderRadius={'8px'}
+              justifyContent={'space-between'}
               onClick={() => setIsSearching(true)}
             >
               <Icon
@@ -138,9 +132,8 @@ export function PlaylistBar({
                 boxSize={'28px'}
                 color={'#535353'}
               />
-              <Text fontSize={'16px'}>
-                {queueView ? 'Your queue' : 'Your library'}
-              </Text>
+              <Text fontSize={'16px'}>{queueView ? 'Queue' : 'Playlist'}</Text>
+              <ModalPlaylistCode />
             </HStack>
             <VStack
               gap={'0px'}
@@ -148,6 +141,7 @@ export function PlaylistBar({
               w={'100%'}
               maxW={'100%'}
               height={'100%'}
+              justifyContent={'space-between'}
             >
               {!queueView ? (
                 <PlaylistBarView
@@ -166,6 +160,12 @@ export function PlaylistBar({
                   setSelectedAlbumOrSong={setSelectedAlbumOrSong}
                 />
               )}
+              <VStack
+                w={'100%'}
+                h={'auto'}
+                alignItems={'flex-end'}
+                justifyContent={'flex-end'}
+              ></VStack>
             </VStack>
           </VStack>
         </VStack>

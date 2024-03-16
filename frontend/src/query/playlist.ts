@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { playlistService } from '../services/playlist';
 
 const MutationKeyCreatePlaylist = 'CREATE_PLAYLIST_KEY';
+const MutationKeyUsePlaylist = 'USE_PLAYLIST_KEY';
+const MutationKeyCreateCodePlaylist = 'CREATE_CODE_PLAYLIST_KEY';
 const MutationKeyDeletePlaylist = 'DELETE_PLAYLIST_KEY';
 const MutationKeyAddSongToPlaylist = 'CREATE_ADD_SONG_TO_PLAYLIST_KEY';
 const MutationKeyGetPlaylist = 'GET_PLAYLIST_KEY';
@@ -58,5 +60,21 @@ export const useDeletePlaylist = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [MutationKeyGetPlaylist] });
     },
+  });
+};
+
+export const useGenerateCode = () => {
+  return useMutation({
+    mutationKey: [MutationKeyCreateCodePlaylist],
+    mutationFn: playlistService.generatePlaylistCode,
+  });
+};
+
+export const usePlaylistCode = () => {
+  return useMutation({
+    mutationKey: [MutationKeyUsePlaylist],
+    mutationFn: playlistService.usePlaylistCode,
+    onError: (err) => err,
+    retry: 0,
   });
 };
