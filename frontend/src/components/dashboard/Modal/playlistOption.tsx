@@ -70,7 +70,6 @@ export function ModalPlaylistOption({
     };
 
     handleCodeChange();
-    console.log(generatedCode);
   }, [generatedCode]);
 
   return (

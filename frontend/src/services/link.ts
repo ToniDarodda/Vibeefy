@@ -4,7 +4,6 @@ class LinkService {
   async getLinkFromS3(musicId: string): Promise<string> {
     try {
       const formatedMusicPath = `${musicId}.wav`;
-      console.log('try x', musicId);
 
       const { data: s3Link }: { data: string } = await FetchS3.get<string>(
         `/s3/signed-url/${formatedMusicPath}`,

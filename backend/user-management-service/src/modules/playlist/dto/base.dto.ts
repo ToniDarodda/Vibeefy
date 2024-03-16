@@ -30,7 +30,7 @@ class BasePlaylistDto {
     description: 'Is the playlist public',
   })
   @IsOptional()
-  isPublic?: string;
+  isPublic: boolean;
 }
 
 class BasePLaylistSongDTO {

@@ -55,6 +55,18 @@ export function ModalAddPlaylistOpen({
     setIsModalAddPlaylistOpen(false);
   };
 
+  const handleAddSongToPlaylist = (playlistId: string) => {
+    if (clickedSong) {
+      addSong({
+        name: clickedSong?.title,
+        songDuration: clickedSong?.songDuration,
+        songId: clickedSong?.id,
+        playlistId: playlistId,
+      });
+    }
+    setIsModalAddPlaylistOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -72,18 +84,6 @@ export function ModalAddPlaylistOpen({
     };
   }, []);
 
-  const handleAddSongToPlaylist = (playlistId: string) => {
-    if (clickedSong) {
-      addSong({
-        name: clickedSong?.title,
-        songDuration: clickedSong?.songDuration,
-        songId: clickedSong?.id,
-        playlistId: playlistId,
-      });
-    }
-    setIsModalAddPlaylistOpen(false);
-  };
-
   return (
     <>
       {isModalAddPlaylistOpen && (
@@ -91,6 +91,8 @@ export function ModalAddPlaylistOpen({
           position={'absolute'}
           top={mooseCoord.clientY}
           left={mooseCoord.clientX}
+          onContextMenu={(e) => e.preventDefault()}
+          ref={modalRef}
         >
           {!createPlaylistClicked && (
             <VStack

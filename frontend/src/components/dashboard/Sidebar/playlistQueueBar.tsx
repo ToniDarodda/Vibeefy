@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 
-import { ModalPlaylistOpen } from '../Modal/playlistOpen';
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
 
@@ -39,7 +38,7 @@ export function PlaylistBar({
 
   const { queue } = useAudioPlayerContext();
 
-  const [isModalPlaylistOpen, setModalPlaylistOpen] = useState<boolean>(false);
+  // const [isModalPlaylistOpen, setModalPlaylistOpen] = useState<boolean>(false);
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
   const [mooseCoord, setMouseCoord] = useState<{
@@ -114,25 +113,26 @@ export function PlaylistBar({
             onContextMenu={(e) => {
               e.preventDefault();
               setModalPlaylistOptionOpen(false);
-              setModalPlaylistOpen(true);
+              // setModalPlaylistOpen(true);
               setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
             }}
             contextMenu={'preventDefault'}
             onClick={() => {
-              setModalPlaylistOpen(false);
+              // setModalPlaylistOpen(false);
               setModalPlaylistOptionOpen(false);
             }}
           >
-            <ModalPlaylistOpen
+            {/* <ModalPlaylistOpen
               isModalPlaylistOpen={isModalPlaylistOpen}
               mooseCoord={mooseCoord}
               playlistsLength={playlists?.length}
-            />
+            /> */}
             <HStack
               w={'100%'}
               gap={'20%'}
               padding={'12px'}
               borderRadius={'8px'}
+              justifyContent={'space-evenly'}
               onClick={() => setIsSearching(true)}
             >
               <Icon
@@ -140,10 +140,10 @@ export function PlaylistBar({
                 boxSize={'28px'}
                 color={'#535353'}
               />
-              <Text fontSize={'16px'}>
-                {queueView ? 'Your queue' : 'Your library'}
+              <Text fontSize={'16px'} w={'auto'}>
+                {queueView ? 'Queue' : 'Library'}
               </Text>
-              <ModalPlaylistCode />
+              <ModalPlaylistCode playlistView={!queueView} />
             </HStack>
             <VStack
               gap={'0px'}

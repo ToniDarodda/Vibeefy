@@ -68,10 +68,8 @@ export function SelectionPanelView({
   const selectColor = async () => {
     if (isAlbumInterface(selectedAlbumOrSong)) {
       const image = (selectedAlbumOrSong as AlbumInterface).thumbnails;
-      console.log(image);
       colorGrapper(image)
         .then((dominantColor) => {
-          console.log(dominantColor);
           const color = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
           setBackgroundColor(color);
         })

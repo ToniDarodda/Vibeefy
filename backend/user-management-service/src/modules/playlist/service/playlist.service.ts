@@ -24,7 +24,7 @@ export class PlaylistService {
   ) {}
 
   async createPlaylist(
-    { name }: PlaylistCreate,
+    { name, isPublic }: PlaylistCreate,
     userId: string,
   ): Promise<Playlist> {
     const user = await this.userRepository.findOne({
@@ -36,6 +36,7 @@ export class PlaylistService {
     return this.playlistRepository.save(
       this.playlistRepository.create({
         name,
+        isPublic,
         user,
       }),
     );
@@ -65,26 +66,33 @@ export class PlaylistService {
   }
 
   async useGeneratedPlaylistCode(code: string, userId: string): Promise<void> {
-    const playlistToShare = await this.playlistRepository.findOne({
-      where: {
-        shareCode: code,
-      },
-    });
+    try {
+      const playlistToShare = await this.playlistRepository.findOne({
+        where: {
+          shareCode: code,
+        },
+      });
 
-    const user = await this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-    });
+      const user = await this.userRepository.findOne({
+        where: {
+          id: userId,
+        },
+      });
 
-    if (playlistToShare.sharedToUser === undefined) {
-      playlistToShare.sharedToUser = [];
-      await this.playlistRepository.save(playlistToShare);
-    }
+      if (playlistToShare.sharedToUser === undefined) {
+        playlistToShare.sharedToUser = [];
+        await this.playlistRepository.save(playlistToShare);
+      }
 
-    if (playlistToShare && user) {
-      playlistToShare.sharedToUser.push(user);
-      await this.playlistRepository.save(playlistToShare);
+      if (playlistToShare && user) {
+        playlistToShare.sharedToUser.push(user);
+        await this.playlistRepository.save(playlistToShare);
+      }
+    } catch (err) {
+      throw new HttpException(
+        'No playlist found with this code',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -99,8 +107,6 @@ export class PlaylistService {
         sharedToUser: true,
       },
     });
-
-    console.log(playlist);
 
     if (!playlist || playlist === undefined || playlist === null)
       throw new HttpException(

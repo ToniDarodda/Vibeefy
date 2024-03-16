@@ -68,7 +68,7 @@ export function PlaylistBarView({
 
   return (
     <VStack
-      h={isPlaying ? '580px' : '670px'}
+      h={isPlaying ? '580px' : '660px'}
       overflow={'scroll'}
       w={'100%'}
       ref={modalRef}

@@ -33,7 +33,7 @@ export class Playlist extends Common {
   name: string;
 
   @Column('boolean', { name: 'public', default: false })
-  isPublic?: boolean;
+  isPublic: boolean;
 
   @Column('varchar', { name: 'share_code', nullable: true, unique: true })
   shareCode?: string;

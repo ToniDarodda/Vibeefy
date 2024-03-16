@@ -47,6 +47,10 @@ class PlaylistService {
     );
     return code;
   }
+
+  async usePlaylistCode(code: string): Promise<void> {
+    await Fetch.post<void>(`/playlist/use-code`, { code });
+  }
 }
 
 export const playlistService: PlaylistService = new PlaylistService();
