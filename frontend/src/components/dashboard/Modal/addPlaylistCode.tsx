@@ -27,10 +27,6 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
 import { AxiosError } from 'axios';
 
-interface ModalPlaylistCodeInterface {
-  playlistView: boolean;
-}
-
 type Inputs = {
   name: string;
   isPublic: boolean;
@@ -40,9 +36,7 @@ type InputCode = {
   code: string;
 };
 
-export function ModalPlaylistCode({
-  playlistView,
-}: ModalPlaylistCodeInterface) {
+export function ModalPlaylistCode() {
   const toast = useToast();
 
   const {
@@ -91,49 +85,36 @@ export function ModalPlaylistCode({
 
   return (
     <>
-      {playlistView && (
-        <Menu>
-          <MenuButton
-            border={'none'}
-            as={IconButton}
-            _hover={{
-              backgroundColor: 'none',
-            }}
-            aria-label="Options"
-            icon={
-              <Icon
-                as={FaPlus}
-                color={'#535353'}
-                boxSize={'24px'}
-                cursor={'pointer'}
-                _hover={{
-                  color: '#ffffff',
-                }}
-              />
-            }
-            variant="outline"
-          />
-          <MenuList>
-            <MenuItem icon={<AddIcon />} onClick={onAddPlaylistOpen}>
-              New Playlist
-            </MenuItem>
-            <MenuItem icon={<ExternalLinkIcon />} onClick={onAddByCodeOpen}>
-              Add Playlist with code
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      )}
-      {!playlistView && (
-        <Icon
-          as={FaPlus}
-          color={'#535353'}
-          boxSize={'24px'}
-          cursor={'not-allowed'}
+      <Menu>
+        <MenuButton
+          border={'none'}
+          as={IconButton}
           _hover={{
-            color: '#ffffff',
+            backgroundColor: 'none',
           }}
+          aria-label="Options"
+          icon={
+            <Icon
+              as={FaPlus}
+              color={'#535353'}
+              boxSize={'24px'}
+              cursor={'pointer'}
+              _hover={{
+                color: '#ffffff',
+              }}
+            />
+          }
+          variant="outline"
         />
-      )}
+        <MenuList>
+          <MenuItem icon={<AddIcon />} onClick={onAddPlaylistOpen}>
+            New Playlist
+          </MenuItem>
+          <MenuItem icon={<ExternalLinkIcon />} onClick={onAddByCodeOpen}>
+            Add Playlist with code
+          </MenuItem>
+        </MenuList>
+      </Menu>
 
       <Modal isOpen={isAddByCodeOpen} onClose={onAddByCodeClose} isCentered>
         <ModalOverlay />
