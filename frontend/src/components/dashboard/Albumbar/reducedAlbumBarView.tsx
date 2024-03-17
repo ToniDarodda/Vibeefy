@@ -32,7 +32,7 @@ export function ReducedAlbumBarView({
         src={
           isAlbumInterface(selectedAlbumOrSong)
             ? selectedAlbumOrSong?.thumbnails
-            : ''
+            : '/vinyl.png'
         }
         boxSize={'60px'}
         borderRadius={'8px'}

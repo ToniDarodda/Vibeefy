@@ -55,8 +55,8 @@ export function AlbumBarView({
           >
             <Text fontSize={{ base: '30px', sm: '40px', md: '60px' }}>
               {isAlbumInterface(selectedAlbumOrSong)
-                ? truncateText(selectedAlbumOrSong?.title, 30)
-                : truncateText(selectedAlbumOrSong?.name ?? '', 30)}
+                ? truncateText(selectedAlbumOrSong?.title, 25)
+                : truncateText(selectedAlbumOrSong?.name ?? '', 25)}
             </Text>
             <Text color={'#ffffff7d'} h={'100%'}>
               {isAlbumInterface(selectedAlbumOrSong)

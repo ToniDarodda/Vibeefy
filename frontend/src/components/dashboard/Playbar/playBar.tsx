@@ -76,7 +76,7 @@ export function Playbar({
 
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-  const { data: albums } = useGetAlbum(currentSong?.albumName ?? '', 1, 0);
+  const { data: albums } = useGetAlbum(currentSong?.albumName ?? 'NA', 1, 0);
 
   const [previousVolume, setPreviousVolume] = useState(sliderValue);
 
@@ -154,7 +154,10 @@ export function Playbar({
                 {truncateText(currentSong?.title ?? '', 19)}
               </Text>
               <Text color={'#ffffff62'} cursor={'pointer'}>
-                {truncateText(currentSong?.albumName?.split('(')[0] ?? '', 20)}
+                {truncateText(
+                  currentSong?.albumName?.split('(')[0] ?? 'NA',
+                  20,
+                )}
               </Text>
             </VStack>
             <Image

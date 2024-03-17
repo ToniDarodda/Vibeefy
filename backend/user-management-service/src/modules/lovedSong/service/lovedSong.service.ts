@@ -47,6 +47,9 @@ export class LovedSongService {
           id: userId,
         },
       },
+      relations: {
+        lovedSongToSong: true,
+      },
     });
   }
 

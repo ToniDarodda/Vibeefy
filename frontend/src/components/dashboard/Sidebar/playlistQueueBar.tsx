@@ -4,7 +4,6 @@ import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
 
-import { useAudioPlayerContext } from '../../../contexts';
 import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
@@ -35,8 +34,6 @@ export function PlaylistBar({
 }: PlaylistBarInterface) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isHoveredLoop, setIsHoveredLoop] = useState(false);
-
-  const { queue } = useAudioPlayerContext();
 
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
@@ -155,7 +152,6 @@ export function PlaylistBar({
                 />
               ) : (
                 <QueueView
-                  queue={queue}
                   setPlaylistView={setPlaylistView}
                   setSelectedAlbumOrSong={setSelectedAlbumOrSong}
                 />

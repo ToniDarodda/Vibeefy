@@ -19,6 +19,7 @@ export function AlbumSearch({
   setPlaylistView,
   setSelectedAlbumOrSong,
 }: AlbumSearchInterface) {
+  console.log(albums.sort((a, b) => +b.year - +a.year));
   return (
     <>
       <Text alignSelf={'flex-start'} fontSize={'20px'} as={'b'}>
@@ -30,37 +31,39 @@ export function AlbumSearch({
         gap={'40px'}
         padding={'0px 0px 12px 0px'}
       >
-        {albums.map((album: AlbumInterface, index: number) => {
-          return (
-            <VStack
-              w={'auto'}
-              key={index}
-              cursor={'pointer'}
-              justifyContent={'space-between'}
-              _hover={{
-                backgroundColor: '#1e1e1e',
-              }}
-              padding={'12px'}
-              borderRadius={'4px'}
-              alignItems={'flex-start'}
-              onClick={() => {
-                setSelectedAlbumOrSong(album);
-                setPlaylistView(true);
-              }}
-            >
-              <Image
-                src={album.thumbnails}
-                boxSize={'200px'}
-                minW={'200px'}
-                objectFit="cover"
-              />
-              <Text overflow={'hidden'} maxW={'200px'}>
-                {truncateText(album.title.split('(')[0], 20)}
-              </Text>
-              <Text color={'#ababab'}>{album.artist.name}</Text>
-            </VStack>
-          );
-        })}
+        {albums
+          .sort((a, b) => +b.year - +a.year)
+          .map((album: AlbumInterface, index: number) => {
+            return (
+              <VStack
+                w={'auto'}
+                key={index}
+                cursor={'pointer'}
+                justifyContent={'space-between'}
+                _hover={{
+                  backgroundColor: '#1e1e1e',
+                }}
+                padding={'12px'}
+                borderRadius={'4px'}
+                alignItems={'flex-start'}
+                onClick={() => {
+                  setSelectedAlbumOrSong(album);
+                  setPlaylistView(true);
+                }}
+              >
+                <Image
+                  src={album.thumbnails}
+                  boxSize={'200px'}
+                  minW={'200px'}
+                  objectFit="cover"
+                />
+                <Text overflow={'hidden'} maxW={'200px'}>
+                  {truncateText(album.title.split('(')[0], 20)}
+                </Text>
+                <Text color={'#ababab'}>{album.artist.name}</Text>
+              </VStack>
+            );
+          })}
       </HStack>
     </>
   );

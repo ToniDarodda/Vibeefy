@@ -24,7 +24,7 @@ import { LovedSongCreate } from '../dto/base.dto';
 export class LovedSongController {
   constructor(private readonly lovedSongService: LovedSongService) {}
 
-  @Post(':songId/user')
+  @Post(':songId')
   @UseInterceptors(ClassSerializerInterceptor)
   async createLovedSong(
     @Body() data: LovedSongCreate,

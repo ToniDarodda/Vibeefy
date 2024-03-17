@@ -25,6 +25,10 @@ interface AudioPlayerContextType {
   queue: (SongInterface & {
     link?: string | undefined;
   })[];
+  playlistQueue: (SongInterface & {
+    link?: string | undefined;
+    playlistName?: string | undefined;
+  })[];
   pause: () => void;
   reStart: () => void;
   togglePlayPause: () => void;
@@ -48,6 +52,7 @@ const defaultValue: AudioPlayerContextType = {
   isPlaying: false,
   isPaused: false,
   queue: [],
+  playlistQueue: [],
   pause: () => {},
   reStart: () => {},
   togglePlayPause: () => {},
