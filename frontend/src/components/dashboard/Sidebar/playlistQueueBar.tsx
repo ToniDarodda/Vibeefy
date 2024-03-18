@@ -1,42 +1,39 @@
-import { useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useState } from 'react';
 import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
 
 import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
 
-import { useAudioPlayerContext } from '../../../contexts';
 import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
 import { IoLibrarySharp } from 'react-icons/io5';
 import { ModalPlaylistCode } from '../Modal/addPlaylistCode';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
 
 interface PlaylistBarInterface {
-  queueView: boolean;
-  isLargardThan1000: boolean;
   playlists: PlaylistType[] | undefined;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement>;
 
-  setIsSearching: (b: boolean) => void;
-  setPlaylistView: (tmp: boolean) => void;
-  setSelectedAlbumOrSong: React.Dispatch<
-    React.SetStateAction<AlbumInterface | PlaylistType | undefined>
+  setSearch: Dispatch<SetStateAction<string>>;
+  isLargardThan1000: boolean;
+  setSelectedAlbumOrSong: Dispatch<
+    SetStateAction<AlbumInterface | PlaylistType | undefined>
   >;
 }
 
 export function PlaylistBar({
   inputRef,
+  setSearch,
   playlists,
-  queueView,
-  setIsSearching,
-  setPlaylistView,
   isLargardThan1000,
   setSelectedAlbumOrSong,
 }: PlaylistBarInterface) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isHoveredLoop, setIsHoveredLoop] = useState(false);
-
-  const { queue } = useAudioPlayerContext();
 
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
@@ -44,6 +41,8 @@ export function PlaylistBar({
     clientX: number;
     clientY: number;
   }>({ clientX: 0, clientY: 0 });
+
+  const { setViewState, queueState } = useViewStateContext();
 
   return (
     <VStack flex={1} h={'100%'} display={isLargardThan1000 ? 'normal' : 'none'}>
@@ -68,8 +67,8 @@ export function PlaylistBar({
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               onClick={() => {
-                setIsSearching(false);
-                setPlaylistView(false);
+                setSearch('');
+                setViewState(ViewStateEnum.ARTISTS);
               }}
             >
               <Icon
@@ -89,8 +88,7 @@ export function PlaylistBar({
               onMouseEnter={() => setIsHoveredLoop(true)}
               onMouseLeave={() => setIsHoveredLoop(false)}
               onClick={() => {
-                setIsSearching(true);
-                setPlaylistView(false);
+                setViewState(ViewStateEnum.SEARCH);
                 inputRef.current?.focus();
               }}
             >
@@ -125,14 +123,13 @@ export function PlaylistBar({
               padding={'20px'}
               borderRadius={'8px'}
               justifyContent={'space-between'}
-              onClick={() => setIsSearching(true)}
             >
               <Icon
-                as={queueView ? MdQueue : IoLibrarySharp}
+                as={queueState ? MdQueue : IoLibrarySharp}
                 boxSize={'28px'}
                 color={'#535353'}
               />
-              <Text fontSize={'16px'}>{queueView ? 'Queue' : 'Playlist'}</Text>
+              <Text fontSize={'16px'}>{queueState ? 'Queue' : 'Playlist'}</Text>
               <ModalPlaylistCode />
             </HStack>
             <VStack
@@ -143,22 +140,17 @@ export function PlaylistBar({
               height={'100%'}
               justifyContent={'space-between'}
             >
-              {!queueView ? (
+              {!queueState ? (
                 <PlaylistBarView
                   mooseCoord={mooseCoord}
                   playlists={playlists ?? []}
                   isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
                   setSelectedAlbumOrSong={setSelectedAlbumOrSong}
-                  setPlaylistView={setPlaylistView}
                   setMouseCoord={setMouseCoord}
                   setModalPlaylistOptionOpen={setModalPlaylistOptionOpen}
                 />
               ) : (
-                <QueueView
-                  queue={queue}
-                  setPlaylistView={setPlaylistView}
-                  setSelectedAlbumOrSong={setSelectedAlbumOrSong}
-                />
+                <QueueView setSelectedAlbumOrSong={setSelectedAlbumOrSong} />
               )}
               <VStack
                 w={'100%'}

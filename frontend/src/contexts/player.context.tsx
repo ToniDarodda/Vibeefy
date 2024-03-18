@@ -4,6 +4,8 @@ import React, {
   useEffect,
   useState,
   ReactNode,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 import { useAudioPlayer } from '../utils/player';
 import { SongInterface } from '../interfaces/artist';
@@ -19,20 +21,26 @@ interface AudioPlayerContextType {
   seek: number;
   isFinish: boolean;
   isPaused: boolean;
+  isListening: boolean;
   currentSong?: SongInterface & { link?: string };
   isPlaying: boolean;
   duration?: number;
   queue: (SongInterface & {
     link?: string | undefined;
   })[];
+  playlistQueue: (SongInterface & {
+    link?: string | undefined;
+    playlistName?: string | undefined;
+  })[];
   pause: () => void;
   reStart: () => void;
   togglePlayPause: () => void;
-  setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPaused: Dispatch<SetStateAction<boolean>>;
   setTime: (time: number) => void;
   setVolume: (volume: number) => void;
   addToQueue: (song: SongInterface) => void;
   setCurrentSong: (song: SongInterface) => void;
+  setIsListening: Dispatch<SetStateAction<boolean>>;
   addPlaylistToQueue: (
     songs: PlaylistSong[] | SongInterface[],
     playlistName: string,
@@ -45,9 +53,12 @@ interface AudioPlayerContextType {
 const defaultValue: AudioPlayerContextType = {
   seek: 0,
   isFinish: true,
+  isListening: false,
   isPlaying: false,
   isPaused: false,
   queue: [],
+  playlistQueue: [],
+  setIsListening: () => {},
   pause: () => {},
   reStart: () => {},
   togglePlayPause: () => {},
@@ -76,6 +87,8 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   const [playlistQueue, setPlaylistQueue] = useState<
     (SongInterface & { link?: string; playlistName?: string })[]
   >([]);
+
+  const [isListening, setIsListening] = useState<boolean>(false);
 
   const s3LinkCache: S3LinkCache = {};
 
@@ -162,6 +175,8 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     addPlaylistToQueue,
     setPlaylistQueue,
     playlistQueue,
+    isListening,
+    setIsListening,
     setCurrentSong: (song: SongInterface) => setCurrentSong(song),
   };
 

@@ -29,29 +29,22 @@ import {
 import { formatTime } from '../../../utils';
 import { useGetAlbum } from '../../../query';
 import { truncateText } from '../../../utils/truncatText';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
 
 interface PlaybarInterface {
-  queueView: boolean;
-  isListening: boolean;
   isLargerThan1000: boolean;
   searchValue: SearchResponse[] | undefined;
 
   setSelectedAlbumOrSong: Dispatch<
     SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
   >;
-  setPlaylistView: Dispatch<SetStateAction<boolean>>;
-  togglePlayPause: () => void;
-  setQueueView: (tmp: boolean) => void;
-  setIsSearching: (tmp: boolean) => void;
 }
 
 export function Playbar({
-  queueView,
   searchValue,
-  isListening,
-  setQueueView,
-  setIsSearching,
-  setPlaylistView,
   isLargerThan1000,
   setSelectedAlbumOrSong,
 }: PlaybarInterface) {
@@ -68,6 +61,7 @@ export function Playbar({
     isPaused,
     setIsPaused,
     isFinish,
+    isListening,
   } = useAudioPlayerContext();
 
   const [sliderValue, setSliderValue] = useState<number>(30);
@@ -76,9 +70,11 @@ export function Playbar({
 
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-  const { data: albums } = useGetAlbum(currentSong?.albumName ?? '', 1, 0);
+  const { data: albums } = useGetAlbum(currentSong?.albumName ?? 'NA', 1, 0);
 
   const [previousVolume, setPreviousVolume] = useState(sliderValue);
+
+  const { setViewState, queueState, setQueueState } = useViewStateContext();
 
   const handleVolumeIconClick = () => {
     if (sliderValue !== 0) {
@@ -147,14 +143,17 @@ export function Playbar({
               alignItems={'flex-start'}
               onClick={() => {
                 if (albums) setSelectedAlbumOrSong(albums[0]);
-                setPlaylistView(true);
+                setViewState(ViewStateEnum.ALBUM);
               }}
             >
               <Text cursor={'pointer'}>
                 {truncateText(currentSong?.title ?? '', 19)}
               </Text>
               <Text color={'#ffffff62'} cursor={'pointer'}>
-                {truncateText(currentSong?.albumName?.split('(')[0] ?? '', 20)}
+                {truncateText(
+                  currentSong?.albumName?.split('(')[0] ?? 'NA',
+                  20,
+                )}
               </Text>
             </VStack>
             <Image
@@ -247,12 +246,12 @@ export function Playbar({
                   boxSize={'30px'}
                   cursor={'pointer'}
                   color={'#8d8d8d'}
-                  as={!queueView ? MdOutlineQueueMusic : MdOutlinePlaylistPlay}
+                  as={!queueState ? MdOutlineQueueMusic : MdOutlinePlaylistPlay}
                   _hover={{
                     color: '#ffffff',
                   }}
                   onClick={() => {
-                    setQueueView(!queueView);
+                    setQueueState(!queueState);
                   }}
                 />
                 <Image
@@ -284,7 +283,6 @@ export function Playbar({
       )}
       <PlaybarMobile
         isPaused={isPaused}
-        setIsSearching={setIsSearching}
         setIsPaused={setIsPaused}
         listeningSong={currentSong?.title ?? ''}
         playNext={playNext}
