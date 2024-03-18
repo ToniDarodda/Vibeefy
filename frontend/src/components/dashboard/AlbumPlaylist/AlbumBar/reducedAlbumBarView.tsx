@@ -1,18 +1,22 @@
 import { HStack, Tooltip, Image, Text } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
+import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../../contexts/viewState.context';
 
 interface ReducedAlbumBarViewInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
-  setPlaylistView: (tmp: boolean) => void;
   isAlbumInterface: (object: any) => object is AlbumInterface;
 }
 
 export function ReducedAlbumBarView({
   isAlbumInterface,
   selectedAlbumOrSong,
-  setPlaylistView,
 }: ReducedAlbumBarViewInterface) {
+  const { setViewState } = useViewStateContext();
+
   return (
     <HStack gap={'20px'} justifyContent={'center'} alignItems={'center'}>
       <Tooltip label="Go back">
@@ -20,13 +24,13 @@ export function ReducedAlbumBarView({
           src="/next2.png"
           transform="rotate(180deg)"
           boxSize={'20px'}
-          onClick={() => setPlaylistView(false)}
+          onClick={() => setViewState(ViewStateEnum.SEARCH)}
         />
       </Tooltip>
       <Image
         src="/next2.png"
         boxSize={'20px'}
-        onClick={() => setPlaylistView(false)}
+        onClick={() => setViewState(ViewStateEnum.ALBUM)}
       />
       <Image
         src={

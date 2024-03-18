@@ -2,6 +2,10 @@ import { HStack, VStack, Text, Image } from '@chakra-ui/react';
 
 import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
 
 interface AlbumSearchInterface {
   albums: AlbumInterface[];
@@ -11,15 +15,14 @@ interface AlbumSearchInterface {
       AlbumInterface | BasePlaylistInterface | undefined
     >,
   ) => void;
-  setPlaylistView: (b: boolean) => void;
 }
 
 export function AlbumSearch({
   albums,
-  setPlaylistView,
   setSelectedAlbumOrSong,
 }: AlbumSearchInterface) {
-  console.log(albums.sort((a, b) => +b.year - +a.year));
+  const { setViewState } = useViewStateContext();
+
   return (
     <>
       <Text alignSelf={'flex-start'} fontSize={'20px'} as={'b'}>
@@ -48,7 +51,7 @@ export function AlbumSearch({
                 alignItems={'flex-start'}
                 onClick={() => {
                   setSelectedAlbumOrSong(album);
-                  setPlaylistView(true);
+                  setViewState(ViewStateEnum.ALBUM);
                 }}
               >
                 <Image

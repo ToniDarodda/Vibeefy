@@ -1,20 +1,24 @@
 import { VStack, HStack, Tooltip, Text, Image } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
-import { truncateText } from '../../../utils/truncatText';
+import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
+import { truncateText } from '../../../../utils/truncatText';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../../contexts/viewState.context';
 
 interface AlbumBarViewInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
 
-  setPlaylistView: (tmp: boolean) => void;
   isAlbumInterface: (object: any) => object is AlbumInterface;
 }
 
 export function AlbumBarView({
   isAlbumInterface,
   selectedAlbumOrSong,
-  setPlaylistView,
 }: AlbumBarViewInterface) {
+  const { setViewState } = useViewStateContext();
+
   return (
     <VStack
       h={'100%'}
@@ -28,13 +32,13 @@ export function AlbumBarView({
             src="/next2.png"
             transform="rotate(180deg)"
             boxSize={'20px'}
-            onClick={() => setPlaylistView(false)}
+            onClick={() => setViewState(ViewStateEnum.ARTISTS)}
           />
         </Tooltip>
         <Image
           src="/next2.png"
           boxSize={'20px'}
-          onClick={() => setPlaylistView(false)}
+          onClick={() => setViewState(ViewStateEnum.ARTISTS)}
         />
       </HStack>
       <VStack flex={1}>

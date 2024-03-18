@@ -1,24 +1,21 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { HStack, Text, Image, VStack, Icon } from '@chakra-ui/react';
+import { HiDotsHorizontal } from 'react-icons/hi';
 
 import { SongInterface, AlbumInterface } from '../../../interfaces';
 import { formatTime } from '../../../utils';
 import { useAudioPlayerContext } from '../../../contexts';
-import { HiDotsHorizontal } from 'react-icons/hi';
 
 interface AlbumViewInterface {
-  setHoveredIndex: React.Dispatch<React.SetStateAction<number>>;
-  setIsListening: (b: boolean) => void;
-  setCurrentSong: (song: SongInterface) => void;
-  setMouseCoord: React.Dispatch<
-    React.SetStateAction<{ clientX: number; clientY: number }>
-  >;
-  setClickedSong: React.Dispatch<
-    React.SetStateAction<SongInterface | undefined>
-  >;
-  setIsModalAddPlaylistQueueOpen: React.Dispatch<React.SetStateAction<boolean>>;
   hoveredIndex: number;
   selectedAlbumOrSong: AlbumInterface;
+  setHoveredIndex: Dispatch<SetStateAction<number>>;
+  setIsModalAddPlaylistQueueOpen: Dispatch<SetStateAction<boolean>>;
+  setClickedSong: Dispatch<SetStateAction<SongInterface | undefined>>;
+  setMouseCoord: Dispatch<SetStateAction<{ clientX: number; clientY: number }>>;
+
+  setIsListening: (b: boolean) => void;
+  setCurrentSong: (song: SongInterface) => void;
 }
 
 export const AlbumView: React.FC<AlbumViewInterface> = ({
@@ -40,6 +37,7 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
         .map((song, songIndex) => (
           <HStack
             w={'100%'}
+            key={songIndex}
             borderRadius={'4px'}
             _hover={{
               backgroundColor: '#ffffff1d',
@@ -48,7 +46,6 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
             onMouseLeave={() => setHoveredIndex(-1)}
           >
             <HStack
-              key={songIndex}
               padding={'12px'}
               w={'95%'}
               justifyContent={'space-between'}

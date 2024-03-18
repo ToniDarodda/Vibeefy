@@ -9,7 +9,6 @@ interface PlayBarMobileInterface {
   playNext: () => void;
   togglePlayPause: () => void;
   setIsPaused: (b: boolean) => void;
-  setIsSearching: (b: boolean) => void;
 }
 
 export function PlaybarMobile({
@@ -17,7 +16,6 @@ export function PlaybarMobile({
   thumbnail,
   setIsPaused,
   listeningSong,
-  setIsSearching,
   togglePlayPause,
   isLargerThan1000,
   playNext,
@@ -76,16 +74,8 @@ export function PlaybarMobile({
             padding={'40px'}
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
           >
-            <Image
-              src="/home.png"
-              boxSize={'30px'}
-              onClick={() => setIsSearching(false)}
-            />
-            <Image
-              src="/loop.png"
-              boxSize={'30px'}
-              onClick={() => setIsSearching(true)}
-            />
+            <Image src="/home.png" boxSize={'30px'} />
+            <Image src="/loop.png" boxSize={'30px'} />
             <Image src="/pl.png" boxSize={'30px'} />
           </HStack>
         </>

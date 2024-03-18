@@ -9,6 +9,10 @@ import {
 } from '../../../interfaces';
 import { ModalPlaylistOption } from '../Modal/playlistOption';
 import { useAudioPlayerContext } from '../../../contexts';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -18,7 +22,6 @@ interface PlaylistBarViewInterface {
   playlists: BasePlaylistInterface[];
   isModalPlaylistOptionOpen: boolean;
 
-  setPlaylistView: (tmp: boolean) => void;
   setSelectedAlbumOrSong: (
     value: React.SetStateAction<
       BasePlaylistInterface | AlbumInterface | undefined
@@ -37,7 +40,6 @@ export function PlaylistBarView({
   playlists,
   mooseCoord,
   setMouseCoord,
-  setPlaylistView,
   setSelectedAlbumOrSong,
   isModalPlaylistOptionOpen,
   setModalPlaylistOptionOpen,
@@ -46,6 +48,8 @@ export function PlaylistBarView({
     useState<BasePlaylistInterface | null>(null);
 
   const { isPlaying } = useAudioPlayerContext();
+
+  const { setViewState } = useViewStateContext();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -100,7 +104,8 @@ export function PlaylistBarView({
             }}
             onClick={() => {
               setSelectedAlbumOrSong(playlist);
-              if (!isModalPlaylistOptionOpen) setPlaylistView(true);
+              if (!isModalPlaylistOptionOpen)
+                setViewState(ViewStateEnum.PLAYLIST);
             }}
           >
             <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'54px'} />

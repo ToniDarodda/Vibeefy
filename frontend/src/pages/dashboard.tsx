@@ -7,16 +7,11 @@ import { Playbar } from '../components/Dashboard/Playbar/playBar';
 import { PlaylistBar } from '../components/Dashboard/Sidebar/playlistQueueBar';
 import { AlbumInterface } from '../interfaces/artist';
 import { PlaylistType } from '../interfaces/playlist';
-import { SelectionPanelView } from '../components/Dashboard/selectionPanelView';
+import { SelectionPanelView } from '../components/Dashboard/AlbumPlaylist/selectionPanelView';
 import { useGetPlaylist } from '../query/playlist';
-import { useAudioPlayerContext } from '../contexts/playerContext';
 import { useGetSearch } from '../query';
 
 export function Dashboard() {
-  const [isSearching, setIsSearching] = useState<boolean>(true);
-  const [isListening, setIsListening] = useState<boolean>(false);
-  const [playlistView, setPlaylistView] = useState<boolean>(false);
-  const [queueView, setQueueView] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,15 +38,9 @@ export function Dashboard() {
   //   download: false,
   // }) as { data: DownloadSongResponse | undefined };
 
-  const { togglePlayPause } = useAudioPlayerContext();
-
   return (
-    <VStack
-      h={'100vh'}
-      backgroundColor={'#000000'}
-      onContextMenu={(e) => e.stopPropagation()}
-    >
-      <VStack w={'100%'} h={'100%'} padding={'8px'}>
+    <VStack h={'100vh'} backgroundColor={'#000000'}>
+      <VStack padding={'8px'} w={'100%'} h={'100%'}>
         <VStack
           flex={1}
           w={'100%'}
@@ -67,44 +56,29 @@ export function Dashboard() {
             borderRadius={'8px'}
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
           >
-            {playlistView ? (
-              <SelectionPanelView
-                playlists={playlists}
-                details={selectedSearchValue}
-                setIsListening={setIsListening}
-                setPlaylistView={setPlaylistView}
-                selectedAlbumOrSong={selectedAlbumOrSong as AlbumInterface}
-              />
-            ) : (
-              <SearchView
-                inputRef={inputRef}
-                isSearching={isSearching}
-                setSearch={setSearch}
-                search={search}
-                searchValue={searchValue}
-                setPlaylistView={setPlaylistView}
-                setSelectedAlbumOrSong={setSelectedAlbumOrSong}
-              />
-            )}
+            <SelectionPanelView
+              playlists={playlists}
+              details={selectedSearchValue}
+              selectedAlbumOrSong={selectedAlbumOrSong as AlbumInterface}
+            />
+            <SearchView
+              inputRef={inputRef}
+              setSearch={setSearch}
+              search={search}
+              searchValue={searchValue}
+              setSelectedAlbumOrSong={setSelectedAlbumOrSong}
+            />
           </VStack>
           <PlaylistBar
             inputRef={inputRef}
+            setSearch={setSearch}
             playlists={playlists}
-            queueView={queueView}
-            setIsSearching={setIsSearching}
-            setPlaylistView={setPlaylistView}
             isLargardThan1000={isLargardThan1000}
             setSelectedAlbumOrSong={setSelectedAlbumOrSong}
           />
         </VStack>
         <Playbar
-          queueView={queueView}
-          setQueueView={setQueueView}
-          isListening={isListening}
           searchValue={searchValue}
-          setIsSearching={setIsSearching}
-          togglePlayPause={togglePlayPause}
-          setPlaylistView={setPlaylistView}
           isLargerThan1000={isLargardThan1000}
           setSelectedAlbumOrSong={setSelectedAlbumOrSong}
         />

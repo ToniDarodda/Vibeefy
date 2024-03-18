@@ -1,1 +1,1 @@
-export * from './playerContext';
+export * from './player.context';

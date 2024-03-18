@@ -9,21 +9,24 @@ import { truncateText } from '../../../utils/truncatText';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useGetAlbum } from '../../../query';
 import { useAudioPlayerContext } from '../../../contexts';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
 
 interface QueueViewInterface {
   setSelectedAlbumOrSong: Dispatch<
     SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
   >;
-  setPlaylistView: (tmp: boolean) => void;
 }
 
-export function QueueView({
-  setPlaylistView,
-  setSelectedAlbumOrSong,
-}: QueueViewInterface) {
+export function QueueView({ setSelectedAlbumOrSong }: QueueViewInterface) {
   const { queue, playlistQueue } = useAudioPlayerContext();
 
+  const { setViewState } = useViewStateContext();
+
   const [clickedAlbum, setClickedAlbum] = useState<SongInterface | null>(null);
+
   const { data: albums } = useGetAlbum(clickedAlbum?.albumName ?? '', 1, 0);
 
   const getAlbumName = (albumName: string | undefined) => {
@@ -47,7 +50,7 @@ export function QueueView({
             padding={'10px'}
             onClick={() => {
               setClickedAlbum(q);
-              setPlaylistView(true);
+              setViewState(ViewStateEnum.PLAYLIST);
             }}
           >
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
@@ -73,7 +76,6 @@ export function QueueView({
         </Text>
       )}
       {playlistQueue.map((q, index) => {
-        console.log(playlistQueue, q);
         return (
           <HStack
             key={index}
@@ -82,7 +84,7 @@ export function QueueView({
             padding={'10px'}
             onClick={() => {
               setClickedAlbum(q);
-              setPlaylistView(true);
+              setViewState(ViewStateEnum.SEARCH);
             }}
           >
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
