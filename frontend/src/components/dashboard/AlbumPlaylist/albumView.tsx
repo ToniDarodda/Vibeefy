@@ -51,10 +51,6 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
               justifyContent={'space-between'}
               onClick={() => {
                 setIsListening(true);
-                setCurrentSong({
-                  ...song,
-                  albumName: selectedAlbumOrSong.title,
-                });
 
                 const filteredSongs = selectedAlbumOrSong.songs
                   .slice(songIndex + 1)
@@ -62,6 +58,10 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                     return { ...e, playlistName: selectedAlbumOrSong.title };
                   });
                 addPlaylistToQueue(filteredSongs, selectedAlbumOrSong.title);
+                setCurrentSong({
+                  ...song,
+                  albumName: selectedAlbumOrSong.title,
+                });
               }}
               onContextMenu={(e) => {
                 e.preventDefault();

@@ -134,13 +134,16 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   };
 
   const playNext = () => {
+    console.log('queue', queue, 'playlistQueue', playlistQueue);
     if (queue.length > 0) {
       const [nextSong, ...remainingQueue] = queue;
 
+      console.log(nextSong, 'queue');
       setCurrentSong(nextSong);
       setQueue(remainingQueue);
     } else if (playlistQueue.length > 0) {
       const [nextSong, ...remainingPlaylistQueue] = playlistQueue;
+      console.log(nextSong, 'playlist');
 
       setCurrentSong(nextSong);
       setPlaylistQueue(remainingPlaylistQueue);
@@ -165,6 +168,10 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     };
     getLink();
   }, [currentSong]);
+
+  useEffect(() => {
+    console.log(playlistQueue);
+  }, [playlistQueue]);
 
   const value = {
     ...playerControls,

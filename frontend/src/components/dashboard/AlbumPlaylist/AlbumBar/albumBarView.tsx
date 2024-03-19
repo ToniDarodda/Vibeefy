@@ -32,7 +32,7 @@ export function AlbumBarView({
             src="/next2.png"
             transform="rotate(180deg)"
             boxSize={'20px'}
-            onClick={() => setViewState(ViewStateEnum.ARTISTS)}
+            onClick={() => setViewState(ViewStateEnum.SEARCH)}
           />
         </Tooltip>
         <Image

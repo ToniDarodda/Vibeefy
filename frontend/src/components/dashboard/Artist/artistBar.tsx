@@ -45,6 +45,9 @@ export function ArtistBar({ artist, reducedView }: ArtistBarInterface) {
               as={MdKeyboardArrowLeft}
               color={'#ffffff'}
               boxSize={'34px'}
+              _hover={{
+                backgroundColor: '#cecece2022',
+              }}
               onClick={() => setViewState(ViewStateEnum.SEARCH)}
             />
             <Icon
@@ -65,12 +68,19 @@ export function ArtistBar({ artist, reducedView }: ArtistBarInterface) {
                 as={MdKeyboardArrowLeft}
                 color={'#ffffff'}
                 boxSize={'34px'}
+                backgroundColor={'#191919'}
+                _hover={{
+                  backgroundColor: '#cecece22',
+                }}
+                cursor={'pointer'}
+                borderRadius={'20px'}
                 onClick={() => setViewState(ViewStateEnum.SEARCH)}
               />
               <Icon
                 as={MdKeyboardArrowRight}
                 color={'#6b6b6b'}
                 boxSize={'34px'}
+                borderRadius={'20px'}
               />
             </HStack>
             <VStack
