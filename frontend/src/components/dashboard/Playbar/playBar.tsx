@@ -147,7 +147,7 @@ export function Playbar({
               }}
             >
               <Text cursor={'pointer'}>
-                {truncateText(currentSong?.title ?? '', 19)}
+                {truncateText(currentSong?.title ?? '', 18)}
               </Text>
               <Text color={'#ffffff62'} cursor={'pointer'}>
                 {truncateText(

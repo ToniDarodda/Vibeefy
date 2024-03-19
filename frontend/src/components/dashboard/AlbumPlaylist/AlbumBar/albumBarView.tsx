@@ -38,7 +38,9 @@ export function AlbumBarView({
         <Image
           src="/next2.png"
           boxSize={'20px'}
-          onClick={() => setViewState(ViewStateEnum.ARTISTS)}
+          onClick={() => {
+            setViewState(ViewStateEnum.SELECTEDARTIST);
+          }}
         />
       </HStack>
       <VStack flex={1}>
@@ -62,7 +64,17 @@ export function AlbumBarView({
                 ? truncateText(selectedAlbumOrSong?.title, 25)
                 : truncateText(selectedAlbumOrSong?.name ?? '', 25)}
             </Text>
-            <Text color={'#ffffff7d'} h={'100%'}>
+            <Text
+              color={'#ffffff7d'}
+              h={'100%'}
+              cursor={'pointer'}
+              _hover={{
+                color: '#ffffff',
+              }}
+              onClick={() => {
+                setViewState(ViewStateEnum.SELECTEDARTIST);
+              }}
+            >
               {isAlbumInterface(selectedAlbumOrSong)
                 ? selectedAlbumOrSong?.artist.name
                 : ''}

@@ -16,6 +16,11 @@ export class ArtistService {
       where: {
         ...artistId,
       },
+      relations: {
+        albums: {
+          songs: true,
+        },
+      },
     });
   }
 

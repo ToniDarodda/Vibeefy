@@ -27,3 +27,23 @@ interface ArtistInterface {
   profilePicture: string;
   artistYoutubeId: string;
 }
+
+export interface AlbumInfo {
+  id: string;
+  title: string;
+  thumbnails: string;
+  year: string;
+  description?: string;
+  albumId: string;
+  songs: SongInterface[];
+}
+
+export interface ArtistInfo {
+  id: string;
+  name: string;
+  thumbnails: string | null;
+  description: string | null;
+  profilePicture: string;
+  artistYoutubeId: string;
+  albums: AlbumInfo[];
+}

@@ -1,4 +1,8 @@
-import { Controller } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  UseInterceptors,
+} from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { ArtistService } from '../service/artist.service';
 import { Artist } from 'src/entities/artist/entity';
@@ -9,6 +13,7 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @MessagePattern({ cmd: 'get_artist_by_id' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getArtistById(data: ArtistGetById): Promise<Artist> {
     return await this.artistService.getArtistById(data);
   }

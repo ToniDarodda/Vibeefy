@@ -1,4 +1,11 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ArtistManagerService } from '../service/artist-manager.service';
 
 @Controller()
@@ -6,6 +13,7 @@ export class ArtistManagerController {
   constructor(private readonly userService: ArtistManagerService) {}
 
   @Get('artist-info/:artistId')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getArtistInfo(@Param('artistId') artistId: string) {
     return this.userService.getArtistInfo(artistId);
   }

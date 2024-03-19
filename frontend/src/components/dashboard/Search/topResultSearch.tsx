@@ -1,13 +1,24 @@
 import { VStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface } from '../../../interfaces';
 import { MakePictureLarger } from '../../../utils/formatPicture';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
+import { Dispatch, SetStateAction } from 'react';
 
 interface TopResultSearchInterface {
   albums: AlbumInterface[];
+  setSelectedArtist: Dispatch<SetStateAction<string>>;
 }
 
-export function TopResultSearch({ albums }: TopResultSearchInterface) {
-  const artistName = albums?.[0]?.artist?.name ?? '';
+export function TopResultSearch({
+  albums,
+  setSelectedArtist,
+}: TopResultSearchInterface) {
+  const artist = albums?.[0]?.artist ?? '';
+
+  const { setViewState } = useViewStateContext();
 
   return (
     <VStack flex={1} justifyContent={'flex-start'} alignItems={'flex-start'}>
@@ -21,9 +32,13 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
         alignItems={'flex-start'}
         padding={'24px'}
         borderRadius={'8px'}
-        cursor={'not-allowed'}
+        cursor={'pointer'}
         _hover={{
           backgroundColor: '#2d2d2d',
+        }}
+        onClick={() => {
+          setViewState(ViewStateEnum.SELECTEDARTIST);
+          setSelectedArtist(artist.id);
         }}
       >
         <Image
@@ -32,7 +47,7 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
           borderRadius={'100px'}
         />
         <Text fontSize={'24px'} as={'b'}>
-          {artistName}
+          {artist.name}
         </Text>
         <Text color={'#adadad'}>Artist</Text>
       </VStack>
