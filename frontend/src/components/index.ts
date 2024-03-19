@@ -1,10 +1,10 @@
-export * from './Shared/Input/passwordInput';
+export * from './shared/Input/passwordInput';
 
-export * from './Card/loginCard';
+export * from './card/loginCard';
 
-export * from './Shared/Navbar/navbar';
+export * from './shared/navbar/navbar';
 
-export * from './Register/Card/registerCard';
+export * from './register/card/registerCard';
 
-export * from './Dashboard/Playbar/playBar';
-export * from './Dashboard/searchBar';
+export * from './dashboard/playbar/playBar';
+export * from './dashboard/searchBar';

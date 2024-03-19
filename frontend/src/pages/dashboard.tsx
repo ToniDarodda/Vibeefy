@@ -2,15 +2,15 @@ import { useRef, useState } from 'react';
 import { VStack, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchResponse } from '../interfaces/search';
-import { SearchView } from '../components/Dashboard/Search/view';
-import { Playbar } from '../components/Dashboard/Playbar/playBar';
-import { PlaylistBar } from '../components/Dashboard/Sidebar/playlistQueueBar';
+import { SearchView } from '../components/dashboard/search/view';
+import { Playbar } from '../components/dashboard/playbar/playBar';
+import { PlaylistBar } from '../components/dashboard/sidebar/playlistQueueBar';
 import { AlbumInterface } from '../interfaces/artist';
 import { PlaylistType } from '../interfaces/playlist';
-import { SelectionPanelView } from '../components/Dashboard/AlbumPlaylist/selectionPanelView';
+import { SelectionPanelView } from '../components/dashboard/albumPlaylist/selectionPanelView';
 import { useGetPlaylist } from '../query/playlist';
 import { useGetSearch } from '../query';
-import { ArtistView } from '../components/Dashboard/Artist/artistView';
+import { ArtistView } from '../components/dashboard/artist/artistView';
 
 export function Dashboard() {
   const [search, setSearch] = useState<string>('');
