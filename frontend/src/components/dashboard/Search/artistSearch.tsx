@@ -1,12 +1,23 @@
 import { HStack, VStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface } from '../../../interfaces';
 import { MakePictureLarger } from '../../../utils/formatPicture';
+import {
+  ViewStateEnum,
+  useViewStateContext,
+} from '../../../contexts/viewState.context';
+import { Dispatch, SetStateAction } from 'react';
 
 interface ArtistSearchInterface {
   albums: AlbumInterface[];
+
+  setSelectedArtist: Dispatch<SetStateAction<string>>;
 }
 
-export function ArtistSearch({ albums }: ArtistSearchInterface) {
+export function ArtistSearch({
+  albums,
+  setSelectedArtist,
+}: ArtistSearchInterface) {
+  const { setViewState } = useViewStateContext();
   return (
     <>
       <Text alignSelf={'flex-start'} fontSize={'20px'} as={'b'}>
@@ -24,11 +35,15 @@ export function ArtistSearch({ albums }: ArtistSearchInterface) {
               <VStack
                 w={'auto'}
                 key={index}
-                cursor={'not-allowed'}
+                cursor={'pointer'}
                 padding={'12px'}
                 borderRadius={'4px'}
                 _hover={{
                   backgroundColor: '#1e1e1e',
+                }}
+                onClick={() => {
+                  setViewState(ViewStateEnum.SELECTEDARTIST);
+                  setSelectedArtist(filteredAlbum.artist.id);
                 }}
               >
                 <Image

@@ -66,23 +66,30 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
       setLastInput('');
     };
 
-    useEffect(() => {
-      const timeoutId = setTimeout(() => {
-        setSearch(inputValue);
-      }, 200);
-
-      if (search.length > 0) setViewState(ViewStateEnum.SEARCH);
-
-      return () => clearTimeout(timeoutId);
-    }, [inputValue, setSearch]);
-
-    useEffect(() => {
-      if (search === '') setInputValue('');
-    }, [viewState]);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value);
     };
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        setSearch(inputValue);
+        if (inputValue.length > 0 && viewState !== ViewStateEnum.SEARCH) {
+          setViewState(ViewStateEnum.SEARCH);
+        }
+      }, 200);
+
+      return () => clearTimeout(timeoutId);
+    }, [inputValue, setSearch, viewState, setViewState]);
+
+    useEffect(() => {
+      if (search === '') {
+        setInputValue('');
+      }
+    }, [viewState]);
+
+    useEffect(() => {
+      if (search === '') setViewState(ViewStateEnum.ARTISTS);
+    }, [search]);
 
     return (
       <VStack

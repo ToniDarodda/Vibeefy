@@ -14,15 +14,19 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   const [seek, setSeek] = useState<number>(0);
   const [duration, setDuration] = useState<number | undefined>(0);
 
+  const onSongEndRef = useRef(onSongEnd);
+
   useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.unload();
-    }
+    onSongEndRef.current = onSongEnd;
+  }, [onSongEnd]);
+
+  useEffect(() => {
     if (url === undefined) return;
+
     const howlPlayer = new Howl({
       src: [url],
       format: ['wav'],
-      autoplay: false,
+      autoplay: true,
       loop: false,
       html5: true,
       preload: true,
@@ -42,14 +46,26 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
       onend: () => {
         setIsFinish(true);
         setIsPlaying(false);
-        onSongEnd();
+        console.log('end');
+        onSongEndRef.current();
       },
     });
 
     playerRef.current = howlPlayer;
 
     playerRef.current.play();
+    return () => {
+      howlPlayer.unload();
+    };
   }, [url]);
+
+  // useEffect(() => {
+  //   if (isPlaying) {
+  //     playerRef.current?.play();
+  //   } else {
+  //     playerRef.current?.pause();
+  //   }
+  // }, [isPlaying]);
 
   const pause = useCallback(() => {
     playerRef.current?.pause();

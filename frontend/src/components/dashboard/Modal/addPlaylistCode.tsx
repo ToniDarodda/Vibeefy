@@ -22,10 +22,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa6';
-import { useCreatePlaylist, usePlaylistCode } from '../../../query';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
 import { AxiosError } from 'axios';
+
+import { useCreatePlaylist, usePlaylistCode } from '../../../query';
 
 type Inputs = {
   name: string;

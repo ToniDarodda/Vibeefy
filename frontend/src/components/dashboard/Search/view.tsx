@@ -22,7 +22,6 @@ import { ArtistSearch } from './artistSearch';
 import { AlbumSearch } from './albumSearch';
 import { useGetAlbum } from '../../../query';
 import { MakePictureLarger } from '../../../utils/formatPicture';
-import { useNavigate } from 'react-router-dom';
 import {
   ViewStateEnum,
   useViewStateContext,
@@ -37,6 +36,7 @@ interface SearchViewInterface {
   inputRef: RefObject<HTMLInputElement>;
 
   setSearch: Dispatch<SetStateAction<string>>;
+  setSelectedArtist: Dispatch<SetStateAction<string>>;
 }
 
 export function SearchView({
@@ -44,18 +44,22 @@ export function SearchView({
   inputRef,
   setSearch,
   searchValue,
+  setSelectedArtist,
   setSelectedAlbumOrSong,
 }: SearchViewInterface) {
-  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [loadedArtistsCount, setLoadedArtistsCount] = useState<number>(20);
 
-  const { viewState } = useViewStateContext();
+  const { viewState, setViewState } = useViewStateContext();
 
   const { data: albums } = useGetAlbum(search, loadedArtistsCount, 0);
 
   return (
-    <VStack h={'100%'} w={'100%'}>
+    <VStack
+      h={'100%'}
+      w={'100%'}
+      display={viewState === ViewStateEnum.SELECTEDARTIST ? 'none' : 'flex'}
+    >
       {(viewState === ViewStateEnum.ARTISTS ||
         viewState === ViewStateEnum.SEARCH) && (
         <SearchBar setSearch={setSearch} search={search} inputRef={inputRef} />
@@ -72,10 +76,16 @@ export function SearchView({
           {search && albums && albums?.length !== 0 && (
             <VStack w={'100%'} gap={'20px'}>
               <HStack w={'100%'}>
-                <TopResultSearch albums={albums} />
+                <TopResultSearch
+                  albums={albums}
+                  setSelectedArtist={setSelectedArtist}
+                />
                 <SongSearch albums={albums} />
               </HStack>
-              <ArtistSearch albums={albums} />
+              <ArtistSearch
+                albums={albums}
+                setSelectedArtist={setSelectedArtist}
+              />
               <AlbumSearch
                 albums={albums}
                 setSelectedAlbumOrSong={setSelectedAlbumOrSong}
@@ -84,7 +94,7 @@ export function SearchView({
           )}
         </HStack>
       )}
-      {(search === '' || viewState === ViewStateEnum.ARTISTS) && (
+      {viewState === ViewStateEnum.ARTISTS && (
         <VStack w={'100%'} h={'100%'} ref={containerRef} gap={'20px'}>
           <HStack
             w={'100%'}
@@ -105,17 +115,16 @@ export function SearchView({
                     key={index}
                     w={'auto'}
                     h={'auto'}
-                    cursor={'not-allowed'}
+                    cursor={'pointer'}
                     _hover={{
                       backgroundColor: '#191919',
                     }}
                     borderRadius={'8px'}
                     padding={'12px'}
-                    onClick={() =>
-                      navigate('/artist', {
-                        state: { key: album.artist.id },
-                      })
-                    }
+                    onClick={() => {
+                      setSelectedArtist(album.artist.id);
+                      setViewState(ViewStateEnum.SELECTEDARTIST);
+                    }}
                   >
                     <Image
                       src={MakePictureLarger(album)}

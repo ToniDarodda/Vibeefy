@@ -10,9 +10,11 @@ import { PlaylistType } from '../interfaces/playlist';
 import { SelectionPanelView } from '../components/Dashboard/AlbumPlaylist/selectionPanelView';
 import { useGetPlaylist } from '../query/playlist';
 import { useGetSearch } from '../query';
+import { ArtistView } from '../components/Dashboard/Artist/artistView';
 
 export function Dashboard() {
   const [search, setSearch] = useState<string>('');
+  const [selectedArtist, setSelectedArtist] = useState<string>('');
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -62,10 +64,15 @@ export function Dashboard() {
               selectedAlbumOrSong={selectedAlbumOrSong as AlbumInterface}
             />
             <SearchView
+              search={search}
               inputRef={inputRef}
               setSearch={setSearch}
-              search={search}
               searchValue={searchValue}
+              setSelectedArtist={setSelectedArtist}
+              setSelectedAlbumOrSong={setSelectedAlbumOrSong}
+            />
+            <ArtistView
+              selectedArtist={selectedArtist}
               setSelectedAlbumOrSong={setSelectedAlbumOrSong}
             />
           </VStack>

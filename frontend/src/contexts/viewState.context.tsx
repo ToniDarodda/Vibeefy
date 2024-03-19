@@ -4,6 +4,7 @@ import React, {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -24,6 +25,7 @@ export enum ViewStateEnum {
   SEARCH,
   ALBUM,
   PLAYLIST,
+  SELECTEDARTIST,
   YOUTUBE,
 }
 
@@ -48,6 +50,10 @@ export const ViewStateProvider: React.FC<ViewStateProviderProps> = ({
   );
 
   const [queueState, setQueueState] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(viewState);
+  }, [viewState]);
 
   return (
     <ViewStateContext.Provider
