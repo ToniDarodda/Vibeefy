@@ -14,6 +14,7 @@ import {
   useViewStateContext,
 } from '../../../contexts/viewState.context';
 import { useGetLovedSong } from '../../../query/lovedSong';
+import { useGetAlbumBySongId } from '../../../query';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -56,12 +57,11 @@ export function PlaylistBarView({
 
   const { data: lovedSong } = useGetLovedSong();
 
-  const getThumbnailsFromFirstSong = (playlist: BasePlaylistInterface) => {
-    if (playlist && playlist.playlistSongs.length > 0) {
-      return playlist.playlistSongs[0].thumbnails ?? 'vinyl.png';
-    }
-    return 'vinyl.png';
-  };
+  const firstSongIds = playlists
+    .map((playlist) => playlist.playlistSongs[0]?.songId)
+    .filter(Boolean);
+
+  const albumInfoQueries = useGetAlbumBySongId(firstSongIds);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -109,6 +109,8 @@ export function PlaylistBarView({
         </HStack>
       )}
       {playlists?.map((playlist: PlaylistType, idx: number) => {
+        const album = albumInfoQueries[idx]?.data;
+        const thumbnailSrc = album?.thumbnails ?? 'vinyl.png';
         return (
           <HStack
             key={idx}
@@ -137,10 +139,7 @@ export function PlaylistBarView({
                 setViewState(ViewStateEnum.PLAYLIST);
             }}
           >
-            <Image
-              src={getThumbnailsFromFirstSong(playlist)}
-              boxSize={'54px'}
-            />
+            <Image src={thumbnailSrc} boxSize={'54px'} />
             <VStack>
               <Text color={'#c6c6c6'} as={'b'}>
                 {playlist.name}

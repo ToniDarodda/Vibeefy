@@ -68,6 +68,8 @@ export class AlbumBaseDTO {
 
 export class AlbumGetById extends PickType(AlbumBaseDTO, ['id']) {}
 
+export class AlbumGetBySongId extends PickType(AlbumBaseDTO, ['id']) {}
+
 export class AlbumGetByName extends PickType(AlbumBaseDTO, [
   'name',
   'take',

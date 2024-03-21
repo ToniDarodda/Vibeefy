@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { albumService } from '../services/album';
 
 const MutationKeyGetAlbum = 'GET_ALBUMS_KEY';
+const MutationKeyGetAlbumById = 'GET_ALBUM_BY_ID_KEY';
+const MutationKeyGetAlbumBySongId = 'GET_ALBUM_BY_SONG_ID_KEY';
 
 export const useGetAlbum = (name: string, take?: number, skip?: number) => {
   return useQuery({
@@ -17,3 +19,23 @@ export const useGetAlbum = (name: string, take?: number, skip?: number) => {
     staleTime: 5 * 60 * 1000, // Les données restent fraîches pendant 5 minutes
   });
 };
+
+export const useGetAlbumById = (albumId: string) => {
+  return useQuery({
+    queryKey: [MutationKeyGetAlbumById, albumId],
+    queryFn: () => albumService.getAlbumById(albumId),
+    enabled: albumId !== undefined && albumId.length > 0,
+  });
+};
+
+import { useQueries } from '@tanstack/react-query';
+
+export const useGetAlbumBySongId = (firstSongIds: string[]) =>
+  useQueries({
+    queries: firstSongIds.map((songId) => {
+      return {
+        queryKey: [MutationKeyGetAlbumBySongId, songId],
+        queryFn: () => albumService.getAlbumBySongId(songId),
+      };
+    }),
+  });

@@ -64,7 +64,7 @@ export function SearchView({
         viewState === ViewStateEnum.SEARCH) && (
         <SearchBar setSearch={setSearch} search={search} inputRef={inputRef} />
       )}
-      {viewState === ViewStateEnum.SEARCH && ( // change this one
+      {viewState === ViewStateEnum.SEARCH && (
         <HStack
           h={'100%'}
           w={'100%'}

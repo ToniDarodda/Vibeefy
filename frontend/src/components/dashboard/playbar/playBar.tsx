@@ -27,7 +27,7 @@ import {
   SearchResponse,
 } from '../../../interfaces';
 import { formatTime } from '../../../utils';
-import { useGetAlbum } from '../../../query';
+import { useGetAlbum, useGetAlbumBySongId } from '../../../query';
 import { truncateText } from '../../../utils/truncatText';
 import {
   ViewStateEnum,
@@ -77,6 +77,8 @@ export function Playbar({
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   const { data: albums } = useGetAlbum(currentSong?.albumName ?? 'NA', 1, 0);
+
+  const albumInfoQueries = useGetAlbumBySongId([currentSong?.id ?? '']);
 
   const [previousVolume, setPreviousVolume] = useState(sliderValue);
 
@@ -168,7 +170,8 @@ export function Playbar({
             <VStack
               alignItems={'flex-start'}
               onClick={() => {
-                if (albums) setSelectedAlbumOrSong(albums[0]);
+                if (albumInfoQueries[0].data)
+                  setSelectedAlbumOrSong(albumInfoQueries[0].data);
                 setViewState(ViewStateEnum.ALBUM);
               }}
             >

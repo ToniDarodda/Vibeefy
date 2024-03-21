@@ -35,12 +35,9 @@ export function ModalPlaylistOption({
     const { innerWidth: width } = window;
     const componentSize = componentRef.current?.offsetWidth ?? 100;
 
-    console.log(componentSize, clientX, width);
     if (clientX + componentSize > width) {
-      console.log('returned', clientX - componentSize);
       return clientX - componentSize;
     }
-    console.log('returned', clientX);
     return clientX;
   };
 

@@ -22,25 +22,16 @@ export function AlbumBarView({
   const { setViewState } = useViewStateContext();
 
   return (
-    <VStack
-      h={'100%'}
-      alignItems={'flex-start'}
-      justifyContent={'space-between'}
-      gap={'30px'}
-    >
+    <VStack h={'100%'} alignItems={'flex-start'} gap={'30px'}>
       <HStack>
         <Icon
           as={MdKeyboardArrowLeft}
+          cursor={'pointer'}
           color={'#ffffff'}
           boxSize={'34px'}
           onClick={() => setViewState(ViewStateEnum.SEARCH)}
         />
-        <Icon
-          as={MdKeyboardArrowRight}
-          color={'#959595'}
-          boxSize={'34px'}
-          onClick={() => setViewState(ViewStateEnum.SELECTEDARTIST)}
-        />
+        <Icon as={MdKeyboardArrowRight} color={'#959595'} boxSize={'34px'} />
       </HStack>
       <VStack flex={1}>
         <HStack justifyContent={'center'} alignItems={'center'} gap={'20px'}>
