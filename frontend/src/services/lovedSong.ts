@@ -10,4 +10,17 @@ export class LovedSongService {
 
     return lovedSong;
   }
+
+  async getAllLovedSong(): Promise<LovedSong[]> {
+    const { data: lovedSongs }: { data: LovedSong[] } =
+      await Fetch.get<LovedSong[]>(`/love-song`);
+
+    return lovedSongs;
+  }
+
+  async deleteLovedSong(songId: string): Promise<void> {
+    await Fetch.delete<void>(`/love-song/${songId}`);
+  }
 }
+
+export const lovedSongService: LovedSongService = new LovedSongService();

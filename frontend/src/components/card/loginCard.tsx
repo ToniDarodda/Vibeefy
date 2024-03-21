@@ -89,7 +89,7 @@ export function LoginCard({ title }: CardInterface) {
         <VStack borderBottom={'1px solid #4E4E4E'} w={'100%'} />
 
         <VStack w={'100%'} alignItems={'center'}>
-          <Text fontSize={'xl'}>Email or username</Text>
+          <Text fontSize={'xl'}>Email</Text>
           <Input
             w={{
               base: '300px',
@@ -98,6 +98,7 @@ export function LoginCard({ title }: CardInterface) {
             }}
             h={'70px'}
             type="email"
+            color={'#ffffff'}
             focusBorderColor="#000000"
             placeholder="Enter your information..."
             _hover={{ border: '2px solid #ffffff' }}

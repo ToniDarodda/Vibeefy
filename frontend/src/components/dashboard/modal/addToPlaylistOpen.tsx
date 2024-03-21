@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { VStack, Text, HStack, Icon } from '@chakra-ui/react';
+import { VStack, Text, HStack, Icon, Image } from '@chakra-ui/react';
 import { UseMutateFunction } from '@tanstack/react-query';
 
 import { useAudioPlayerContext } from '../../../contexts';
@@ -9,7 +9,8 @@ import {
   PlaylistType,
   BasePlaylistInterface,
 } from '../../../interfaces';
-import { MdAddToQueue } from 'react-icons/md';
+import { MdOutlineQueueMusic } from 'react-icons/md';
+import { GoPlus } from 'react-icons/go';
 
 interface PlaylistOpenInterface {
   isModalAddPlaylistOpen: boolean;
@@ -98,33 +99,50 @@ export function ModalAddPlaylistOpen({
             <VStack
               w={'250px'}
               h={'90px'}
-              padding={'12px'}
-              backgroundColor={'#121212'}
-              border={'1px solid #82828267'}
+              padding={'4px'}
+              backgroundColor={'#282828'}
               justifyContent={'center'}
-              alignContent={'center'}
-              borderRadius={'8px'}
+              alignItems={'flex-start'}
+              borderRadius={'4px'}
               cursor={'pointer'}
-              gap={'20px'}
             >
-              <Text
-                onClick={handleClickPlaylist}
-                color={'#ffffff9c'}
-                _hover={{
-                  textColor: '#ffffff',
-                }}
+              <HStack
+                w={'100%'}
+                h={'40px'}
+                _hover={{ backgroundColor: '#3e3d3d' }}
+                cursor={'pointer'}
+                justifyContent={'flex-start'}
+                alignItems={'center'}
+                paddingLeft={'8px'}
               >
-                Add to existing playlist
-              </Text>
-              <Text
-                color={'#ffffff9c'}
-                _hover={{
-                  textColor: '#ffffff',
-                }}
-                onClick={handleClickQueue}
+                <Icon
+                  as={MdOutlineQueueMusic}
+                  boxSize={'24px'}
+                  color={'#a7a7a7'}
+                />
+
+                <Text onClick={handleClickPlaylist}>
+                  Add to existing playlist
+                </Text>
+              </HStack>
+              <HStack
+                w={'100%'}
+                h={'40px'}
+                _hover={{ backgroundColor: '#3e3d3d' }}
+                cursor={'pointer'}
+                justifyContent={'flex-start'}
+                alignItems={'center'}
+                paddingLeft={'8px'}
               >
-                Add song to queue
-              </Text>
+                <Icon
+                  as={GoPlus}
+                  w={'40px'}
+                  boxSize={'24px'}
+                  color={'#a7a7a7'}
+                />
+
+                <Text onClick={handleClickQueue}>Add song to queue</Text>
+              </HStack>
             </VStack>
           )}
           {createPlaylistClicked && (
@@ -133,31 +151,27 @@ export function ModalAddPlaylistOpen({
               h={'200px'}
               padding={'12px'}
               overflow={'scroll'}
-              backgroundColor={'#121212'}
-              border={'1px solid #82828267'}
-              borderRadius={'8px'}
-              gap={'12px'}
+              backgroundColor={'#282828'}
+              borderRadius={'4px'}
+              alignItems={'flex-start'}
               cursor={'pointer'}
               ref={modalRef}
             >
+              <Text fontSize={'12px'}>Add to playlist</Text>
+              <VStack w={'100%'} h={'1px'} borderBottom={'1px solid #3e3d3d'} />
               {playlists?.map((playlist: BasePlaylistInterface) => {
                 return (
                   <HStack
                     alignItems={'center'}
                     w={'100%'}
-                    justifyContent={'space-evenly'}
+                    padding={'8px'}
+                    borderRadius={'4px'}
+                    _hover={{ backgroundColor: '#1a1a1a' }}
                   >
-                    <Icon
-                      as={MdAddToQueue}
-                      color={'#c8c8c89c'}
-                      boxSize={'20px'}
-                    />
+                    <Image src="/vinyl.png" boxSize={'24px'} />
 
                     <Text
                       w={'100px'}
-                      _hover={{
-                        textColor: '#a6a4a4',
-                      }}
                       onClick={() => handleAddSongToPlaylist(playlist.id)}
                     >
                       {playlist.name}

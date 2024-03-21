@@ -16,9 +16,6 @@ export const config: DataSourceOptions = {
   cli: {
     migrationsDir: 'src/migrations/',
   },
-  ssl: {
-    rejectUnauthorized: false,
-  },
 } as DataSourceOptions;
 
 export const dataSource = new DataSource(config);

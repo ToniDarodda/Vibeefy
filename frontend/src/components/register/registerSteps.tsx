@@ -109,7 +109,7 @@ export function RegisterStep() {
       {registerFlow === RegisterFlow.EMAIL && (
         <EmailStep>
           <VStack alignItems={'flex-start'} gap={'20px'}>
-            <Text fontSize={'xl'}>Email or username</Text>
+            <Text fontSize={'xl'}>Email</Text>
             <Input
               w={{
                 base: '300px',
@@ -119,6 +119,7 @@ export function RegisterStep() {
               h={'70px'}
               type="email"
               focusBorderColor="#000000"
+              color={'#ffffff'}
               placeholder="Enter your information..."
               marginBottom={errors.email?.message ? '10px' : '184px'}
               _hover={{ border: '2px solid #ffffff' }}
@@ -199,6 +200,7 @@ export function RegisterStep() {
               }}
               h={'70px'}
               type="name"
+              color={'#ffffff'}
               focusBorderColor="#000000"
               placeholder="Enter your information..."
               _hover={{ border: '2px solid #ffffff' }}
@@ -258,7 +260,12 @@ export function RegisterStep() {
             paddingLeft={'20px'}
           >
             <HStack h={'60px'} gap={'30px'}>
-              <Checkbox size={'lg'} colorScheme="orange" border={'orange'} />
+              <Checkbox
+                size={'lg'}
+                colorScheme="orange"
+                border={'orange'}
+                required
+              />
               <Text
                 fontSize={{
                   base: '12px',

@@ -61,9 +61,11 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
     };
 
     const handleLastSearch = () => {
-      setInputValue(lastInput);
-      setSearch(lastInput);
-      setLastInput('');
+      if (lastInput.length > 0) {
+        setInputValue(lastInput);
+        setSearch(lastInput);
+        setLastInput('');
+      }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +107,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
               <Icon
                 as={MdKeyboardArrowLeft}
                 color={inputValue.length > 0 ? '#ffffff' : '#959595'}
+                cursor={inputValue.length > 0 ? 'pointer' : 'normal'}
                 boxSize={'34px'}
                 onClick={handleResetSearch}
               />
@@ -113,6 +116,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
               <Icon
                 as={MdKeyboardArrowRight}
                 color={lastInput.length > 0 ? '#ffffff' : '#959595'}
+                cursor={lastInput.length > 0 ? 'pointer' : 'normal'}
                 boxSize={'34px'}
                 onClick={handleLastSearch}
               />

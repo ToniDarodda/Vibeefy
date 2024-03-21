@@ -18,7 +18,12 @@ export function ReducedAlbumBarView({
   const { setViewState } = useViewStateContext();
 
   return (
-    <HStack gap={'20px'} justifyContent={'center'} alignItems={'center'}>
+    <HStack
+      gap={'20px'}
+      h={'100%'}
+      justifyContent={'center'}
+      alignItems={'center'}
+    >
       <Tooltip label="Go back">
         <Image
           src="/next2.png"
@@ -38,7 +43,7 @@ export function ReducedAlbumBarView({
             ? selectedAlbumOrSong?.thumbnails
             : '/vinyl.png'
         }
-        boxSize={'60px'}
+        boxSize={'50px'}
         borderRadius={'8px'}
       />
       <Text fontSize={'40px'} color={'#ffffffb7'}>

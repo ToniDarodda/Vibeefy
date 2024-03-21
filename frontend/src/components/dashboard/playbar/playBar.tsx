@@ -23,16 +23,22 @@ import { useAudioPlayerContext } from '../../../contexts';
 import {
   AlbumInterface,
   BasePlaylistInterface,
+  LovedSong,
   SearchResponse,
 } from '../../../interfaces';
 import { formatTime } from '../../../utils';
-import { useGetAlbum } from '../../../query';
+import { useGetAlbum, useGetAlbumBySongId } from '../../../query';
 import { truncateText } from '../../../utils/truncatText';
 import {
   ViewStateEnum,
   useViewStateContext,
 } from '../../../contexts/viewState.context';
 import { PlaybarMobile } from './playBarMobile';
+import {
+  useCreateLovedSong,
+  useDeleteLovedSong,
+  useGetLovedSong,
+} from '../../../query/lovedSong';
 
 interface PlaybarInterface {
   isLargerThan1000: boolean;
@@ -72,9 +78,14 @@ export function Playbar({
 
   const { data: albums } = useGetAlbum(currentSong?.albumName ?? 'NA', 1, 0);
 
+  const albumInfoQueries = useGetAlbumBySongId([currentSong?.id ?? '']);
+
   const [previousVolume, setPreviousVolume] = useState(sliderValue);
 
   const { setViewState, queueState, setQueueState } = useViewStateContext();
+  const { mutate: addLovedSong } = useCreateLovedSong();
+  const { mutate: deleteLovedSong } = useDeleteLovedSong();
+  const { data: lovedSongs } = useGetLovedSong();
 
   const handleVolumeIconClick = () => {
     if (sliderValue !== 0) {
@@ -96,6 +107,23 @@ export function Playbar({
     const result = ((e.clientX - rect.left) * 100) / widthComputed;
 
     setTime((result / 100) * duration!);
+  };
+
+  const handleLovedSong = (e: any) => {
+    if (likedSong) deleteLovedSong(currentSong?.id ?? '');
+    else
+      addLovedSong({
+        songId: currentSong?.id ?? '',
+        isPublic: false,
+      });
+
+    setLikedSong(!likedSong);
+  };
+
+  const isTheSongLiked = () => {
+    return lovedSongs?.some((song: LovedSong) =>
+      song.lovedSongToSong.some((lsts) => lsts.songId === currentSong?.id),
+    );
   };
 
   useEffect(() => {
@@ -142,7 +170,8 @@ export function Playbar({
             <VStack
               alignItems={'flex-start'}
               onClick={() => {
-                if (albums) setSelectedAlbumOrSong(albums[0]);
+                if (albumInfoQueries[0].data)
+                  setSelectedAlbumOrSong(albumInfoQueries[0].data);
                 setViewState(ViewStateEnum.ALBUM);
               }}
             >
@@ -157,12 +186,10 @@ export function Playbar({
               </Text>
             </VStack>
             <Image
-              src={likedSong ? '/heart.png' : '/like.png'}
+              src={isTheSongLiked() ? '/heart.png' : '/like.png'}
               boxSize={'16px'}
               cursor={'pointer'}
-              onClick={() => {
-                setLikedSong(!likedSong);
-              }}
+              onClick={handleLovedSong}
             />
           </HStack>
 
@@ -229,6 +256,11 @@ export function Playbar({
                       ? (Math.round(seek + 1) * 100) / duration
                       : (Math.round(seek) * 100) / 180
                   }
+                  sx={{
+                    '& > div:first-child': {
+                      transition: 'width 1s linear', // Increased duration and changed to linear timing
+                    },
+                  }}
                   onClick={handleBarChange}
                   borderRadius={'8px'}
                 />
@@ -281,15 +313,7 @@ export function Playbar({
           </HStack>
         </HStack>
       )}
-      <PlaybarMobile
-        isPaused={isPaused}
-        setIsPaused={setIsPaused}
-        listeningSong={currentSong?.title ?? ''}
-        playNext={playNext}
-        togglePlayPause={togglePlayPause}
-        thumbnail={currentSong?.thumbnails ?? ''}
-        isLargerThan1000={isLargerThan1000}
-      />
+      <PlaybarMobile isLargerThan1000={isLargerThan1000} />
     </>
   );
 }

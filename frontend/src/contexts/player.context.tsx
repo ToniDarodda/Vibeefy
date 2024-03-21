@@ -39,6 +39,7 @@ interface AudioPlayerContextType {
   setTime: (time: number) => void;
   setVolume: (volume: number) => void;
   addToQueue: (song: SongInterface) => void;
+  addAlbumToQueue: (songs: SongInterface[]) => void;
   setCurrentSong: (song: SongInterface) => void;
   setIsListening: Dispatch<SetStateAction<boolean>>;
   addPlaylistToQueue: (
@@ -64,6 +65,7 @@ const defaultValue: AudioPlayerContextType = {
   togglePlayPause: () => {},
   setTime: () => {},
   setVolume: () => {},
+  addAlbumToQueue: () => {},
   addToQueue: () => {},
   setCurrentSong: () => {},
   addPlaylistToQueue: () => {},
@@ -104,6 +106,22 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     ]);
   };
 
+  const addAlbumToQueue = async (songs: SongInterface[]) => {
+    await Promise.all(
+      songs.map(async (song: SongInterface) => {
+        if (!s3LinkCache[song.videoId]) {
+          const link = await linkService.getLinkFromS3(song.videoId);
+          s3LinkCache[song.videoId] = link!;
+        }
+
+        setQueue((prevQueue) => [
+          ...prevQueue,
+          { ...song, link: s3LinkCache[song.videoId] },
+        ]);
+      }),
+    );
+  };
+
   const addPlaylistToQueue = async (
     songs: PlaylistSong[] | SongInterface[],
     playlistName?: string,
@@ -134,16 +152,13 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   };
 
   const playNext = () => {
-    console.log('queue', queue, 'playlistQueue', playlistQueue);
     if (queue.length > 0) {
       const [nextSong, ...remainingQueue] = queue;
 
-      console.log(nextSong, 'queue');
       setCurrentSong(nextSong);
       setQueue(remainingQueue);
     } else if (playlistQueue.length > 0) {
       const [nextSong, ...remainingPlaylistQueue] = playlistQueue;
-      console.log(nextSong, 'playlist');
 
       setCurrentSong(nextSong);
       setPlaylistQueue(remainingPlaylistQueue);
@@ -169,10 +184,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     getLink();
   }, [currentSong]);
 
-  useEffect(() => {
-    console.log(playlistQueue);
-  }, [playlistQueue]);
-
   const value = {
     ...playerControls,
     queue,
@@ -184,6 +195,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     playlistQueue,
     isListening,
     setIsListening,
+    addAlbumToQueue,
     setCurrentSong: (song: SongInterface) => setCurrentSong(song),
   };
 

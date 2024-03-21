@@ -33,7 +33,8 @@ export function ModalPlaylistOption({
 
   const calculateModalCoordX = (clientX: number) => {
     const { innerWidth: width } = window;
-    const componentSize = componentRef.current?.offsetWidth ?? 0;
+    const componentSize = componentRef.current?.offsetWidth ?? 100;
+
     if (clientX + componentSize > width) {
       return clientX - componentSize;
     }
@@ -76,76 +77,69 @@ export function ModalPlaylistOption({
     <>
       {isModalPlaylistOptionOpen && (
         <VStack
+          w={'200px'}
+          h={'200px'}
+          zIndex={'2'}
           position={'absolute'}
           top={mooseCoord.clientY}
           left={calculateModalCoordX(mooseCoord.clientX)}
-          zIndex={'2'}
         >
           <VStack
-            backgroundColor={'#121212'}
-            border={'1px solid #82828267'}
+            w={'100%'}
+            padding={'4px'}
             ref={componentRef}
-            gap={'12px'}
+            borderRadius={'4px'}
             alignItems={'flex-start'}
-            padding={'20px'}
-            borderRadius={'8px'}
+            backgroundColor={'#282828'}
           >
             <HStack
-              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              w={'100%'}
+              h={'40px'}
               gap={'12px'}
+              cursor={'pointer'}
+              paddingLeft={'8px'}
+              _hover={{ backgroundColor: '#3e3d3d' }}
             >
-              <Icon as={FaPencilAlt} color={'#c8c8c89c'} />
-              <Text
-                color={'#ffffff9c'}
-                fontSize={'14px'}
-                _hover={{ color: '#ffffff' }}
-                onClick={() => ''}
-              >
-                Update playlist
-              </Text>
+              <Icon as={FaPencilAlt} color={'#c8c8c89c'} boxSize={'24px'} />
+              <Text fontSize={'14px'}>Update playlist</Text>
             </HStack>
             <HStack
-              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              w={'100%'}
+              h={'40px'}
               gap={'12px'}
+              paddingLeft={'8px'}
+              cursor={'pointer'}
+              _hover={{ backgroundColor: '#3e3d3d' }}
             >
-              <Icon as={MdDelete} color={'#c8c8c89c'} />
-              <Text
-                color={'#ffffff9c'}
-                fontSize={'14px'}
-                _hover={{ color: '#ffffff' }}
-                onClick={handlePlaylistdelete}
-              >
+              <Icon as={MdDelete} color={'#c8c8c89c'} boxSize={'24px'} />
+              <Text fontSize={'14px'} onClick={handlePlaylistdelete}>
                 Delete playlist
               </Text>
             </HStack>
             <HStack
-              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              w={'100%'}
+              h={'40px'}
               gap={'12px'}
+              cursor={'pointer'}
+              paddingLeft={'8px'}
+              _hover={{ backgroundColor: '#3e3d3d' }}
             >
-              <Icon as={MdShare} color={'#c8c8c89c'} />
-              <Text
-                color={'#ffffff9c'}
-                fontSize={'14px'}
-                _hover={{ color: '#ffffff' }}
-                onClick={handlePlaylistShare}
-              >
+              <Icon as={MdShare} color={'#c8c8c89c'} boxSize={'24px'} />
+              <Text fontSize={'14px'} onClick={handlePlaylistShare}>
                 Share playlist
               </Text>
             </HStack>
             <VStack w={'100%'} borderBottom={'1px solid #82828267'} />
             <HStack
-              _hover={{ color: '#ffffff', cursor: 'pointer' }}
+              w={'100%'}
+              h={'40px'}
               gap={'12px'}
+              cursor={'pointer'}
+              paddingLeft={'8px'}
+              _hover={{ backgroundColor: '#3e3d3d' }}
             >
-              <Icon as={MdAddToQueue} color={'#c8c8c89c'} />
-              <Text
-                color={'#ffffff9c'}
-                fontSize={'14px'}
-                _hover={{ color: '#ffffff' }}
-                onClick={() => ''}
-              >
-                Add to queue
-              </Text>
+              <Icon as={MdAddToQueue} color={'#c8c8c89c'} boxSize={'24px'} />
+              <Text fontSize={'14px'}>Add to queue</Text>
             </HStack>
           </VStack>
         </VStack>

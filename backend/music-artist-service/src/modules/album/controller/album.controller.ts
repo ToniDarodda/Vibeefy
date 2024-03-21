@@ -1,7 +1,11 @@
 import { Controller } from '@nestjs/common';
 import { AlbumService } from '../service/album.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { AlbumGetById, AlbumGetByName } from '../dto/base.dto';
+import {
+  AlbumGetById,
+  AlbumGetByName,
+  AlbumGetBySongId,
+} from '../dto/base.dto';
 import { Album } from 'src/entities/album/entity';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -18,5 +22,9 @@ export class AlbumController {
   @MessagePattern({ cmd: 'get_album_by_name' })
   async getAlbumByName({ name, skip, take }: AlbumGetByName): Promise<Album[]> {
     return await this.albumService.getAlbumByName(name, take, skip);
+  }
+  @MessagePattern({ cmd: 'get_album_by_song_id' })
+  async getAlbumBySongId({ id }: AlbumGetBySongId): Promise<Album> {
+    return await this.albumService.getAlbumBySongId(id);
   }
 }
