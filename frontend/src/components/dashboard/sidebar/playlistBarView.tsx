@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { MdLibraryMusic } from 'react-icons/md';
-import { HStack, Text, Icon, VStack } from '@chakra-ui/react';
+import { HStack, Text, Icon, VStack, Image } from '@chakra-ui/react';
 
 import {
   AlbumInterface,
@@ -13,6 +13,7 @@ import {
   ViewStateEnum,
   useViewStateContext,
 } from '../../../contexts/viewState.context';
+import { useGetLovedSong } from '../../../query/lovedSong';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -47,11 +48,20 @@ export function PlaylistBarView({
   const [selectedPlaylist, setSelectedPlaylist] =
     useState<BasePlaylistInterface | null>(null);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
   const { isPlaying } = useAudioPlayerContext();
 
   const { setViewState } = useViewStateContext();
 
-  const modalRef = useRef<HTMLDivElement>(null);
+  const { data: lovedSong } = useGetLovedSong();
+
+  const getThumbnailsFromFirstSong = (playlist: BasePlaylistInterface) => {
+    if (playlist && playlist.playlistSongs.length > 0) {
+      return playlist.playlistSongs[0].thumbnails ?? 'vinyl.png';
+    }
+    return 'vinyl.png';
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,6 +89,25 @@ export function PlaylistBarView({
       gap={'18px'}
       alignItems={'center'}
     >
+      {lovedSong && lovedSong.length > 0 && (
+        <HStack
+          w={'100%'}
+          cursor={'pointer'}
+          borderRadius={'4px'}
+          justifyContent={'flex-start'}
+          gap={'12px'}
+          _hover={{
+            backgroundColor: '#161616',
+          }}
+        >
+          <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'54px'} />
+          <VStack>
+            <Text color={'#c6c6c6'} as={'b'}>
+              Liked Songs
+            </Text>
+          </VStack>
+        </HStack>
+      )}
       {playlists?.map((playlist: PlaylistType, idx: number) => {
         return (
           <HStack
@@ -108,7 +137,10 @@ export function PlaylistBarView({
                 setViewState(ViewStateEnum.PLAYLIST);
             }}
           >
-            <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'54px'} />
+            <Image
+              src={getThumbnailsFromFirstSong(playlist)}
+              boxSize={'54px'}
+            />
             <VStack>
               <Text color={'#c6c6c6'} as={'b'}>
                 {playlist.name}
@@ -121,15 +153,15 @@ export function PlaylistBarView({
                 Me
               </Text>
             </VStack>
-            <ModalPlaylistOption
-              selectedPl={selectedPlaylist!}
-              setMouseCoord={setMouseCoord}
-              isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-              mooseCoord={mooseCoord}
-            />
           </HStack>
         );
       })}
+      <ModalPlaylistOption
+        selectedPl={selectedPlaylist!}
+        setMouseCoord={setMouseCoord}
+        isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
+        mooseCoord={mooseCoord}
+      />
     </VStack>
   );
 }

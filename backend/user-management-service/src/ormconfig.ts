@@ -4,7 +4,6 @@ import { DataSource } from 'typeorm';
 
 dotenv.config();
 const { TYPE, HOST, PORT, DB_USERNAME, PASSWORD, DATABASE } = process.env;
-console.log(TYPE, HOST, PORT, DB_USERNAME, PASSWORD, DATABASE);
 export const config: DataSourceOptions = {
   type: TYPE,
   host: HOST,
@@ -16,9 +15,6 @@ export const config: DataSourceOptions = {
   migrations: ['dist/migrations/*.js'],
   cli: {
     migrationsDir: 'src/migrations/',
-  },
-  ssl: {
-    rejectUnauthorized: false, // Utilisez cette option avec prudence
   },
 } as DataSourceOptions;
 

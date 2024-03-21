@@ -46,7 +46,6 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
       onend: () => {
         setIsFinish(true);
         setIsPlaying(false);
-        console.log('end');
         onSongEndRef.current();
       },
     });

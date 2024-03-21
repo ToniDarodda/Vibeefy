@@ -8,7 +8,8 @@ interface SongSearchInterface {
 }
 
 export function SongSearch({ albums }: SongSearchInterface) {
-  const { setCurrentSong, currentSong, isPaused } = useAudioPlayerContext();
+  const { setCurrentSong, currentSong, isPaused, setIsListening } =
+    useAudioPlayerContext();
 
   return (
     <VStack flex={2} justifyContent={'flex-start'} alignItems={'flex-start'}>
@@ -43,6 +44,7 @@ export function SongSearch({ albums }: SongSearchInterface) {
                     ...song,
                     albumName: album.title,
                   });
+                  setIsListening(true);
                 }}
               >
                 <HStack>

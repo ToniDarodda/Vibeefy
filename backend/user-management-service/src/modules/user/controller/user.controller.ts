@@ -47,6 +47,8 @@ export class UserController {
 
     res.cookie(COOKIE_TOKEN_NAME, accessToken, {
       expires: new Date(Date.now() + parseInt(ACCESS_TOKEN, 10)),
+      secure: true,
+      sameSite: 'none',
     });
   }
 
@@ -62,6 +64,8 @@ export class UserController {
 
     res.cookie(COOKIE_TOKEN_NAME, accessToken, {
       expires: new Date(Date.now() + parseInt(ACCESS_TOKEN, 10)),
+      secure: true,
+      sameSite: 'none',
     });
   }
 

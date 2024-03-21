@@ -1,17 +1,19 @@
-import { VStack, HStack, Tooltip, Text, Image } from '@chakra-ui/react';
-
 import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
+
+export interface AlbumBarViewInterface {
+  selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
+
+  isAlbumInterface: (object: any) => object is AlbumInterface;
+}
+
+import { VStack, HStack, Text, Image, Icon } from '@chakra-ui/react';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+
 import { truncateText } from '../../../../utils/truncatText';
 import {
   ViewStateEnum,
   useViewStateContext,
 } from '../../../../contexts/viewState.context';
-
-interface AlbumBarViewInterface {
-  selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
-
-  isAlbumInterface: (object: any) => object is AlbumInterface;
-}
 
 export function AlbumBarView({
   isAlbumInterface,
@@ -24,23 +26,20 @@ export function AlbumBarView({
       h={'100%'}
       alignItems={'flex-start'}
       justifyContent={'space-between'}
-      gap={'50px'}
+      gap={'30px'}
     >
-      <HStack gap={'20px'}>
-        <Tooltip label="Go back">
-          <Image
-            src="/next2.png"
-            transform="rotate(180deg)"
-            boxSize={'20px'}
-            onClick={() => setViewState(ViewStateEnum.SEARCH)}
-          />
-        </Tooltip>
-        <Image
-          src="/next2.png"
-          boxSize={'20px'}
-          onClick={() => {
-            setViewState(ViewStateEnum.SELECTEDARTIST);
-          }}
+      <HStack>
+        <Icon
+          as={MdKeyboardArrowLeft}
+          color={'#ffffff'}
+          boxSize={'34px'}
+          onClick={() => setViewState(ViewStateEnum.SEARCH)}
+        />
+        <Icon
+          as={MdKeyboardArrowRight}
+          color={'#959595'}
+          boxSize={'34px'}
+          onClick={() => setViewState(ViewStateEnum.SELECTEDARTIST)}
         />
       </HStack>
       <VStack flex={1}>

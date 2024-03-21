@@ -4,7 +4,6 @@ import { VStack, Text, Image, HStack } from '@chakra-ui/react';
 
 import { ModalAddPlaylistOpen } from '../modal/addToPlaylistOpen';
 import { ReducedAlbumBarView } from './albumBar/reducedAlbumBarView';
-import { AlbumBarView } from './albumBar/albumBarView';
 
 import { useAudioPlayerContext } from '../../../contexts';
 import {
@@ -14,7 +13,6 @@ import {
   SongInterface,
 } from '../../../interfaces';
 import { useAddSongToPlaylist } from '../../../query';
-import { colorGrapper } from '../../../utils/colorGrap';
 import {
   ViewStateEnum,
   useViewStateContext,
@@ -22,6 +20,7 @@ import {
 import { isAlbumInterface, selectColor } from '../../../utils/playlistOrAlbum';
 import { PlaylistView } from './playlistView';
 import { AlbumView } from './albumView';
+import { AlbumBarView } from './albumBar/albumBarView';
 
 interface ChooseBarViewInterface {
   details: SearchResponse | null;
@@ -84,7 +83,7 @@ export function SelectionPanelView({
             borderBottom={'1px solid #3d3d3d'}
             background={`linear-gradient(190deg, ${backgroundColor} 0%, #131313 100%)`}
             height={reducedView ? '80px' : '260px'}
-            transition="0.2s ease-out"
+            transition="0.3s ease-out"
           >
             {reducedView && (
               <ReducedAlbumBarView

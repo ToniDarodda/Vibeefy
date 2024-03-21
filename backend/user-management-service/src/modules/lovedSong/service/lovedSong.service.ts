@@ -54,8 +54,27 @@ export class LovedSongService {
   }
 
   async deleteLovedSong(songId: string): Promise<void> {
-    await this.lovedSongToSongRepository.delete({
-      songId,
+    const findLovedSongs = await this.lovedSongToSongRepository.find({
+      where: {
+        songId: songId,
+      },
+      relations: ['lovedSong'],
     });
+
+    for (const findLovedSong of findLovedSongs) {
+      await this.lovedSongToSongRepository.delete({
+        id: findLovedSong.id,
+      });
+
+      const count = await this.lovedSongToSongRepository.count({
+        where: {
+          lovedSong: findLovedSong.lovedSong,
+        },
+      });
+
+      if (count === 0) {
+        await this.lovedSongRepository.delete(findLovedSong.lovedSong.id);
+      }
+    }
   }
 }
