@@ -109,7 +109,7 @@ export function RegisterStep() {
       {registerFlow === RegisterFlow.EMAIL && (
         <EmailStep>
           <VStack alignItems={'flex-start'} gap={'20px'}>
-            <Text fontSize={'xl'}>Email or username</Text>
+            <Text fontSize={'xl'}>Email</Text>
             <Input
               w={{
                 base: '300px',
