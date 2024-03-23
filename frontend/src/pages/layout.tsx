@@ -32,7 +32,7 @@ export function Layout() {
           </VStack>
         )}
       </HStack>
-      <VStack w={'100%'} h={'90px'}>
+      <VStack w={'100%'} h={'90px'} display={isListening ? 'initial' : 'none'}>
         <Playbar />
       </VStack>
     </VStack>
