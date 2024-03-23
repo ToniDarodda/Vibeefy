@@ -1,7 +1,9 @@
-import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+import { VStack, HStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 import { AlbumInterface, SongInterface } from '../../../interfaces';
 import { formatTime } from '../../../utils';
 import { useAudioPlayerContext } from '../../../contexts';
+import { useEffect } from 'react';
+import { truncateText } from '../../../utils/truncatText';
 
 interface SongSearchInterface {
   albums: AlbumInterface[];
@@ -10,6 +12,12 @@ interface SongSearchInterface {
 export function SongSearch({ albums }: SongSearchInterface) {
   const { setCurrentSong, currentSong, isPaused, setIsListening } =
     useAudioPlayerContext();
+  const [isLargardThan800] = useMediaQuery('(min-width: 800px)');
+  const [isLargardThan400] = useMediaQuery('(min-width: 400px)');
+
+  useEffect(() => {
+    console.log(isLargardThan800);
+  }, [isLargardThan800]);
 
   return (
     <VStack flex={2} justifyContent={'flex-start'} alignItems={'flex-start'}>
@@ -20,7 +28,7 @@ export function SongSearch({ albums }: SongSearchInterface) {
         w={'100%'}
         h={'220px'}
         alignItems={'flex-start'}
-        padding={'24px'}
+        padding={isLargardThan800 ? '24px' : isLargardThan400 ? '12px' : '4px'}
         borderRadius={'8px'}
         cursor={'pointer'}
         overflow={'scroll'}
@@ -58,16 +66,33 @@ export function SongSearch({ albums }: SongSearchInterface) {
                     }
                     boxSize={'44px'}
                   />
-                  <VStack w={'200px'} alignItems={'flex-start'}>
+                  <VStack
+                    w={{ base: '100px', sm: '150px', md: '200px' }}
+                    alignItems={'flex-start'}
+                  >
                     <Text fontSize={'14px'}>
                       {song.title.includes('(')
-                        ? song.title.split('(')[0]
-                        : song.title}
+                        ? truncateText(song.title.split('(')[0], 10)
+                        : truncateText(
+                            song.title,
+                            isLargardThan400
+                              ? isLargardThan800
+                                ? 35
+                                : 20
+                              : 10,
+                          )}
                     </Text>
-                    <Text>{album.artist.name}</Text>
+                    <Text>
+                      {truncateText(
+                        album.artist.name,
+                        isLargardThan400 ? (isLargardThan800 ? 35 : 20) : 10,
+                      )}
+                    </Text>
                   </VStack>
                 </HStack>
-                <Text>{formatTime(song.songDuration)}</Text>
+                <Text display={isLargardThan800 ? 'initial' : 'none'}>
+                  {formatTime(song.songDuration)}
+                </Text>
               </HStack>
             );
           });

@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Image } from '@chakra-ui/react';
+import { HStack, VStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 
 import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
@@ -22,6 +22,8 @@ export function AlbumSearch({
   setSelectedAlbumOrSong,
 }: AlbumSearchInterface) {
   const { setViewState } = useViewStateContext();
+
+  const [isLargardThan800] = useMediaQuery('(min-width: 800px)');
 
   return (
     <>
@@ -56,12 +58,30 @@ export function AlbumSearch({
               >
                 <Image
                   src={album.thumbnails}
-                  boxSize={'200px'}
-                  minW={'200px'}
+                  boxSize={{
+                    base: '100px',
+                    sm: '120px',
+                    md: '200px',
+                  }}
+                  minW={{
+                    base: '100px',
+                    sm: '120px',
+                    md: '200px',
+                  }}
                   objectFit="cover"
                 />
-                <Text overflow={'hidden'} maxW={'200px'}>
-                  {truncateText(album.title.split('(')[0], 20)}
+                <Text
+                  overflow={'hidden'}
+                  maxW={{
+                    base: '100px',
+                    sm: '120px',
+                    md: '200px',
+                  }}
+                >
+                  {truncateText(
+                    album.title.split('(')[0],
+                    isLargardThan800 ? 20 : 10,
+                  )}
                 </Text>
                 <Text color={'#ababab'}>{album.artist.name}</Text>
               </VStack>

@@ -122,7 +122,7 @@ export function ArtistView({
                   <HStack
                     key={index}
                     w={'100%'}
-                    alignItems={'flex-start'}
+                    alignItems={'center'}
                     justifyContent={'space-between'}
                     padding={'8px'}
                     borderRadius={'8px'}
@@ -136,7 +136,7 @@ export function ArtistView({
                     }}
                   >
                     <HStack gap={'12px'}>
-                      <Text w={'20px'} color={'#7a7a7a'}>
+                      <Text minW={'10px'} color={'#7a7a7a'}>
                         {index + 1}
                       </Text>
                       <Image
@@ -150,7 +150,7 @@ export function ArtistView({
                         boxSize={'50px'}
                         borderRadius={'4px'}
                       ></Image>
-                      <Text>{song.title}</Text>
+                      <Text>{truncateText(song.title.split('(')[0], 15)}</Text>
                     </HStack>
                     <Text color={'#7a7a7a'}>
                       {formatTime(song.songDuration)}
@@ -242,7 +242,7 @@ export function ArtistView({
               About
             </Text>
             <VStack
-              w={'60%'}
+              w={{ base: '100%', md: '80%', lg: '70%', xl: '60%' }}
               minH={'600px'}
               borderRadius={'8px'}
               padding={'12px'}

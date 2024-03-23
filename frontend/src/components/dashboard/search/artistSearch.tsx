@@ -48,9 +48,17 @@ export function ArtistSearch({
               >
                 <Image
                   src={MakePictureLarger(filteredAlbum)}
-                  boxSize={'200px'}
+                  boxSize={{
+                    base: '100px',
+                    sm: '120px',
+                    md: '200px',
+                  }}
                   borderRadius={'100px'}
-                  minW={'200px'}
+                  minW={{
+                    base: '100px',
+                    sm: '120px',
+                    md: '200px',
+                  }}
                   objectFit="cover"
                 />
                 <Text>{filteredAlbum.artist.name}</Text>

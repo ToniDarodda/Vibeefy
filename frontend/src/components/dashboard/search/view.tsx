@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { VStack, HStack, Text, Image } from '@chakra-ui/react';
+import { Dispatch, RefObject, SetStateAction, useRef, useState } from 'react';
+import { VStack, HStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 
 import { SearchBar } from '../searchBar';
 import {
@@ -48,11 +41,10 @@ export function SearchView({
   setSelectedAlbumOrSong,
 }: SearchViewInterface) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [loadedArtistsCount, setLoadedArtistsCount] = useState<number>(20);
-
   const { viewState, setViewState } = useViewStateContext();
 
-  const { data: albums } = useGetAlbum(search, loadedArtistsCount, 0);
+  const { data: albums } = useGetAlbum(search, 20, 0);
+  const [isLargardThan800] = useMediaQuery('(min-width: 800px)');
 
   return (
     <VStack
@@ -66,11 +58,11 @@ export function SearchView({
       )}
       {viewState === ViewStateEnum.SEARCH && (
         <HStack
-          h={'100%'}
+          marginTop={{ base: '100px', sm: '110px', md: '154px', lg: '160px' }}
+          height="100%"
           w={'100%'}
           gap={'20px'}
           padding={'24px'}
-          marginTop={search === '' ? '0px' : '100px'}
         >
           {albums?.length === 0 && <NoDataSearch albums={albums} />}
           {search && albums && albums?.length !== 0 && (

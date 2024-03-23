@@ -5,6 +5,7 @@ import {
   ViewStateEnum,
   useViewStateContext,
 } from '../../../../contexts/viewState.context';
+import { truncateText } from '../../../../utils/truncatText';
 
 interface ReducedAlbumBarViewInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
@@ -46,9 +47,12 @@ export function ReducedAlbumBarView({
         boxSize={'50px'}
         borderRadius={'8px'}
       />
-      <Text fontSize={'40px'} color={'#ffffffb7'}>
+      <Text
+        fontSize={{ base: '16px', sm: '30px', md: '40px' }}
+        color={'#ffffffb7'}
+      >
         {isAlbumInterface(selectedAlbumOrSong)
-          ? selectedAlbumOrSong?.title
+          ? truncateText(selectedAlbumOrSong?.title, 18)
           : selectedAlbumOrSong?.name}
       </Text>
       <Text color={'#ffffff80'}>
