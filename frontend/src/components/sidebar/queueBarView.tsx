@@ -1,10 +1,10 @@
 import { HStack, Image, Text, VStack } from '@chakra-ui/react';
-import { truncateText } from '../../../utils/truncatText';
-import { useAudioPlayerContext } from '../../../contexts';
+import { truncateText } from '../../utils/truncatText';
+import { useAudioPlayerContext } from '../../contexts';
 import {
   ViewStateEnum,
   useViewStateContext,
-} from '../../../contexts/viewState.context';
+} from '../../contexts/viewState.context';
 
 export function QueueView() {
   const { queue, playlistQueue } = useAudioPlayerContext();

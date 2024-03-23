@@ -20,21 +20,20 @@ import { FaCirclePlay } from 'react-icons/fa6';
 import { FaCirclePause } from 'react-icons/fa6';
 import { MdOutlineSkipPrevious, MdOutlineSkipNext } from 'react-icons/md';
 
-import { useAudioPlayerContext } from '../../../contexts';
-import { LovedSong } from '../../../interfaces';
-import { formatTime } from '../../../utils';
-import { useGetAlbumBySongId } from '../../../query';
-import { truncateText } from '../../../utils/truncatText';
+import { useAudioPlayerContext } from '../../contexts';
+import { formatTime } from '../../utils';
+import { useGetAlbumBySongId } from '../../query';
+import { truncateText } from '../../utils/truncatText';
 import {
   ViewStateEnum,
   useViewStateContext,
-} from '../../../contexts/viewState.context';
+} from '../../contexts/viewState.context';
 import { PlaybarMobile } from './playBarMobile';
 import {
   useCreateLovedSong,
   useDeleteLovedSong,
   useGetLovedSong,
-} from '../../../query/lovedSong';
+} from '../../query/lovedSong';
 
 interface PlaybarInterface {}
 
@@ -106,9 +105,7 @@ export function Playbar({}: PlaybarInterface) {
   };
 
   const isTheSongLiked = () => {
-    return lovedSongs?.some((song: LovedSong) =>
-      song.lovedSongToSong.some((lsts) => lsts.songId === currentSong?.id),
-    );
+    return lovedSongs?.some((song) => song.songId === currentSong?.id);
   };
 
   useEffect(() => {

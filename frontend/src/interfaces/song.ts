@@ -6,13 +6,11 @@ export interface Song {
   videoId: string;
 }
 
-interface LovedSongToSong {
+export interface LovedSongToSong {
   id: string;
   songId: string;
 }
 
 export interface LovedSong {
-  id: string;
-  public: boolean;
   lovedSongToSong: LovedSongToSong[];
 }

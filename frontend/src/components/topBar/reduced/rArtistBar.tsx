@@ -2,7 +2,7 @@ import { HStack, Icon, VStack, Text } from '@chakra-ui/react';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-import { ArtistInfo } from '../../../../interfaces';
+import { ArtistInfo } from '../../../interfaces';
 
 interface ReducedArtistBarInterface {
   artist: ArtistInfo;

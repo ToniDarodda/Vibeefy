@@ -7,16 +7,15 @@ import {
   Spinner,
   useMediaQuery,
 } from '@chakra-ui/react';
-import { useAudioPlayerContext } from '../../../contexts';
-import { useGetAlbum } from '../../../query';
-import { truncateText } from '../../../utils/truncatText';
+import { useAudioPlayerContext } from '../../contexts';
+import { useGetAlbum } from '../../query';
+import { truncateText } from '../../utils/truncatText';
 import { useState } from 'react';
 import {
   useCreateLovedSong,
   useDeleteLovedSong,
   useGetLovedSong,
-} from '../../../query/lovedSong';
-import { LovedSong } from '../../../interfaces';
+} from '../../query/lovedSong';
 import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
 import { MdOutlineSkipNext } from 'react-icons/md';
 
@@ -52,9 +51,7 @@ export function PlaybarMobile() {
   };
 
   const isTheSongLiked = () => {
-    return lovedSongs?.some((song: LovedSong) =>
-      song.lovedSongToSong.some((lsts) => lsts.songId === currentSong?.id),
-    );
+    return lovedSongs?.some((lsts) => lsts.songId === currentSong?.id);
   };
 
   return (

@@ -1,14 +1,10 @@
-import { VStack, HStack, Text, Image, Icon } from '@chakra-ui/react';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import { HStack, Image, Text, Icon, VStack } from '@chakra-ui/react';
 
-import { AlbumInterface } from '../../../interfaces';
-import { truncateText } from '../../../utils/truncatText';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import { truncateText } from '../../utils/truncatText';
 import { useNavigate } from 'react-router-dom';
 
-export interface AlbumBarInterface {
-  album: AlbumInterface;
-}
-export function AlbumBar({ album }: AlbumBarInterface) {
+export function CollectionBar() {
   const navigate = useNavigate();
 
   const handleNavigateBack = () => {
@@ -30,7 +26,7 @@ export function AlbumBar({ album }: AlbumBarInterface) {
       <VStack flex={1}>
         <HStack justifyContent={'center'} alignItems={'center'} gap={'20px'}>
           <Image
-            src={album?.thumbnails ?? '/vinyl.png'}
+            src={'/collection1.png'}
             boxSize={{ base: '100px', sm: '120px', md: '150px' }}
             borderRadius={'8px'}
           />
@@ -39,20 +35,11 @@ export function AlbumBar({ album }: AlbumBarInterface) {
             justifyContent={'space-between'}
             h={'100%'}
           >
-            <Text fontSize={{ base: '30px', sm: '40px', md: '60px' }}>
-              {truncateText(album?.title ?? '', 25)}
+            <Text>Playlist</Text>
+            <Text fontSize={{ base: '30px', sm: '40px', md: '60px' }} as={'b'}>
+              {truncateText('Liked Songs', 25)}
             </Text>
-            <Text
-              color={'#ffffff7d'}
-              h={'100%'}
-              cursor={'pointer'}
-              _hover={{
-                color: '#ffffff',
-              }}
-              onClick={() => {}}
-            >
-              {album?.artist.name ?? ''}
-            </Text>
+            <Text color={'#ffffff7d'}>By Vibeefy</Text>
           </VStack>
         </HStack>
       </VStack>

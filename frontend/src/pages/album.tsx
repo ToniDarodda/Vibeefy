@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { VStack, Text, Image, HStack } from '@chakra-ui/react';
-import { AlbumView } from '../components/dashboard/view/albumView';
+import { AlbumView } from '../components/view/albumView';
 import { useAudioPlayerContext } from '../contexts';
 import { useGetAlbumById } from '../query';
-import { isAlbumInterface } from '../utils/playlistOrAlbum';
+import { selectColor } from '../utils/playlistOrAlbum';
 import { useParams } from 'react-router-dom';
-import { AlbumBar } from '../components/dashboard/topBar/albumBar';
-import { ReducedAlbumBar } from '../components/dashboard/topBar/reduced/rAlbumBar';
+import { AlbumBar } from '../components/topBar/albumBar';
+import { ReducedAlbumBar } from '../components/topBar/reduced/rAlbumBar';
 
 export function Album() {
   const { albumId } = useParams();
@@ -44,6 +44,10 @@ export function Album() {
     setLastScrollTop(scrollTop);
   };
 
+  useEffect(() => {
+    selectColor(album?.thumbnails ?? '', setBackgroundColor);
+  }, [albumId, album]);
+
   return (
     <VStack w={'100%'} h={'100%'} backgroundColor={'#121212'}>
       <HStack
@@ -55,12 +59,7 @@ export function Album() {
         height={reducedView ? '80px' : '260px'}
         transition="0.3s ease-out"
       >
-        {reducedView && (
-          <ReducedAlbumBar
-            isAlbumInterface={isAlbumInterface}
-            selectedAlbumOrSong={album}
-          />
-        )}
+        {reducedView && <ReducedAlbumBar selectedAlbumOrSong={album} />}
         {!reducedView && <AlbumBar album={album!} />}
       </HStack>
 

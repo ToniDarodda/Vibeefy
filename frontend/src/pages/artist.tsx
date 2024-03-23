@@ -5,7 +5,7 @@ import { MdOutlineQueueMusic } from 'react-icons/md';
 import { GoPlus } from 'react-icons/go';
 import { MdFavorite } from 'react-icons/md';
 
-import { ArtistBar } from '../components/dashboard/topBar/artistBar';
+import { ArtistBar } from '../components/topBar/artistBar';
 import { useAudioPlayerContext } from '../contexts';
 import { AlbumInfo } from '../interfaces';
 import { formatTime } from '../utils';

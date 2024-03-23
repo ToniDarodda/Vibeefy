@@ -1,16 +1,15 @@
 import { HStack, Tooltip, Image, Text } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
-import { truncateText } from '../../../../utils/truncatText';
+import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
+import { truncateText } from '../../../utils/truncatText';
 import { useNavigate } from 'react-router-dom';
+import { isAlbumInterface } from '../../../utils/playlistOrAlbum';
 
 interface ReducedAlbumBarInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
-  isAlbumInterface: (object: any) => object is AlbumInterface;
 }
 
 export function ReducedAlbumBar({
-  isAlbumInterface,
   selectedAlbumOrSong,
 }: ReducedAlbumBarInterface) {
   const navigate = useNavigate();

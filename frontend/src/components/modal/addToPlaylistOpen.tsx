@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { VStack, Text, HStack, Icon, Image } from '@chakra-ui/react';
 import { UseMutateFunction } from '@tanstack/react-query';
 
-import { useAudioPlayerContext } from '../../../contexts';
+import { useAudioPlayerContext } from '../../contexts';
 import {
   SongInterface,
   PlaylistSong,
   PlaylistType,
   BasePlaylistInterface,
-} from '../../../interfaces';
+} from '../../interfaces';
 import { MdOutlineQueueMusic } from 'react-icons/md';
 import { GoPlus } from 'react-icons/go';
 

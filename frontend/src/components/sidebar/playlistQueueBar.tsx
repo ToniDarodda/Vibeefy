@@ -8,12 +8,20 @@ import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
 import { IoLibrarySharp } from 'react-icons/io5';
 import { ModalPlaylistCode } from '../modal/addPlaylistCode';
-import { useViewStateContext } from '../../../contexts/viewState.context';
-import { useGetPlaylist } from '../../../query';
+import { useViewStateContext } from '../../contexts/viewState.context';
+import { useGetPlaylist } from '../../query';
+import { useNavigate } from 'react-router-dom';
+import { useSearchProvider } from '../../contexts/search.context';
+import { useAudioPlayerContext } from '../../contexts';
 
 export function PlaylistQueueBar() {
+  const navigate = useNavigate();
+
+  const { setInputValue } = useSearchProvider();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isHoveredLoop, setIsHoveredLoop] = useState(false);
+
+  const { isListening } = useAudioPlayerContext();
 
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
@@ -28,11 +36,15 @@ export function PlaylistQueueBar() {
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
 
+  const handleNavigateHome = () => {
+    setInputValue('');
+    navigate('/search');
+  };
+
   return (
     <VStack
       w={'100%'}
       h={'100%'}
-      overflow="scroll"
       display={isLargardThan1000 ? 'normal' : 'none'}
     >
       {isLargardThan1000 && (
@@ -55,7 +67,7 @@ export function PlaylistQueueBar() {
               borderRadius={'8px'}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              onClick={() => {}}
+              onClick={handleNavigateHome}
             >
               <Icon
                 as={MdHome}
@@ -117,10 +129,9 @@ export function PlaylistQueueBar() {
             </HStack>
             <VStack
               gap={'0px'}
-              overflow={'scroll'}
               w={'100%'}
-              maxW={'100%'}
               height={'100%'}
+              maxH={isListening ? '540px' : '620px'}
               justifyContent={'space-between'}
             >
               {!queueState ? (
@@ -134,12 +145,6 @@ export function PlaylistQueueBar() {
               ) : (
                 <QueueView />
               )}
-              <VStack
-                w={'100%'}
-                h={'auto'}
-                alignItems={'flex-end'}
-                justifyContent={'flex-end'}
-              ></VStack>
             </VStack>
           </VStack>
         </VStack>

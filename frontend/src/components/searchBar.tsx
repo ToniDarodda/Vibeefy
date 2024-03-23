@@ -14,7 +14,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { debounce } from 'lodash';
 
-import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
+import { GetMusicType, useSearchProvider } from '../contexts/search.context';
 
 interface SearchBarInterface {
   inputRef: RefObject<HTMLInputElement>;

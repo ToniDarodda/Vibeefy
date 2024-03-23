@@ -5,10 +5,10 @@ import {
   BasePlaylistInterface,
   PlaylistSong,
   SongInterface,
-} from '../../../interfaces';
-import { formatTime } from '../../../utils';
-import { useGetSong } from '../../../query/song';
-import { useAudioPlayerContext } from '../../../contexts';
+} from '../../interfaces';
+import { formatTime } from '../../utils';
+import { useGetSong } from '../../query/song';
+import { useAudioPlayerContext } from '../../contexts';
 
 interface PlaylistViewInterface {
   hoveredIndex: number;

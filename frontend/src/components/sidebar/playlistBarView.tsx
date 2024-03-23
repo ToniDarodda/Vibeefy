@@ -3,12 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { BasePlaylistInterface, PlaylistType } from '../../../interfaces';
+import { BasePlaylistInterface, PlaylistType } from '../../interfaces';
 import { ModalPlaylistOption } from '../modal/playlistOption';
-import { useAudioPlayerContext } from '../../../contexts';
-import { useGetLovedSong } from '../../../query/lovedSong';
-import { useGetAlbumBySongId } from '../../../query';
-import { useGetSong } from '../../../query/song';
+import { useAudioPlayerContext } from '../../contexts';
+import { useGetLovedSong } from '../../query/lovedSong';
+import { useGetAlbumBySongId } from '../../query';
+import { useGetSong } from '../../query/song';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -55,6 +55,10 @@ export function PlaylistBarView({
     navigate(`/playlist/${playlistId}`);
   };
 
+  const handleCollectionRedirect = () => {
+    navigate('/collection/tracks');
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -87,16 +91,19 @@ export function PlaylistBarView({
           cursor={'pointer'}
           borderRadius={'4px'}
           justifyContent={'flex-start'}
+          padding={'4px'}
           gap={'12px'}
           _hover={{
             backgroundColor: '#161616',
           }}
+          onClick={handleCollectionRedirect}
         >
           <Image src="/collection1.png" boxSize={'54px'} borderRadius={'4px'} />
-          <VStack>
+          <VStack alignItems={'flex-start'}>
             <Text color={'#c6c6c6'} as={'b'}>
               Liked Songs
             </Text>
+            <Text color={'#919191'}>Vibeefy</Text>
           </VStack>
         </HStack>
       )}
@@ -111,6 +118,7 @@ export function PlaylistBarView({
             cursor={'pointer'}
             borderRadius={'4px'}
             justifyContent={'flex-start'}
+            padding={'4px'}
             gap={'12px'}
             _hover={{
               backgroundColor: '#161616',
@@ -128,11 +136,10 @@ export function PlaylistBarView({
             }}
             onClick={() => {
               // setSelectedAlbumOrSong(playlist);
-              console.log(playlist, 'plausliut');
               handlePlaylistRedirect(playlist.id);
             }}
           >
-            <Image src={thumbnailSrc} boxSize={'54px'} />
+            <Image src={thumbnailSrc} boxSize={'54px'} borderRadius={'4px'} />
             <VStack>
               <Text color={'#c6c6c6'} as={'b'}>
                 {playlist.name}

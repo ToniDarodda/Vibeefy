@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { VStack, Text, Image, HStack } from '@chakra-ui/react';
-import { PlaylistView } from '../components/dashboard/view/playlistView';
+import { PlaylistView } from '../components/view/playlistView';
 import { useAudioPlayerContext } from '../contexts';
-import { selectColor, isAlbumInterface } from '../utils/playlistOrAlbum';
+import { selectColor } from '../utils/playlistOrAlbum';
 import { useParams } from 'react-router-dom';
 import { useGetPlaylistById } from '../query';
-import { ReducedAlbumBar } from '../components/dashboard/topBar/reduced/rAlbumBar';
-import { PlaylistBar } from '../components/dashboard/topBar/playlistBar';
+import { ReducedAlbumBar } from '../components/topBar/reduced/rAlbumBar';
+import { PlaylistBar } from '../components/topBar/playlistBar';
+import { albumService } from '../services';
 
 export function Playlist() {
   const { playlistId } = useParams();
@@ -37,11 +39,24 @@ export function Playlist() {
   };
 
   useEffect(() => {
-    selectColor(playlist, setBackgroundColor);
+    const resolvePlaylistImage = async () => {
+      if (
+        playlist &&
+        playlist.playlistSongs &&
+        playlist.playlistSongs.length > 0
+      ) {
+        const songId = playlist?.playlistSongs[0].songId;
+        const album = await albumService.getAlbumBySongId(songId!);
+        selectColor(album.thumbnails, setBackgroundColor);
+      } else {
+        setBackgroundColor('#191919');
+      }
+    };
+    resolvePlaylistImage();
   }, [playlist]);
 
   return (
-    <VStack w={'100%'} h={'100%'}>
+    <VStack w={'100%'} h={'100%'} backgroundColor={'#121212'}>
       <HStack
         w={'100%'}
         padding={reducedView ? '12px' : '24px'}
@@ -52,10 +67,7 @@ export function Playlist() {
         transition="0.3s ease-out"
       >
         {reducedView ? (
-          <ReducedAlbumBar
-            selectedAlbumOrSong={playlist!}
-            isAlbumInterface={isAlbumInterface}
-          />
+          <ReducedAlbumBar selectedAlbumOrSong={playlist!} />
         ) : (
           <PlaylistBar playlist={playlist!} />
         )}

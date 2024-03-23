@@ -1,6 +1,6 @@
 import { HStack, VStack, Text, Image } from '@chakra-ui/react';
-import { AlbumInterface } from '../../../interfaces';
-import { MakePictureLarger } from '../../../utils/formatPicture';
+import { AlbumInterface } from '../../interfaces';
+import { MakePictureLarger } from '../../utils/formatPicture';
 import { useNavigate } from 'react-router-dom';
 
 interface ArtistSearchInterface {

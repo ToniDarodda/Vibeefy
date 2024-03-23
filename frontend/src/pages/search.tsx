@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRef } from 'react';
 import { VStack, HStack } from '@chakra-ui/react';
 
 import { SearchBar } from '../components';
-import { AlbumSearch } from '../components/dashboard/search/albumSearch';
-import { ArtistSearch } from '../components/dashboard/search/artistSearch';
-import { NoDataSearch } from '../components/dashboard/search/noDataSearch';
-import { SongSearch } from '../components/dashboard/search/songSearch';
-import { TopResultSearch } from '../components/dashboard/search/topResultSearch';
+import { AlbumSearch } from '../components/search/albumSearch';
+import { ArtistSearch } from '../components/search/artistSearch';
+import { NoDataSearch } from '../components/search/noDataSearch';
+import { SongSearch } from '../components/search/songSearch';
+import { TopResultSearch } from '../components/search/topResultSearch';
 import { useGetAlbum } from '../query';
 import { useSearchProvider } from '../contexts/search.context';
 
@@ -40,7 +41,9 @@ export function Search() {
               <SongSearch albums={albums} />
             </HStack>
             <ArtistSearch albums={albums} />
-            <AlbumSearch albums={albums} />
+            <VStack w={'100%'}>
+              <AlbumSearch albums={albums} />
+            </VStack>
           </VStack>
         )}
       </HStack>

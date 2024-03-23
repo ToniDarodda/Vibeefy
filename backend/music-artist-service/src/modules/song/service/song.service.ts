@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Song } from 'src/entities/song/entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class SongService {
@@ -18,6 +18,14 @@ export class SongService {
         album: {
           artist: true,
         },
+      },
+    });
+  }
+
+  async getSongsInfoByIds(ids: string[]): Promise<Song[]> {
+    return this.songRepository.find({
+      where: {
+        id: In(ids),
       },
     });
   }

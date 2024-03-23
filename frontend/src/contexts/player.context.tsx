@@ -142,7 +142,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
 
         return {
           ...realSong,
-          albumName: playlistName,
+          albumName: playlistName ?? 'Test',
           link: s3LinkCache[realSong.videoId],
         };
       }),

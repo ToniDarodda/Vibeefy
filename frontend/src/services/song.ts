@@ -9,6 +9,16 @@ class SongService {
 
     return song;
   }
+
+  async getSongsInfoByIds(songIds: string[]): Promise<Song[]> {
+    const { data: songsInfo }: { data: Song[] } = await Fetch.get<Song[]>(
+      `/songs/info?${songIds.map((id: string) => `songId=${id}&`)}`.replaceAll(
+        ',',
+        '',
+      ),
+    );
+    return songsInfo;
+  }
 }
 
 export const songService: SongService = new SongService();

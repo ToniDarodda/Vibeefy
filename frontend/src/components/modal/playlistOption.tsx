@@ -2,8 +2,8 @@ import { VStack, HStack, Text, Icon, useToast } from '@chakra-ui/react';
 import { useEffect, useRef } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import { MdDelete, MdAddToQueue, MdShare } from 'react-icons/md';
-import { useDeletePlaylist, useGenerateCode } from '../../../query';
-import { BasePlaylistInterface } from '../../../interfaces';
+import { useDeletePlaylist, useGenerateCode } from '../../query';
+import { BasePlaylistInterface } from '../../interfaces';
 
 interface PlaylistOption {
   isModalPlaylistOptionOpen: boolean;

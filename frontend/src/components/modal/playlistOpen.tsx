@@ -1,5 +1,5 @@
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
-import { useCreatePlaylist } from '../../../query';
+import { useCreatePlaylist } from '../../query';
 import { useRef } from 'react';
 
 interface PlaylistOpenInterface {

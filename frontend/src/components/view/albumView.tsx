@@ -2,9 +2,9 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { HStack, Text, Image, VStack, Icon } from '@chakra-ui/react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 
-import { SongInterface, AlbumInterface } from '../../../interfaces';
-import { formatTime } from '../../../utils';
-import { useAudioPlayerContext } from '../../../contexts';
+import { SongInterface, AlbumInterface } from '../../interfaces';
+import { formatTime } from '../../utils';
+import { useAudioPlayerContext } from '../../contexts';
 
 interface AlbumViewInterface {
   album: AlbumInterface;

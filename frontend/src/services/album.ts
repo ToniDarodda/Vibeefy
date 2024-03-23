@@ -25,7 +25,6 @@ class AlbumService {
     const { data: album }: { data: AlbumInterface } = await Fetch.get(
       `album-info/song/${songId}`,
     );
-    console.log(songId);
     return album;
   }
 }

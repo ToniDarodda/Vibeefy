@@ -1,7 +1,7 @@
 import { HStack, VStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 
-import { AlbumInterface } from '../../../interfaces';
-import { truncateText } from '../../../utils/truncatText';
+import { AlbumInterface } from '../../interfaces';
+import { truncateText } from '../../utils/truncatText';
 import { useNavigate } from 'react-router-dom';
 
 interface AlbumSearchInterface {
@@ -23,12 +23,12 @@ export function AlbumSearch({ albums }: AlbumSearchInterface) {
         Albums
       </Text>
       <HStack
-        w="100%"
-        maxW={'100%'}
-        overflowX="auto"
-        overflowY="hidden"
-        gap="40px"
+        w={'100%'}
         padding="0px 0px 12px 0px"
+        alignItems={'flex-start'}
+        justifyContent={'flex-start'}
+        flexWrap={'wrap'}
+        gap={'30px'}
       >
         {albums
           .sort((a, b) => +b.year - +a.year)
@@ -41,8 +41,8 @@ export function AlbumSearch({ albums }: AlbumSearchInterface) {
                 _hover={{
                   backgroundColor: '#1e1e1e',
                 }}
-                padding={'12px'}
                 borderRadius={'4px'}
+                padding={'12px'}
                 alignItems={'flex-start'}
                 onClick={() => handleNavigateAlbum(album.id)}
               >

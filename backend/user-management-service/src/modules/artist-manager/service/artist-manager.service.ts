@@ -34,6 +34,10 @@ export class ArtistManagerService {
     return firstValueFrom(observable);
   }
 
+  async getSongsInfoByIds(ids: string[]) {
+    return this.client.send({ cmd: 'get_songs_info_by_ids' }, { ids: ids });
+  }
+
   async getSongsInfo(albumId: string) {
     const observable = this.client.send(
       { cmd: 'get_songs_by_album_id' },
