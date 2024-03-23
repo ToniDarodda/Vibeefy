@@ -30,8 +30,8 @@ export function ArtistSearch({ albums }: ArtistSearchInterface) {
               <VStack
                 w={'auto'}
                 key={index}
-                cursor={'pointer'}
                 padding={'12px'}
+                cursor={'pointer'}
                 borderRadius={'4px'}
                 _hover={{
                   backgroundColor: '#1e1e1e',

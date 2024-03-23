@@ -78,21 +78,21 @@ export function PlaylistBarView({
 
   return (
     <VStack
-      h={isPlaying ? '580px' : '660px'}
-      overflow={'scroll'}
       w={'100%'}
-      ref={modalRef}
+      h={isPlaying ? '580px' : '660px'}
       gap={'18px'}
+      ref={modalRef}
+      overflow={'scroll'}
       alignItems={'center'}
     >
       {lovedSong && lovedSong.length > 0 && (
         <HStack
           w={'100%'}
+          gap={'12px'}
+          padding={'4px'}
           cursor={'pointer'}
           borderRadius={'4px'}
           justifyContent={'flex-start'}
-          padding={'4px'}
-          gap={'12px'}
           _hover={{
             backgroundColor: '#161616',
           }}
@@ -115,11 +115,11 @@ export function PlaylistBarView({
           <HStack
             key={idx}
             w={'100%'}
+            gap={'12px'}
+            padding={'4px'}
             cursor={'pointer'}
             borderRadius={'4px'}
             justifyContent={'flex-start'}
-            padding={'4px'}
-            gap={'12px'}
             _hover={{
               backgroundColor: '#161616',
             }}
@@ -145,8 +145,8 @@ export function PlaylistBarView({
                 {playlist.name}
               </Text>
               <Text
-                color={'#919191'}
                 fontSize={'14px'}
+                color={'#919191'}
                 alignSelf={'flex-start'}
               >
                 Me

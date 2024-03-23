@@ -21,13 +21,7 @@ export function QueueView() {
     <VStack w={'100%'} h={'560px'}>
       {queue.map((q, index) => {
         return (
-          <HStack
-            key={index}
-            w={'100%'}
-            alignItems={'center'}
-            padding={'10px'}
-            onClick={() => {}}
-          >
+          <HStack w={'100%'} key={index} padding={'10px'} alignItems={'center'}>
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
             <VStack alignItems={'flex-start'}>
               <Text cursor={'pointer'}>
@@ -40,9 +34,9 @@ export function QueueView() {
       })}
       <VStack
         h={'2px'}
-        borderBottom={'1px solid #2b2a2a'}
         w={'100%'}
         marginTop={'20px'}
+        borderBottom={'1px solid #2b2a2a'}
       />
       {playlistQueue[0] && (
         <Text alignSelf={'flex-start'}>
@@ -53,10 +47,10 @@ export function QueueView() {
       {playlistQueue.map((q, index) => {
         return (
           <HStack
-            key={index}
             w={'100%'}
-            alignItems={'center'}
+            key={index}
             padding={'10px'}
+            alignItems={'center'}
             onClick={() => {
               setViewState(ViewStateEnum.SEARCH);
             }}

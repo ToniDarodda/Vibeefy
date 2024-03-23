@@ -22,22 +22,22 @@ export function SongSearch({ albums }: SongSearchInterface) {
       <VStack
         w={'100%'}
         h={'220px'}
-        alignItems={'flex-start'}
-        padding={isLargardThan800 ? '24px' : isLargardThan400 ? '12px' : '4px'}
-        borderRadius={'8px'}
+        gap={'12px'}
         cursor={'pointer'}
         overflow={'scroll'}
-        gap={'12px'}
+        borderRadius={'8px'}
+        alignItems={'flex-start'}
+        padding={isLargardThan800 ? '24px' : isLargardThan400 ? '12px' : '4px'}
       >
         {albums?.map((album: AlbumInterface) => {
           return album.songs.map((song: SongInterface, index: number) => {
             return (
               <HStack
                 w={'100%'}
-                justifyContent={'space-between'}
                 key={index}
-                padding={'0px 12px 0px 12px'}
                 borderRadius={'4px'}
+                padding={'0px 12px 0px 12px'}
+                justifyContent={'space-between'}
                 backgroundColor={currentSong?.id === song.id ? '#1e1e1e' : ''}
                 _hover={{
                   backgroundColor: '#1e1e1e',
@@ -62,8 +62,8 @@ export function SongSearch({ albums }: SongSearchInterface) {
                     boxSize={'44px'}
                   />
                   <VStack
-                    w={{ base: '100px', sm: '150px', md: '200px' }}
                     alignItems={'flex-start'}
+                    w={{ base: '100px', sm: '150px', md: '200px' }}
                   >
                     <Text fontSize={'14px'}>
                       {song.title.includes('(')

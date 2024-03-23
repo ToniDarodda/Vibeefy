@@ -12,12 +12,12 @@ export function NoDataSearch({ albums }: NoDataSearchInterface) {
         <VStack w={'100%'} justifyContent={'center'} alignItems={'center'}>
           <Text fontSize={'20px'}>No data found...</Text>
           <HStack
-            w={'200px'}
             h={'30px'}
-            backgroundColor={'#3d3d3d'}
-            justifyContent={'center'}
-            borderRadius={'4px'}
+            w={'200px'}
             cursor={'pointer'}
+            borderRadius={'4px'}
+            justifyContent={'center'}
+            backgroundColor={'#3d3d3d'}
             _hover={{
               backgroundColor: '#5e5d5d',
             }}

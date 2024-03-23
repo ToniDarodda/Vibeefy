@@ -51,12 +51,12 @@ export function PlaylistQueueBar() {
         <VStack w={'100%'} h={'100%'} flex={1} borderRadius={'8px'}>
           <VStack
             w={'100%'}
+            gap={'20px'}
+            padding={'12px'}
             borderRadius={'8px'}
+            alignItems={'flex-start'}
             backgroundColor={'#2b2b2b'}
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
-            padding={'12px'}
-            alignItems={'flex-start'}
-            gap={'20px'}
           >
             <HStack
               h={'50px'}
@@ -78,10 +78,10 @@ export function PlaylistQueueBar() {
             </HStack>
             <HStack
               w={'100%'}
-              gap={'20%'}
-              cursor={'pointer'}
               h={'50px'}
+              gap={'20%'}
               padding={'12px'}
+              cursor={'pointer'}
               borderRadius={'8px'}
               onMouseEnter={() => setIsHoveredLoop(true)}
               onMouseLeave={() => setIsHoveredLoop(false)}
@@ -99,9 +99,9 @@ export function PlaylistQueueBar() {
             flex={3}
             w={'100%'}
             borderRadius={'8px'}
+            padding={'0px 12px 0px'}
             backgroundColor={'#2b2b2b'}
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
-            padding={'0px 12px 0px'}
             onContextMenu={(e) => {
               e.preventDefault();
               setModalPlaylistOptionOpen(false);

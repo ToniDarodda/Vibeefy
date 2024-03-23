@@ -24,11 +24,11 @@ export function AlbumSearch({ albums }: AlbumSearchInterface) {
       </Text>
       <HStack
         w={'100%'}
-        padding="0px 0px 12px 0px"
-        alignItems={'flex-start'}
-        justifyContent={'flex-start'}
-        flexWrap={'wrap'}
         gap={'30px'}
+        flexWrap={'wrap'}
+        alignItems={'flex-start'}
+        padding="0px 0px 12px 0px"
+        justifyContent={'flex-start'}
       >
         {albums
           .sort((a, b) => +b.year - +a.year)
@@ -36,14 +36,14 @@ export function AlbumSearch({ albums }: AlbumSearchInterface) {
             return (
               <VStack
                 key={index}
+                padding={'12px'}
                 cursor={'pointer'}
-                justifyContent={'space-between'}
+                borderRadius={'4px'}
+                alignItems={'flex-start'}
                 _hover={{
                   backgroundColor: '#1e1e1e',
                 }}
-                borderRadius={'4px'}
-                padding={'12px'}
-                alignItems={'flex-start'}
+                justifyContent={'space-between'}
                 onClick={() => handleNavigateAlbum(album.id)}
               >
                 <Image
@@ -61,12 +61,12 @@ export function AlbumSearch({ albums }: AlbumSearchInterface) {
                   objectFit="cover"
                 />
                 <Text
-                  overflow={'hidden'}
                   maxW={{
                     base: '100px',
                     sm: '120px',
                     md: '200px',
                   }}
+                  overflow={'hidden'}
                 >
                   {truncateText(
                     album.title.split('(')[0],

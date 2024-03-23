@@ -24,11 +24,11 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
       <VStack
         w={'100%'}
         h={'220px'}
-        backgroundColor={'#161616'}
-        alignItems={'flex-start'}
         padding={'24px'}
-        borderRadius={'8px'}
         cursor={'pointer'}
+        borderRadius={'8px'}
+        alignItems={'flex-start'}
+        backgroundColor={'#161616'}
         _hover={{
           backgroundColor: '#2d2d2d',
         }}
@@ -38,12 +38,12 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
       >
         <Image
           src={MakePictureLarger(albums[0])}
-          boxSize={{ base: '60px', sm: '80px', md: '100px' }}
           borderRadius={'100px'}
+          boxSize={{ base: '60px', sm: '80px', md: '100px' }}
         />
         <Text
-          fontSize={{ base: '16px', sm: '16px', md: '20px', lg: '24px' }}
           as={'b'}
+          fontSize={{ base: '16px', sm: '16px', md: '20px', lg: '24px' }}
         >
           {artist.name}
         </Text>
