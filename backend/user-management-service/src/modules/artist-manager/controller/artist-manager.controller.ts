@@ -46,7 +46,9 @@ export class ArtistManagerController {
 
   @Get('songs/info')
   async getSongsInfoById(@Query('songId') songIds: string[]) {
-    return this.userService.getSongsInfoByIds(songIds);
+    const ids = songIds instanceof Array ? songIds : [songIds];
+
+    return this.userService.getSongsInfoByIds(ids);
   }
 
   @Get('songs/:songId')
