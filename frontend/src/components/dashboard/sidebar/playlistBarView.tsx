@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from 'react';
-import { HStack, Text, Icon, VStack, Image } from '@chakra-ui/react';
+import { HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { MdLibraryMusic } from 'react-icons/md';
 
 import { BasePlaylistInterface, PlaylistType } from '../../../interfaces';
 import { ModalPlaylistOption } from '../modal/playlistOption';
 import { useAudioPlayerContext } from '../../../contexts';
 import { useGetLovedSong } from '../../../query/lovedSong';
 import { useGetAlbumBySongId } from '../../../query';
+import { useGetSong } from '../../../query/song';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {
@@ -91,7 +92,7 @@ export function PlaylistBarView({
             backgroundColor: '#161616',
           }}
         >
-          <Icon as={MdLibraryMusic} color={'#535353'} boxSize={'54px'} />
+          <Image src="/collection1.png" boxSize={'54px'} borderRadius={'4px'} />
           <VStack>
             <Text color={'#c6c6c6'} as={'b'}>
               Liked Songs

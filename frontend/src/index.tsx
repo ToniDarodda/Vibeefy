@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 
 import ReactDOM from 'react-dom/client';
@@ -6,18 +5,21 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Loading } from './pages';
 import { AudioPlayerProvider } from './contexts/player.context';
 import { ViewStateProvider } from './contexts/viewState.context';
-import { Login } from './pages/auth/login';
-import { Register } from './pages/auth/register';
-import { Album } from './pages/album';
-import { Playlist } from './pages/playlist';
-import { Search } from './pages/search';
-import { Layout } from './pages/layout';
-import { EmptySearch } from './pages/emptySearch';
 import { SearchProvider } from './contexts/search.context';
-import { Artist } from './pages/artist';
+import {
+  Layout,
+  EmptySearch,
+  Artist,
+  Album,
+  Playlist,
+  Collection,
+  Login,
+  Loading,
+  Search,
+  Register,
+} from './pages';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'artist/:id', element: <Artist /> },
       { path: 'album/:albumId', element: <Album /> },
       { path: 'playlist/:playlistId', element: <Playlist /> },
+      { path: 'collection/tracks', element: <Collection /> },
     ],
   },
   { path: '/login', element: <Login /> },

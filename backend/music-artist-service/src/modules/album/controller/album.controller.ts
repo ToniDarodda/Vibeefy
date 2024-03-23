@@ -16,6 +16,7 @@ export class AlbumController {
 
   @MessagePattern({ cmd: 'get_album_by_id' })
   async getAlbumById({ id }: AlbumGetById): Promise<Album> {
+    console.log(id);
     return await this.albumService.getAlbumById(id);
   }
 

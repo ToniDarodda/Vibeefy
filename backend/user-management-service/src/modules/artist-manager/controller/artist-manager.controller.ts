@@ -22,14 +22,14 @@ export class ArtistManagerController {
     return this.userService.getArtist(+take, +skip);
   }
 
+  @Get('album-info/song/:songId')
+  async getAlbumInfoBySongId(@Param('songId') songId: string) {
+    return this.userService.getAlbumInfoBySongId(songId);
+  }
+
   @Get('album-info/:albumId')
   async getAlbumInfo(@Param('albumId') albumId: string) {
     return this.userService.getAlbumInfo(albumId);
-  }
-
-  @Get('album-info/song/:songId')
-  async getAlbumInfoBySongId(@Param('songId') songId: string) {
-    return this.userService.getAlbumInfo(songId);
   }
 
   @Get('album-name-info/')

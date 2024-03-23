@@ -43,8 +43,6 @@ export class AlbumService {
       },
     });
 
-    console.log(album);
-
     return await this.albumRepository.findOne({
       where: {
         albumId: album.albumId,
