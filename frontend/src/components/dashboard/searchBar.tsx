@@ -128,7 +128,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
               {...rest}
               value={inputValue}
               onChange={handleChange}
-              w={'400px'}
+              w={{ base: '300px', sm: '300px', md: '400px' }}
               backgroundColor={'#1b1b1b'}
               _placeholder={{
                 color: '#c7c7c7c1',
@@ -154,7 +154,11 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
             }}
           />
         </HStack>
-        <HStack w={'100%'} gap={'12px'} padding={'0px 24px 0px 24px'}>
+        <HStack
+          w={'100%'}
+          gap={'12px'}
+          padding={{ base: '0px', sm: '0px', md: '0px 24px 0px 24px' }}
+        >
           <HStack
             h={'30px'}
             w={'50px'}
@@ -174,7 +178,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
           </HStack>
           <HStack
             h={'30px'}
-            w={'70px'}
+            w={'80px'}
             cursor={'pointer'}
             borderRadius={'28px'}
             justifyContent={'center'}
@@ -191,7 +195,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
           </HStack>
           <HStack
             h={'30px'}
-            w={'70px'}
+            w={'80px'}
             cursor={'pointer'}
             borderRadius={'28px'}
             justifyContent={'center'}
@@ -208,7 +212,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
           </HStack>
           <HStack
             h={'30px'}
-            w={'70px'}
+            w={'80px'}
             cursor={'pointer'}
             borderRadius={'28px'}
             justifyContent={'center'}

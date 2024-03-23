@@ -43,10 +43,13 @@ export function TopResultSearch({
       >
         <Image
           src={MakePictureLarger(albums[0])}
-          boxSize={'100px'}
+          boxSize={{ base: '60px', sm: '80px', md: '100px' }}
           borderRadius={'100px'}
         />
-        <Text fontSize={'24px'} as={'b'}>
+        <Text
+          fontSize={{ base: '16px', sm: '16px', md: '20px', lg: '24px' }}
+          as={'b'}
+        >
           {artist.name}
         </Text>
         <Text color={'#adadad'}>Artist</Text>

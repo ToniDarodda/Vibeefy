@@ -56,7 +56,12 @@ export function ArtistBar({ artist, reducedView }: ArtistBarInterface) {
               boxSize={'34px'}
             />
             <HStack>
-              <Text position="absolute" p="4" fontSize={'80px'} as={'b'}>
+              <Text
+                position="absolute"
+                p="4"
+                fontSize={{ base: '20px', md: '40px', lg: '70px', xl: '80px' }}
+                as={'b'}
+              >
                 {artist?.name}
               </Text>
             </HStack>
@@ -89,7 +94,12 @@ export function ArtistBar({ artist, reducedView }: ArtistBarInterface) {
               alignItems={reducedView ? 'center' : 'flex-start'}
               justifyContent={reducedView ? 'center' : 'flex-end'}
             >
-              <Text position="absolute" p="4" fontSize={'80px'} as={'b'}>
+              <Text
+                position="absolute"
+                p="4"
+                fontSize={{ base: '20px', md: '40px', lg: '70px', xl: '80px' }}
+                as={'b'}
+              >
                 {artist?.name}
               </Text>
             </VStack>

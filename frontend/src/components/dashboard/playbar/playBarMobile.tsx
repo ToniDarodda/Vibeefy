@@ -53,85 +53,85 @@ export function PlaybarMobile({ isLargerThan1000 }: PlayBarMobileInterface) {
 
   return (
     <>
-      {!isLargerThan1000 && isListening && (
+      {!isLargerThan1000 && (
         <>
-          <HStack
-            position={'fixed'}
-            bottom={'90px'}
-            backgroundColor={'#513e21'}
-            background={`linear-gradient(190deg, #191919 0%, #131313 100%)`}
-            w={'calc(100% - 20px)'}
-            borderRadius={'8px'}
-            h={'60px'}
-            padding={'12px'}
-            marginBottom={'4px'}
-          >
-            <Image
-              src={albums ? albums[0]?.thumbnails : 'vinyl.png'}
-              boxSize={'50px'}
-            />
-            <VStack alignItems={'flex-start'} gap={'4px'} marginRight={'8px'}>
-              <Text>{truncateText(currentSong?.title ?? '', 16)}</Text>
-              <Text color={'#ffffff8a'}>Saison 2</Text>
-            </VStack>
-
-            <Image
-              src={isTheSongLiked() ? '/heart.png' : '/like.png'}
-              boxSize={'20px'}
-              cursor={'pointer'}
-              onClick={handleLovedSong}
-            />
+          {isListening && (
             <HStack
-              alignItems={'center'}
-              flex={1}
-              justifyContent={'flex-end'}
-              gap={'20px'}
+              background={`linear-gradient(190deg, #191919 0%, #131313 100%)`}
+              borderRadius={'8px'}
+              h={'60px'}
+              w={'100%'}
+              padding={'8px'}
             >
-              {!isPlaying && !isPaused && !isFinish && (
-                <Spinner boxSize={'38px'} color="#ffffff" />
-              )}
-              {(isPlaying || isPaused || isFinish) && (
+              <Image
+                src={albums ? albums[0]?.thumbnails : 'vinyl.png'}
+                borderRadius={'4px'}
+                boxSize={'50px'}
+              />
+              <VStack alignItems={'flex-start'} gap={'4px'} marginRight={'8px'}>
+                <Text>{truncateText(currentSong?.title ?? '', 13)}</Text>
+                <Text color={'#ffffff8a'} fontSize={'12px'}>
+                  {albums ? truncateText(albums[0].title, 12) : ''}
+                </Text>
+              </VStack>
+              <Image
+                src={isTheSongLiked() ? '/heart.png' : '/like.png'}
+                boxSize={'16px'}
+                cursor={'pointer'}
+                onClick={handleLovedSong}
+              />
+              <HStack
+                alignItems={'center'}
+                flex={1}
+                justifyContent={'flex-end'}
+                gap={'12px'}
+              >
+                {!isPlaying && !isPaused && !isFinish && (
+                  <Spinner boxSize={'38px'} color="#ffffff" />
+                )}
+                {(isPlaying || isPaused || isFinish) && (
+                  <Icon
+                    as={!isPlaying ? FaCirclePlay : FaCirclePause}
+                    cursor={'pointer'}
+                    boxSize={'30px'}
+                    color="#ffffff"
+                    onClick={() => {
+                      togglePlayPause();
+                      setIsPaused(!isPaused);
+                    }}
+                    borderRadius={'100px'}
+                    _hover={{
+                      color: '#fe9333',
+                      backgroundColor: '#ffffff',
+                    }}
+                  />
+                )}
                 <Icon
-                  as={!isPlaying ? FaCirclePlay : FaCirclePause}
+                  as={MdOutlineSkipNext}
                   cursor={'pointer'}
-                  boxSize={'34px'}
-                  color="#ffffff"
-                  onClick={() => {
-                    togglePlayPause();
-                    setIsPaused(!isPaused);
-                  }}
-                  borderRadius={'100px'}
+                  boxSize={'26px'}
+                  onClick={playNext}
+                  color={'#8b8b8b'}
                   _hover={{
-                    color: '#fe9333',
-                    backgroundColor: '#ffffff',
+                    color: '#ffffff',
                   }}
                 />
-              )}
-              <Icon
-                as={MdOutlineSkipNext}
-                cursor={'pointer'}
-                boxSize={'30px'}
-                onClick={playNext}
-                color={'#8b8b8b'}
-                _hover={{
-                  color: '#ffffff',
-                }}
-              />
+              </HStack>
             </HStack>
-          </HStack>
+          )}
           <HStack
             w={'100%'}
-            h={'80px'}
+            h={'48px'}
             borderRadius={'8px'}
-            backgroundColor={'#3d3d3d'}
-            justifyContent={'space-between'}
+            justifyContent={'space-evenly'}
+            gap={'50px'}
             alignItems={'center'}
-            padding={'40px'}
-            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #2B2B2B"
+            padding={'12px'}
+            background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #191919  "
           >
-            <Image src="/home.png" boxSize={'30px'} />
-            <Image src="/loop.png" boxSize={'30px'} />
-            <Image src="/pl.png" boxSize={'30px'} />
+            <Image src="/home.png" boxSize={'22px'} />
+            <Image src="/loop.png" boxSize={'22px'} />
+            <Image src="/pl.png" boxSize={'22px'} />
           </HStack>
         </>
       )}
