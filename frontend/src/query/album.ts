@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import { albumService } from '../services/album';
 
 const MutationKeyGetAlbum = 'GET_ALBUMS_KEY';
@@ -28,14 +28,13 @@ export const useGetAlbumById = (albumId: string) => {
   });
 };
 
-import { useQueries } from '@tanstack/react-query';
-
 export const useGetAlbumBySongId = (firstSongIds: string[]) =>
   useQueries({
     queries: firstSongIds.map((songId) => {
       return {
         queryKey: [MutationKeyGetAlbumBySongId, songId],
         queryFn: () => albumService.getAlbumBySongId(songId),
+        enabled: songId !== undefined && songId.length > 0,
       };
     }),
   });

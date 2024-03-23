@@ -1,13 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { forwardRef, RefObject, useCallback } from 'react';
+import {
+  ChangeEvent,
+  forwardRef,
+  RefObject,
+  useCallback,
+  useEffect,
+} from 'react';
 import { HStack, Input, Icon, VStack, Text } from '@chakra-ui/react';
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdAccountCircle,
 } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { debounce } from 'lodash';
+
 import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 
 interface SearchBarInterface {
@@ -15,20 +21,37 @@ interface SearchBarInterface {
 }
 
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
-  ({ inputRef, ...rest }, _ref) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ inputRef, ...rest }, ref) => {
     const navigate = useNavigate();
+    const { name } = useParams();
 
     const {
       setSearch,
       applyMusicTypeBackground,
       applyMusicTypeColor,
       handleClickMusicType,
-      handleLastSearch,
       handleResetSearch,
       lastInput,
       inputValue,
       setInputValue,
     } = useSearchProvider();
+
+    const handleNavigateBack = () => {
+      navigate(-1);
+    };
+
+    const updateSearch = (searchValue: string) => {
+      setSearch(searchValue);
+      navigate(searchValue ? `/search/${searchValue}` : '/search');
+    };
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setInputValue(value);
+      debouncedUpdateSearch(value);
+      debouncedUpdateEmptySearch(value);
+    };
 
     const debouncedUpdateSearch = useCallback(
       debounce((searchValue) => {
@@ -38,11 +61,22 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
       [setSearch, navigate],
     );
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setInputValue(value);
-      debouncedUpdateSearch(value);
-    };
+    const debouncedUpdateEmptySearch = useCallback(
+      debounce((searchValue) => {
+        if (searchValue === '') {
+          setSearch('');
+          navigate('/search');
+        }
+      }, 300),
+      [setSearch, navigate],
+    );
+
+    useEffect(() => {
+      if (name) {
+        setInputValue(name!);
+        setSearch(name!);
+      }
+    }, []);
 
     return (
       <VStack
@@ -61,7 +95,10 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
                 color={inputValue.length > 0 ? '#ffffff' : '#959595'}
                 cursor={inputValue.length > 0 ? 'pointer' : 'normal'}
                 boxSize={'34px'}
-                onClick={handleResetSearch}
+                onClick={() => {
+                  handleResetSearch();
+                  handleNavigateBack();
+                }}
               />
             </VStack>
             <VStack backgroundColor={'#191919'} borderRadius={'100px'}>
@@ -70,7 +107,10 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
                 color={lastInput.length > 0 ? '#ffffff' : '#959595'}
                 cursor={lastInput.length > 0 ? 'pointer' : 'normal'}
                 boxSize={'34px'}
-                onClick={handleLastSearch}
+                onClick={() => {
+                  setInputValue(lastInput);
+                  updateSearch(lastInput);
+                }}
               />
             </VStack>
             <Input

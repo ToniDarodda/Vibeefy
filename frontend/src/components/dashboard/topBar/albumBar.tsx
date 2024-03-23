@@ -3,11 +3,18 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 import { AlbumInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
+import { useNavigate } from 'react-router-dom';
 
 export interface AlbumBarInterface {
   album: AlbumInterface;
 }
 export function AlbumBar({ album }: AlbumBarInterface) {
+  const navigate = useNavigate();
+
+  const handleNavigateBack = () => {
+    navigate(-1);
+  };
+
   return (
     <VStack h={'100%'} alignItems={'flex-start'} gap={'30px'}>
       <HStack>
@@ -16,6 +23,7 @@ export function AlbumBar({ album }: AlbumBarInterface) {
           cursor={'pointer'}
           color={'#ffffff'}
           boxSize={'34px'}
+          onClick={handleNavigateBack}
         />
         <Icon as={MdKeyboardArrowRight} color={'#959595'} boxSize={'34px'} />
       </HStack>

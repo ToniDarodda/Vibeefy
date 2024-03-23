@@ -101,7 +101,8 @@ export function PlaylistBarView({
       )}
       {playlists?.map((playlist: PlaylistType, idx: number) => {
         const album = albumInfoQueries[idx]?.data;
-        const thumbnailSrc = album?.thumbnails ?? 'vinyl.png';
+        const thumbnailSrc = album?.thumbnails ?? '/vinyl.png';
+
         return (
           <HStack
             key={idx}

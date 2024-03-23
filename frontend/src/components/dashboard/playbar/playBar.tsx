@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   HStack,
   Text,
@@ -21,14 +21,9 @@ import { FaCirclePause } from 'react-icons/fa6';
 import { MdOutlineSkipPrevious, MdOutlineSkipNext } from 'react-icons/md';
 
 import { useAudioPlayerContext } from '../../../contexts';
-import {
-  AlbumInterface,
-  BasePlaylistInterface,
-  LovedSong,
-  SearchResponse,
-} from '../../../interfaces';
+import { LovedSong } from '../../../interfaces';
 import { formatTime } from '../../../utils';
-import { useGetAlbum, useGetAlbumBySongId } from '../../../query';
+import { useGetAlbumBySongId } from '../../../query';
 import { truncateText } from '../../../utils/truncatText';
 import {
   ViewStateEnum,
@@ -67,8 +62,6 @@ export function Playbar({}: PlaybarInterface) {
   const [likedSong, setLikedSong] = useState<boolean>(false);
 
   const progressBarRef = useRef<HTMLDivElement>(null);
-
-  const { data: albums } = useGetAlbum(currentSong?.albumName ?? 'NA', 1, 0);
 
   const albumInfoQueries = useGetAlbumBySongId([currentSong?.id ?? '']);
 

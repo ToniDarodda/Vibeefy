@@ -22,11 +22,11 @@ export function PlaylistQueueBar() {
     clientY: number;
   }>({ clientX: 0, clientY: 0 });
 
-  const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
+  const { queueState } = useViewStateContext();
 
   const { data: playlists } = useGetPlaylist();
 
-  const { queueState } = useViewStateContext();
+  const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
 
   return (
     <VStack

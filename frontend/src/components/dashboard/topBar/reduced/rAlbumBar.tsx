@@ -1,11 +1,8 @@
 import { HStack, Tooltip, Image, Text } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../../contexts/viewState.context';
-import { truncateText } from '../../../utils/truncatText';
+import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
+import { truncateText } from '../../../../utils/truncatText';
+import { useNavigate } from 'react-router-dom';
 
 interface ReducedAlbumBarInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
@@ -16,7 +13,11 @@ export function ReducedAlbumBar({
   isAlbumInterface,
   selectedAlbumOrSong,
 }: ReducedAlbumBarInterface) {
-  const { setViewState } = useViewStateContext();
+  const navigate = useNavigate();
+
+  const handleNavigateBack = () => {
+    navigate(-1);
+  };
 
   return (
     <HStack
@@ -30,14 +31,10 @@ export function ReducedAlbumBar({
           src="/next2.png"
           transform="rotate(180deg)"
           boxSize={'20px'}
-          onClick={() => setViewState(ViewStateEnum.SEARCH)}
+          onClick={handleNavigateBack}
         />
       </Tooltip>
-      <Image
-        src="/next2.png"
-        boxSize={'20px'}
-        onClick={() => setViewState(ViewStateEnum.ALBUM)}
-      />
+      <Image src="/next2.png" boxSize={'20px'} />
       <Image
         src={
           isAlbumInterface(selectedAlbumOrSong)

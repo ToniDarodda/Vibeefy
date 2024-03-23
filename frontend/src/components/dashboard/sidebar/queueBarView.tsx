@@ -1,7 +1,5 @@
 import { HStack, Image, Text, VStack } from '@chakra-ui/react';
-import { SongInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
-import { useState } from 'react';
 import { useAudioPlayerContext } from '../../../contexts';
 import {
   ViewStateEnum,
@@ -12,9 +10,6 @@ export function QueueView() {
   const { queue, playlistQueue } = useAudioPlayerContext();
 
   const { setViewState } = useViewStateContext();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [clickedAlbum, setClickedAlbum] = useState<SongInterface | null>(null);
 
   const getAlbumName = (albumName: string | undefined) => {
     if (albumName && albumName.length > 0) return albumName.split('(')[0];
@@ -31,10 +26,7 @@ export function QueueView() {
             w={'100%'}
             alignItems={'center'}
             padding={'10px'}
-            onClick={() => {
-              setClickedAlbum(q);
-              setViewState(ViewStateEnum.PLAYLIST);
-            }}
+            onClick={() => {}}
           >
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
             <VStack alignItems={'flex-start'}>
@@ -66,7 +58,6 @@ export function QueueView() {
             alignItems={'center'}
             padding={'10px'}
             onClick={() => {
-              setClickedAlbum(q);
               setViewState(ViewStateEnum.SEARCH);
             }}
           >

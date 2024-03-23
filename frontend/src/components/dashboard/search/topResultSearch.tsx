@@ -1,19 +1,20 @@
 import { VStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface } from '../../../interfaces';
 import { MakePictureLarger } from '../../../utils/formatPicture';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../../contexts/viewState.context';
+import { useNavigate } from 'react-router-dom';
 
 interface TopResultSearchInterface {
   albums: AlbumInterface[];
 }
 
 export function TopResultSearch({ albums }: TopResultSearchInterface) {
+  const navigate = useNavigate();
+
   const artist = albums?.[0]?.artist ?? '';
 
-  const { setViewState } = useViewStateContext();
+  const handleNavigateArtist = (artistId: string) => {
+    navigate(`/artist/${artistId}`);
+  };
 
   return (
     <VStack justifyContent={'flex-start'} alignItems={'flex-start'}>
@@ -32,8 +33,7 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
           backgroundColor: '#2d2d2d',
         }}
         onClick={() => {
-          setViewState(ViewStateEnum.SELECTEDARTIST);
-          // setSelectedArtist(artist.id);
+          handleNavigateArtist(artist.id);
         }}
       >
         <Image

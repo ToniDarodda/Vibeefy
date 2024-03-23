@@ -7,10 +7,11 @@ import { useGetAlbumById } from '../query';
 import { isAlbumInterface } from '../utils/playlistOrAlbum';
 import { useParams } from 'react-router-dom';
 import { AlbumBar } from '../components/dashboard/topBar/albumBar';
-import { ReducedAlbumBar } from '../components/dashboard/topBar/reducedAlbumBar';
+import { ReducedAlbumBar } from '../components/dashboard/topBar/reduced/rAlbumBar';
 
 export function Album() {
   const { albumId } = useParams();
+
   const [reducedView, setReducedView] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [isModalAddPlaylistQueueOpen, setIsModalAddPlaylistQueueOpen] =
@@ -44,7 +45,7 @@ export function Album() {
   };
 
   return (
-    <VStack w={'100%'} h={'100%'}>
+    <VStack w={'100%'} h={'100%'} backgroundColor={'#121212'}>
       <HStack
         w={'100%'}
         padding={reducedView ? '12px' : '24px'}

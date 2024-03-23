@@ -23,12 +23,12 @@ export function AlbumSearch({ albums }: AlbumSearchInterface) {
         Albums
       </Text>
       <HStack
-        w="100%" // Utilisez 100% de la largeur du parent
+        w="100%"
         maxW={'100%'}
-        overflowX="auto" // Autorise le défilement horizontal si nécessaire
-        overflowY="hidden" // Empêche le défilement vertical
-        gap="40px" // Espace entre chaque album
-        padding="0px 0px 12px 0px" // Pad
+        overflowX="auto"
+        overflowY="hidden"
+        gap="40px"
+        padding="0px 0px 12px 0px"
       >
         {albums
           .sort((a, b) => +b.year - +a.year)

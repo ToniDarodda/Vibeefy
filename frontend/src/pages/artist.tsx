@@ -1,20 +1,21 @@
 import { Text, VStack, Image, HStack, Icon } from '@chakra-ui/react';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-
 import { MdOutlineQueueMusic } from 'react-icons/md';
 import { GoPlus } from 'react-icons/go';
 import { MdFavorite } from 'react-icons/md';
+
 import { ArtistBar } from '../components/dashboard/topBar/artistBar';
 import { useAudioPlayerContext } from '../contexts';
 import { AlbumInfo } from '../interfaces';
 import { formatTime } from '../utils';
 import { truncateText } from '../utils/truncatText';
 import { useGetArtistInfo } from '../query/artist';
-import { useParams } from 'react-router-dom';
 
 export function Artist() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [reducedView, setReducedView] = useState<boolean>(false);
   const [clickedAlbum, setClickedAlbum] = useState<AlbumInfo>();
   const [isModalAlbumQueueOpen, setIsModalAlbumQueueOpen] =
@@ -59,6 +60,10 @@ export function Artist() {
 
   const showLessSongs = () => {
     setSongDisplayLimit(5);
+  };
+
+  const handleNavigateAlbum = (albumId: string) => {
+    navigate(`/album/${albumId}`);
   };
 
   useEffect(() => {
@@ -130,7 +135,7 @@ export function Artist() {
                       }
                       boxSize={'50px'}
                       borderRadius={'4px'}
-                    ></Image>
+                    />
                     <Text>{truncateText(song.title.split('(')[0], 15)}</Text>
                   </HStack>
                   <Text color={'#7a7a7a'}>{formatTime(song.songDuration)}</Text>
@@ -185,20 +190,7 @@ export function Artist() {
                       setClickedAlbum(album);
                       setIsModalAlbumQueueOpen(true);
                     }}
-                    onClick={() => {
-                      // setSelectedAlbumOrSong({
-                      //   ...album,
-                      //   artist: {
-                      //     id: artist.id,
-                      //     artistYoutubeId: artist.artistYoutubeId,
-                      //     description: artist.description,
-                      //     name: artist.name,
-                      //     profilePicture: artist.profilePicture,
-                      //     thumbnails: artist.thumbnails,
-                      //   },
-                      // });
-                      // setViewState(ViewStateEnum.ALBUM);
-                    }}
+                    onClick={() => handleNavigateAlbum(album.id)}
                   >
                     <VStack w={'100%'}>
                       <Image

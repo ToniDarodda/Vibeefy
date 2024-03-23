@@ -5,7 +5,7 @@ import { useAudioPlayerContext } from '../contexts';
 import { selectColor, isAlbumInterface } from '../utils/playlistOrAlbum';
 import { useParams } from 'react-router-dom';
 import { useGetPlaylistById } from '../query';
-import { ReducedAlbumBar } from '../components/dashboard/topBar/reducedAlbumBar';
+import { ReducedAlbumBar } from '../components/dashboard/topBar/reduced/rAlbumBar';
 import { PlaylistBar } from '../components/dashboard/topBar/playlistBar';
 
 export function Playlist() {
@@ -51,13 +51,14 @@ export function Playlist() {
         height={reducedView ? '80px' : '260px'}
         transition="0.3s ease-out"
       >
-        {reducedView && (
+        {reducedView ? (
           <ReducedAlbumBar
             selectedAlbumOrSong={playlist!}
             isAlbumInterface={isAlbumInterface}
           />
+        ) : (
+          <PlaylistBar playlist={playlist!} />
         )}
-        {!reducedView && <PlaylistBar playlist={playlist!} />}
       </HStack>
 
       <VStack
