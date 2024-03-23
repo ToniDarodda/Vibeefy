@@ -17,6 +17,7 @@ export class AlbumService {
       },
       relations: {
         songs: true,
+        artist: true,
       },
     });
   }
@@ -41,8 +42,6 @@ export class AlbumService {
         },
       },
     });
-
-    console.log(album);
 
     return await this.albumRepository.findOne({
       where: {

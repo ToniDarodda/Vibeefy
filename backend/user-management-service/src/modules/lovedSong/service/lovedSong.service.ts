@@ -40,15 +40,14 @@ export class LovedSongService {
     return lovedSongCreated;
   }
 
-  getLovedSong(userId: string): Promise<LovedSong[]> {
-    return this.lovedSongRepository.find({
+  getLovedSong(userId: string): Promise<LovedSongToSong[]> {
+    return this.lovedSongToSongRepository.find({
       where: {
-        user: {
-          id: userId,
+        lovedSong: {
+          user: {
+            id: userId,
+          },
         },
-      },
-      relations: {
-        lovedSongToSong: true,
       },
     });
   }

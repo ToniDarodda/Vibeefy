@@ -1,4 +1,4 @@
-import { LovedSong } from '../interfaces/song';
+import { LovedSong, LovedSongToSong } from '../interfaces/song';
 import { Fetch } from '../utils';
 
 export class LovedSongService {
@@ -11,9 +11,9 @@ export class LovedSongService {
     return lovedSong;
   }
 
-  async getAllLovedSong(): Promise<LovedSong[]> {
-    const { data: lovedSongs }: { data: LovedSong[] } =
-      await Fetch.get<LovedSong[]>(`/love-song`);
+  async getAllLovedSong(): Promise<LovedSongToSong[]> {
+    const { data: lovedSongs }: { data: LovedSongToSong[] } =
+      await Fetch.get<LovedSongToSong[]>(`/love-song`);
 
     return lovedSongs;
   }

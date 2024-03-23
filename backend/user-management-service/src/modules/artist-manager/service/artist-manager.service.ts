@@ -14,8 +14,11 @@ export class ArtistManagerService {
     return this.client.send({ cmd: 'get_artist' }, { take, skip });
   }
 
-  async getAlbumInfo(songId: string) {
-    return this.client.send({ cmd: 'get_album_by_song_id' }, { id: songId });
+  async getAlbumInfo(albumId: string) {
+    return this.client.send({ cmd: 'get_album_by_id' }, { id: albumId });
+  }
+  async getAlbumInfoBySongId(albumId: string) {
+    return this.client.send({ cmd: 'get_album_by_song_id' }, { id: albumId });
   }
 
   async getAlbumByNameInfo(name: string, take?: number, skip?: number) {
@@ -29,6 +32,10 @@ export class ArtistManagerService {
     const observable = this.client.send({ cmd: 'get_song_by_id' }, { id: id });
 
     return firstValueFrom(observable);
+  }
+
+  async getSongsInfoByIds(ids: string[]) {
+    return this.client.send({ cmd: 'get_songs_info_by_ids' }, { ids: ids });
   }
 
   async getSongsInfo(albumId: string) {

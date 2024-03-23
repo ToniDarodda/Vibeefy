@@ -137,6 +137,7 @@ export class PlaylistService {
       },
       relations: {
         playlistSongs: true,
+        user: true,
       },
     });
   }

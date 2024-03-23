@@ -22,14 +22,14 @@ export class ArtistManagerController {
     return this.userService.getArtist(+take, +skip);
   }
 
-  @Get('album-info/:albumId')
-  async getAlbumInfo(@Param('albumId') artistId: string) {
-    return this.userService.getAlbumInfo(artistId);
-  }
-
   @Get('album-info/song/:songId')
   async getAlbumInfoBySongId(@Param('songId') songId: string) {
-    return this.userService.getAlbumInfo(songId);
+    return this.userService.getAlbumInfoBySongId(songId);
+  }
+
+  @Get('album-info/:albumId')
+  async getAlbumInfo(@Param('albumId') albumId: string) {
+    return this.userService.getAlbumInfo(albumId);
   }
 
   @Get('album-name-info/')
@@ -42,6 +42,11 @@ export class ArtistManagerController {
     const skipNumber = parseInt(skip, 10) || 0;
 
     return this.userService.getAlbumByNameInfo(name, takeNumber, skipNumber);
+  }
+
+  @Get('songs/info')
+  async getSongsInfoById(@Query('songId') songIds: string[]) {
+    return this.userService.getSongsInfoByIds(songIds);
   }
 
   @Get('songs/:songId')

@@ -28,6 +28,21 @@ export class SondBaseDTO {
   songDuration: number;
 }
 
+export class SongsGetByIdsDTO {
+  @ApiProperty({
+    example: [
+      'cb638b04-44cc-432e-bfb5-7a971edcdb96',
+      'ae638b04-44cc-432e-bfb5-7a971edcdb98',
+    ],
+    description: 'List of song ids',
+    isArray: true,
+  })
+  @IsUUID('4', { each: true })
+  @IsNotEmpty({ each: true })
+  @IsString({ each: true })
+  ids: string[];
+}
+
 export class SongGetById extends PickType(SondBaseDTO, ['id']) {}
 
 export class SongGetByName extends PickType(SondBaseDTO, ['name']) {}

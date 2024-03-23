@@ -8,6 +8,7 @@ const MutationKeyCreateCodePlaylist = 'CREATE_CODE_PLAYLIST_KEY';
 const MutationKeyDeletePlaylist = 'DELETE_PLAYLIST_KEY';
 const MutationKeyAddSongToPlaylist = 'CREATE_ADD_SONG_TO_PLAYLIST_KEY';
 const MutationKeyGetPlaylist = 'GET_PLAYLIST_KEY';
+const MutationKeyGetPlaylistById = 'GET_PLAYLIST_BY_ID_KEY';
 
 export const useCreatePlaylist = () => {
   const queryClient = useQueryClient();
@@ -25,6 +26,13 @@ export const useGetPlaylist = () => {
   return useQuery({
     queryKey: [MutationKeyGetPlaylist],
     queryFn: playlistService.getPlaylist,
+  });
+};
+
+export const useGetPlaylistById = (playlistId: string) => {
+  return useQuery({
+    queryKey: [MutationKeyGetPlaylistById, playlistId],
+    queryFn: () => playlistService.getPlaylistById(playlistId),
   });
 };
 

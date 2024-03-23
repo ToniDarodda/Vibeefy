@@ -5,9 +5,21 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Login, Register, Loading, Dashboard } from './pages';
 import { AudioPlayerProvider } from './contexts/player.context';
 import { ViewStateProvider } from './contexts/viewState.context';
+import { SearchProvider } from './contexts/search.context';
+import {
+  Layout,
+  EmptySearch,
+  Artist,
+  Album,
+  Playlist,
+  Collection,
+  Login,
+  Loading,
+  Search,
+  Register,
+} from './pages';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,20 +32,20 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />,
+    element: <Layout />,
+    children: [
+      { index: true, element: <EmptySearch /> },
+      { path: 'search', element: <EmptySearch /> },
+      { path: 'search/:name', element: <Search /> },
+      { path: 'artist/:id', element: <Artist /> },
+      { path: 'album/:albumId', element: <Album /> },
+      { path: 'playlist/:playlistId', element: <Playlist /> },
+      { path: 'collection/tracks', element: <Collection /> },
+    ],
   },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/loading',
-    element: <Loading />,
-  },
-  {
-    path: '/dashboard',
-    element: <Dashboard />,
-  },
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
+  { path: '/loading', element: <Loading /> },
 ]);
 
 const customTheme = extendTheme({
@@ -70,7 +82,9 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <AudioPlayerProvider>
           <ViewStateProvider>
-            <RouterProvider router={router} />
+            <SearchProvider>
+              <RouterProvider router={router} />
+            </SearchProvider>
           </ViewStateProvider>
         </AudioPlayerProvider>
       </QueryClientProvider>

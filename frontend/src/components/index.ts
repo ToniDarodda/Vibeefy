@@ -6,5 +6,5 @@ export * from './shared/navbar/navbar';
 
 export * from './register/card/registerCard';
 
-export * from './dashboard/playbar/playBar';
-export * from './dashboard/searchBar';
+export * from './playbar/playBar';
+export * from './searchBar';

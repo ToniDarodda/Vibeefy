@@ -13,7 +13,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { QueryFailedError } from 'typeorm';
 
-import { LovedSong } from 'src/entities/lovedSong/entity';
+import { LovedSong, LovedSongToSong } from 'src/entities/lovedSong/entity';
 import { AuthToken } from 'src/decorators/auth.decorator';
 import { DecodedUserToken } from 'src/utils/jwt.util';
 import { LovedSongService } from '../service/lovedSong.service';
@@ -47,7 +47,7 @@ export class LovedSongController {
   @UseInterceptors(ClassSerializerInterceptor)
   getLovedSong(
     @AuthToken() { userId }: DecodedUserToken,
-  ): Promise<LovedSong[]> {
+  ): Promise<LovedSongToSong[]> {
     return this.lovedSongService.getLovedSong(userId);
   }
 
