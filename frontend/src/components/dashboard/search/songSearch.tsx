@@ -2,7 +2,6 @@ import { VStack, HStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 import { AlbumInterface, SongInterface } from '../../../interfaces';
 import { formatTime } from '../../../utils';
 import { useAudioPlayerContext } from '../../../contexts';
-import { useEffect } from 'react';
 import { truncateText } from '../../../utils/truncatText';
 
 interface SongSearchInterface {
@@ -14,10 +13,6 @@ export function SongSearch({ albums }: SongSearchInterface) {
     useAudioPlayerContext();
   const [isLargardThan800] = useMediaQuery('(min-width: 800px)');
   const [isLargardThan400] = useMediaQuery('(min-width: 400px)');
-
-  useEffect(() => {
-    console.log(isLargardThan800);
-  }, [isLargardThan800]);
 
   return (
     <VStack flex={2} justifyContent={'flex-start'} alignItems={'flex-start'}>

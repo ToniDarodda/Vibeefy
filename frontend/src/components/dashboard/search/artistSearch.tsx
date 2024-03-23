@@ -1,25 +1,20 @@
 import { HStack, VStack, Text, Image } from '@chakra-ui/react';
 import { AlbumInterface } from '../../../interfaces';
 import { MakePictureLarger } from '../../../utils/formatPicture';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../../contexts/viewState.context';
-import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface ArtistSearchInterface {
   albums: AlbumInterface[];
-
-  setSelectedArtist: Dispatch<SetStateAction<string>>;
 }
 
-export function ArtistSearch({
-  albums,
-  setSelectedArtist,
-}: ArtistSearchInterface) {
-  const { setViewState } = useViewStateContext();
+export function ArtistSearch({ albums }: ArtistSearchInterface) {
+  const navigate = useNavigate();
+
+  const handleNavigateArtist = (artistId: string) => {
+    navigate(`/artist/${artistId}`);
+  };
   return (
-    <>
+    <VStack w={'100%'} justifyContent={'flex-start'}>
       <Text alignSelf={'flex-start'} fontSize={'20px'} as={'b'}>
         Artists
       </Text>
@@ -41,10 +36,7 @@ export function ArtistSearch({
                 _hover={{
                   backgroundColor: '#1e1e1e',
                 }}
-                onClick={() => {
-                  setViewState(ViewStateEnum.SELECTEDARTIST);
-                  setSelectedArtist(filteredAlbum.artist.id);
-                }}
+                onClick={() => handleNavigateArtist(filteredAlbum.artist.id)}
               >
                 <Image
                   src={MakePictureLarger(filteredAlbum)}
@@ -54,6 +46,7 @@ export function ArtistSearch({
                     md: '200px',
                   }}
                   borderRadius={'100px'}
+                  minH={{ base: '100px', sm: '120px', md: '200px' }}
                   minW={{
                     base: '100px',
                     sm: '120px',
@@ -66,6 +59,6 @@ export function ArtistSearch({
             );
           })}
       </HStack>
-    </>
+    </VStack>
   );
 }

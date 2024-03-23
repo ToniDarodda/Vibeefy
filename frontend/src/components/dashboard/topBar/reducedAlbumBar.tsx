@@ -1,21 +1,21 @@
 import { HStack, Tooltip, Image, Text } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../../interfaces';
+import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
 import {
   ViewStateEnum,
   useViewStateContext,
-} from '../../../../contexts/viewState.context';
-import { truncateText } from '../../../../utils/truncatText';
+} from '../../../contexts/viewState.context';
+import { truncateText } from '../../../utils/truncatText';
 
-interface ReducedAlbumBarViewInterface {
+interface ReducedAlbumBarInterface {
   selectedAlbumOrSong: AlbumInterface | BasePlaylistInterface | undefined;
   isAlbumInterface: (object: any) => object is AlbumInterface;
 }
 
-export function ReducedAlbumBarView({
+export function ReducedAlbumBar({
   isAlbumInterface,
   selectedAlbumOrSong,
-}: ReducedAlbumBarViewInterface) {
+}: ReducedAlbumBarInterface) {
   const { setViewState } = useViewStateContext();
 
   return (

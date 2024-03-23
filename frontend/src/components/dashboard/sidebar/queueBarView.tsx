@@ -1,43 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HStack, Image, Text, VStack } from '@chakra-ui/react';
-import {
-  AlbumInterface,
-  BasePlaylistInterface,
-  SongInterface,
-} from '../../../interfaces';
+import { SongInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useGetAlbum } from '../../../query';
+import { useState } from 'react';
 import { useAudioPlayerContext } from '../../../contexts';
 import {
   ViewStateEnum,
   useViewStateContext,
 } from '../../../contexts/viewState.context';
 
-interface QueueViewInterface {
-  setSelectedAlbumOrSong: Dispatch<
-    SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
-  >;
-}
-
-export function QueueView({ setSelectedAlbumOrSong }: QueueViewInterface) {
+export function QueueView() {
   const { queue, playlistQueue } = useAudioPlayerContext();
 
   const { setViewState } = useViewStateContext();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clickedAlbum, setClickedAlbum] = useState<SongInterface | null>(null);
-
-  const { data: albums } = useGetAlbum(clickedAlbum?.albumName ?? '', 1, 0);
 
   const getAlbumName = (albumName: string | undefined) => {
     if (albumName && albumName.length > 0) return albumName.split('(')[0];
 
     return '';
   };
-
-  useEffect(() => {
-    if (albums && clickedAlbum !== null) setSelectedAlbumOrSong(albums[0]);
-  }, [clickedAlbum]);
 
   return (
     <VStack w={'100%'} h={'560px'}>

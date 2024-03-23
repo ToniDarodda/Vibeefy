@@ -1,47 +1,40 @@
 import { HStack, VStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 
-import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
+import { AlbumInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../../contexts/viewState.context';
+import { useNavigate } from 'react-router-dom';
 
 interface AlbumSearchInterface {
   albums: AlbumInterface[];
-
-  setSelectedAlbumOrSong: (
-    value: React.SetStateAction<
-      AlbumInterface | BasePlaylistInterface | undefined
-    >,
-  ) => void;
 }
 
-export function AlbumSearch({
-  albums,
-  setSelectedAlbumOrSong,
-}: AlbumSearchInterface) {
-  const { setViewState } = useViewStateContext();
+export function AlbumSearch({ albums }: AlbumSearchInterface) {
+  const navigate = useNavigate();
 
   const [isLargardThan800] = useMediaQuery('(min-width: 800px)');
 
+  const handleNavigateAlbum = (albumId: string) => {
+    navigate(`/album/${albumId}`);
+  };
+
   return (
-    <>
+    <VStack w={'100%'}>
       <Text alignSelf={'flex-start'} fontSize={'20px'} as={'b'}>
         Albums
       </Text>
       <HStack
-        w={'100%'}
-        overflow={'scroll'}
-        gap={'40px'}
-        padding={'0px 0px 12px 0px'}
+        w="100%" // Utilisez 100% de la largeur du parent
+        maxW={'100%'}
+        overflowX="auto" // Autorise le défilement horizontal si nécessaire
+        overflowY="hidden" // Empêche le défilement vertical
+        gap="40px" // Espace entre chaque album
+        padding="0px 0px 12px 0px" // Pad
       >
         {albums
           .sort((a, b) => +b.year - +a.year)
           .map((album: AlbumInterface, index: number) => {
             return (
               <VStack
-                w={'auto'}
                 key={index}
                 cursor={'pointer'}
                 justifyContent={'space-between'}
@@ -51,10 +44,7 @@ export function AlbumSearch({
                 padding={'12px'}
                 borderRadius={'4px'}
                 alignItems={'flex-start'}
-                onClick={() => {
-                  setSelectedAlbumOrSong(album);
-                  setViewState(ViewStateEnum.ALBUM);
-                }}
+                onClick={() => handleNavigateAlbum(album.id)}
               >
                 <Image
                   src={album.thumbnails}
@@ -88,6 +78,6 @@ export function AlbumSearch({
             );
           })}
       </HStack>
-    </>
+    </VStack>
   );
 }

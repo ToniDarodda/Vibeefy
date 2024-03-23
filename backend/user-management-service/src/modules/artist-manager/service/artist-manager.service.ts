@@ -14,8 +14,8 @@ export class ArtistManagerService {
     return this.client.send({ cmd: 'get_artist' }, { take, skip });
   }
 
-  async getAlbumInfo(songId: string) {
-    return this.client.send({ cmd: 'get_album_by_song_id' }, { id: songId });
+  async getAlbumInfo(albumId: string) {
+    return this.client.send({ cmd: 'get_album_by_id' }, { id: albumId });
   }
 
   async getAlbumByNameInfo(name: string, take?: number, skip?: number) {

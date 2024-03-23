@@ -1,19 +1,18 @@
 import { VStack } from '@chakra-ui/react';
-import { Navbar } from '../components/shared/navbar/navbar';
-import { LoginCard } from '../components/card/loginCard';
+import { Navbar, RegisterCard } from '../../components';
 
-export function Login(): JSX.Element {
+export function Register() {
   return (
     <VStack backgroundColor={'#262626'} height={'auto'} minH={'100vh'}>
       <Navbar />
       <VStack
-        w={'100%'}
         h={'100%'}
+        w={'100%'}
         minH={'100vh'}
         alignItems={'center'}
         justifyContent={'center'}
       >
-        <LoginCard title="Login to Vibeefy" />
+        <RegisterCard />
       </VStack>
     </VStack>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 
 import ReactDOM from 'react-dom/client';
@@ -5,9 +6,18 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Login, Register, Loading, Dashboard } from './pages';
+import { Loading } from './pages';
 import { AudioPlayerProvider } from './contexts/player.context';
 import { ViewStateProvider } from './contexts/viewState.context';
+import { Login } from './pages/auth/login';
+import { Register } from './pages/auth/register';
+import { Album } from './pages/album';
+import { Playlist } from './pages/playlist';
+import { Search } from './pages/search';
+import { Layout } from './pages/layout';
+import { EmptySearch } from './pages/emptySearch';
+import { SearchProvider } from './contexts/search.context';
+import { Artist } from './pages/artist';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,20 +30,19 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />,
+    element: <Layout />,
+    children: [
+      { index: true, element: <EmptySearch /> },
+      { path: 'search', element: <EmptySearch /> },
+      { path: 'search/:name', element: <Search /> },
+      { path: 'artist/:id', element: <Artist /> },
+      { path: 'album/:albumId', element: <Album /> },
+      { path: 'playlist/:playlistId', element: <Playlist /> },
+    ],
   },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/loading',
-    element: <Loading />,
-  },
-  {
-    path: '/dashboard',
-    element: <Dashboard />,
-  },
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
+  { path: '/loading', element: <Loading /> },
 ]);
 
 const customTheme = extendTheme({
@@ -70,7 +79,9 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <AudioPlayerProvider>
           <ViewStateProvider>
-            <RouterProvider router={router} />
+            <SearchProvider>
+              <RouterProvider router={router} />
+            </SearchProvider>
           </ViewStateProvider>
         </AudioPlayerProvider>
       </QueryClientProvider>

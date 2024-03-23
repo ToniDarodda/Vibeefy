@@ -7,32 +7,31 @@ import { formatTime } from '../../../utils';
 import { useAudioPlayerContext } from '../../../contexts';
 
 interface AlbumViewInterface {
+  album: AlbumInterface;
   hoveredIndex: number;
-  selectedAlbumOrSong: AlbumInterface;
+
   setHoveredIndex: Dispatch<SetStateAction<number>>;
   setIsModalAddPlaylistQueueOpen: Dispatch<SetStateAction<boolean>>;
-  setClickedSong: Dispatch<SetStateAction<SongInterface | undefined>>;
   setMouseCoord: Dispatch<SetStateAction<{ clientX: number; clientY: number }>>;
-
   setIsListening: (b: boolean) => void;
   setCurrentSong: (song: SongInterface) => void;
 }
 
 export const AlbumView: React.FC<AlbumViewInterface> = ({
+  album,
   hoveredIndex,
-  setCurrentSong,
-  setHoveredIndex,
-  setIsListening,
+
   setMouseCoord,
-  setClickedSong,
-  selectedAlbumOrSong,
+  setCurrentSong,
+  setIsListening,
+  setHoveredIndex,
   setIsModalAddPlaylistQueueOpen,
 }) => {
   const { addPlaylistToQueue } = useAudioPlayerContext();
 
   return (
     <VStack w={'100%'}>
-      {selectedAlbumOrSong?.songs
+      {album?.songs
         .sort((a, b) => (a?.trackNumber ?? 10) - (b?.trackNumber ?? 10))
         .map((song, songIndex) => (
           <HStack
@@ -52,15 +51,15 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
               onClick={() => {
                 setIsListening(true);
 
-                const filteredSongs = selectedAlbumOrSong.songs
+                const filteredSongs = album.songs
                   .slice(songIndex + 1)
                   .map((e) => {
-                    return { ...e, playlistName: selectedAlbumOrSong.title };
+                    return { ...e, playlistName: album.title };
                   });
-                addPlaylistToQueue(filteredSongs, selectedAlbumOrSong.title);
+                addPlaylistToQueue(filteredSongs, album.title);
                 setCurrentSong({
                   ...song,
-                  albumName: selectedAlbumOrSong.title,
+                  albumName: album.title,
                 });
               }}
               onContextMenu={(e) => {
@@ -69,10 +68,10 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                   clientX: e.clientX,
                   clientY: e.clientY,
                 });
-                setClickedSong({
-                  ...song,
-                  albumName: selectedAlbumOrSong.title,
-                });
+                // setClickedSong({
+                //   ...song,
+                //   albumName: album.title,
+                // });
                 setIsModalAddPlaylistQueueOpen(true);
               }}
             >

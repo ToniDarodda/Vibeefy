@@ -13,6 +13,7 @@ import {
   Stack,
   Spinner,
   Icon,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { MdOutlineQueueMusic, MdOutlinePlaylistPlay } from 'react-icons/md';
 import { FaCirclePlay } from 'react-icons/fa6';
@@ -40,20 +41,9 @@ import {
   useGetLovedSong,
 } from '../../../query/lovedSong';
 
-interface PlaybarInterface {
-  isLargerThan1000: boolean;
-  searchValue: SearchResponse[] | undefined;
+interface PlaybarInterface {}
 
-  setSelectedAlbumOrSong: Dispatch<
-    SetStateAction<AlbumInterface | BasePlaylistInterface | undefined>
-  >;
-}
-
-export function Playbar({
-  searchValue,
-  isLargerThan1000,
-  setSelectedAlbumOrSong,
-}: PlaybarInterface) {
+export function Playbar({}: PlaybarInterface) {
   const {
     duration,
     setVolume,
@@ -69,6 +59,8 @@ export function Playbar({
     isFinish,
     isListening,
   } = useAudioPlayerContext();
+
+  const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
 
   const [sliderValue, setSliderValue] = useState<number>(30);
 
@@ -155,8 +147,8 @@ export function Playbar({
   }, [togglePlayPause]);
 
   return (
-    <>
-      {isListening && isLargerThan1000 && (
+    <VStack w={'100%'} h={'100%'}>
+      {isListening && isLargardThan1000 && (
         <HStack
           w={'100%'}
           h={'80px'}
@@ -170,8 +162,8 @@ export function Playbar({
             <VStack
               alignItems={'flex-start'}
               onClick={() => {
-                if (albumInfoQueries[0].data)
-                  setSelectedAlbumOrSong(albumInfoQueries[0].data);
+                // if (albumInfoQueries[0].data)
+                //   setSelectedAlbumOrSong(albumInfoQueries[0].data);
                 setViewState(ViewStateEnum.ALBUM);
               }}
             >
@@ -313,7 +305,7 @@ export function Playbar({
           </HStack>
         </HStack>
       )}
-      <PlaybarMobile isLargerThan1000={isLargerThan1000} />
-    </>
+      <PlaybarMobile />
+    </VStack>
   );
 }

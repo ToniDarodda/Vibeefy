@@ -5,7 +5,7 @@ import { RegisterStep } from '../registerSteps';
 
 export function RegisterCard() {
   const navigate = useNavigate();
-  const redirectLogin = () => navigate('/');
+  const redirectLogin = () => navigate('/login');
 
   return (
     <VStack

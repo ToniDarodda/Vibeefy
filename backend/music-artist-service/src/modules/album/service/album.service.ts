@@ -17,6 +17,7 @@ export class AlbumService {
       },
       relations: {
         songs: true,
+        artist: true,
       },
     });
   }

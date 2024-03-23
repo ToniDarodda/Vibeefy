@@ -1,7 +1,6 @@
-import { Dispatch, RefObject, SetStateAction, useState } from 'react';
-import { VStack, HStack, Text, Icon } from '@chakra-ui/react';
+import { useState } from 'react';
+import { VStack, HStack, Text, Icon, useMediaQuery } from '@chakra-ui/react';
 
-import { PlaylistType, AlbumInterface } from '../../../interfaces';
 import { MdHome, MdSearch } from 'react-icons/md';
 
 import { QueueView } from './queueBarView';
@@ -9,29 +8,10 @@ import { PlaylistBarView } from './playlistBarView';
 import { MdQueue } from 'react-icons/md';
 import { IoLibrarySharp } from 'react-icons/io5';
 import { ModalPlaylistCode } from '../modal/addPlaylistCode';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../../contexts/viewState.context';
+import { useViewStateContext } from '../../../contexts/viewState.context';
+import { useGetPlaylist } from '../../../query';
 
-interface PlaylistBarInterface {
-  playlists: PlaylistType[] | undefined;
-  inputRef: RefObject<HTMLInputElement>;
-
-  setSearch: Dispatch<SetStateAction<string>>;
-  isLargardThan1000: boolean;
-  setSelectedAlbumOrSong: Dispatch<
-    SetStateAction<AlbumInterface | PlaylistType | undefined>
-  >;
-}
-
-export function PlaylistBar({
-  inputRef,
-  setSearch,
-  playlists,
-  isLargardThan1000,
-  setSelectedAlbumOrSong,
-}: PlaylistBarInterface) {
+export function PlaylistQueueBar() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isHoveredLoop, setIsHoveredLoop] = useState(false);
 
@@ -42,10 +22,19 @@ export function PlaylistBar({
     clientY: number;
   }>({ clientX: 0, clientY: 0 });
 
-  const { setViewState, queueState } = useViewStateContext();
+  const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
+
+  const { data: playlists } = useGetPlaylist();
+
+  const { queueState } = useViewStateContext();
 
   return (
-    <VStack flex={1} h={'100%'} display={isLargardThan1000 ? 'normal' : 'none'}>
+    <VStack
+      w={'100%'}
+      h={'100%'}
+      overflow="scroll"
+      display={isLargardThan1000 ? 'normal' : 'none'}
+    >
       {isLargardThan1000 && (
         <VStack w={'100%'} h={'100%'} flex={1} borderRadius={'8px'}>
           <VStack
@@ -66,10 +55,7 @@ export function PlaylistBar({
               borderRadius={'8px'}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              onClick={() => {
-                setSearch('');
-                setViewState(ViewStateEnum.ARTISTS);
-              }}
+              onClick={() => {}}
             >
               <Icon
                 as={MdHome}
@@ -87,10 +73,7 @@ export function PlaylistBar({
               borderRadius={'8px'}
               onMouseEnter={() => setIsHoveredLoop(true)}
               onMouseLeave={() => setIsHoveredLoop(false)}
-              onClick={() => {
-                setViewState(ViewStateEnum.SEARCH);
-                inputRef.current?.focus();
-              }}
+              onClick={() => {}}
             >
               <Icon
                 as={MdSearch}
@@ -145,12 +128,11 @@ export function PlaylistBar({
                   mooseCoord={mooseCoord}
                   playlists={playlists ?? []}
                   isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-                  setSelectedAlbumOrSong={setSelectedAlbumOrSong}
                   setMouseCoord={setMouseCoord}
                   setModalPlaylistOptionOpen={setModalPlaylistOptionOpen}
                 />
               ) : (
-                <QueueView setSelectedAlbumOrSong={setSelectedAlbumOrSong} />
+                <QueueView />
               )}
               <VStack
                 w={'100%'}

@@ -5,23 +5,18 @@ import {
   ViewStateEnum,
   useViewStateContext,
 } from '../../../contexts/viewState.context';
-import { Dispatch, SetStateAction } from 'react';
 
 interface TopResultSearchInterface {
   albums: AlbumInterface[];
-  setSelectedArtist: Dispatch<SetStateAction<string>>;
 }
 
-export function TopResultSearch({
-  albums,
-  setSelectedArtist,
-}: TopResultSearchInterface) {
+export function TopResultSearch({ albums }: TopResultSearchInterface) {
   const artist = albums?.[0]?.artist ?? '';
 
   const { setViewState } = useViewStateContext();
 
   return (
-    <VStack flex={1} justifyContent={'flex-start'} alignItems={'flex-start'}>
+    <VStack justifyContent={'flex-start'} alignItems={'flex-start'}>
       <Text fontSize={'20px'} as={'b'}>
         Top result
       </Text>
@@ -38,7 +33,7 @@ export function TopResultSearch({
         }}
         onClick={() => {
           setViewState(ViewStateEnum.SELECTEDARTIST);
-          setSelectedArtist(artist.id);
+          // setSelectedArtist(artist.id);
         }}
       >
         <Image

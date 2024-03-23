@@ -20,6 +20,13 @@ class PlaylistService {
     return playlists;
   }
 
+  async getPlaylistById(playlistId: string): Promise<PlaylistType> {
+    const { data: playlist }: { data: PlaylistType } =
+      await Fetch.get<PlaylistType>(`/playlist/${playlistId}`);
+
+    return playlist;
+  }
+
   async addSongToPlaylist(
     name: string,
     songId: string,

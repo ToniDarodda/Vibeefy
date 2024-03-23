@@ -1,97 +1,48 @@
-import { RefObject, forwardRef, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { forwardRef, RefObject, useCallback } from 'react';
 import { HStack, Input, Icon, VStack, Text } from '@chakra-ui/react';
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdAccountCircle,
 } from 'react-icons/md';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../contexts/viewState.context';
+import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
+import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 
 interface SearchBarInterface {
-  search: string;
   inputRef: RefObject<HTMLInputElement>;
-
-  setSearch: (b: string) => void;
-}
-
-enum GetMusicType {
-  ALL = 'ALL',
-  ARTISTS = 'ARTISTS',
-  SONGS = 'SONGS',
-  ALBUMS = 'ALBUMS',
-  PLAYLISTS = 'PLAYLIST',
 }
 
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ setSearch, search, inputRef, ...rest }, _ref) => {
-    const [inputValue, setInputValue] = useState<string>(search);
-    const [lastInput, setLastInput] = useState<string>('');
-    const [musicType, setMusicType] = useState<GetMusicType>(GetMusicType.ALL);
+  ({ inputRef, ...rest }, _ref) => {
+    const navigate = useNavigate();
 
-    const { setViewState, viewState } = useViewStateContext();
+    const {
+      setSearch,
+      applyMusicTypeBackground,
+      applyMusicTypeColor,
+      handleClickMusicType,
+      handleLastSearch,
+      handleResetSearch,
+      lastInput,
+      inputValue,
+      setInputValue,
+    } = useSearchProvider();
 
-    const applyMusicTypeBackground = (musicTypeValue: GetMusicType) => {
-      if (musicType === musicTypeValue) {
-        return '#ffffff';
-      }
-      return '#191919';
+    const debouncedUpdateSearch = useCallback(
+      debounce((searchValue) => {
+        setSearch(searchValue);
+        navigate(searchValue ? `/search/${searchValue}` : '/search');
+      }, 300),
+      [setSearch, navigate],
+    );
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setInputValue(value);
+      debouncedUpdateSearch(value);
     };
-
-    const applyMusicTypeColor = (musicTypeValue: GetMusicType) => {
-      if (musicType === musicTypeValue) {
-        return '#191919';
-      }
-      return '#ffffff';
-    };
-
-    const handleClickMusicType = (newMusicType: GetMusicType) => {
-      if (musicType !== newMusicType) {
-        setMusicType(newMusicType);
-      }
-    };
-
-    const handleResetSearch = () => {
-      setLastInput(search);
-      setSearch('');
-      setInputValue('');
-    };
-
-    const handleLastSearch = () => {
-      if (lastInput.length > 0) {
-        setInputValue(lastInput);
-        setSearch(lastInput);
-        setLastInput('');
-      }
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
-    };
-
-    useEffect(() => {
-      const timeoutId = setTimeout(() => {
-        setSearch(inputValue);
-        if (inputValue.length > 0 && viewState !== ViewStateEnum.SEARCH) {
-          setViewState(ViewStateEnum.SEARCH);
-        }
-      }, 200);
-
-      return () => clearTimeout(timeoutId);
-    }, [inputValue, setSearch, viewState, setViewState]);
-
-    useEffect(() => {
-      if (search === '') {
-        setInputValue('');
-      }
-    }, [viewState]);
-
-    useEffect(() => {
-      if (search === '') setViewState(ViewStateEnum.ARTISTS);
-    }, [search]);
 
     return (
       <VStack
@@ -100,6 +51,7 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
         top={'0'}
         backgroundColor={'#111111'}
         padding={'12px'}
+        borderRadius={'8px 8px 0px 0px'}
       >
         <HStack w={'100%'} padding={'12px'} justifyContent={'center'}>
           <HStack width={'100%'} justifyContent={'flex-start'}>

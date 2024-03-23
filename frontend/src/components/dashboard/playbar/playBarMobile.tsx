@@ -1,4 +1,12 @@
-import { HStack, VStack, Text, Image, Icon, Spinner } from '@chakra-ui/react';
+import {
+  HStack,
+  VStack,
+  Text,
+  Image,
+  Icon,
+  Spinner,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { useAudioPlayerContext } from '../../../contexts';
 import { useGetAlbum } from '../../../query';
 import { truncateText } from '../../../utils/truncatText';
@@ -12,11 +20,7 @@ import { LovedSong } from '../../../interfaces';
 import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
 import { MdOutlineSkipNext } from 'react-icons/md';
 
-interface PlayBarMobileInterface {
-  isLargerThan1000: boolean;
-}
-
-export function PlaybarMobile({ isLargerThan1000 }: PlayBarMobileInterface) {
+export function PlaybarMobile() {
   const [likedSong, setLikedSong] = useState<boolean>(false);
   const {
     togglePlayPause,
@@ -28,6 +32,8 @@ export function PlaybarMobile({ isLargerThan1000 }: PlayBarMobileInterface) {
     isFinish,
     isPlaying,
   } = useAudioPlayerContext();
+
+  const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
 
   const { data: albums } = useGetAlbum(currentSong?.albumName ?? 'NA', 1, 0);
   const { mutate: addLovedSong } = useCreateLovedSong();
@@ -53,7 +59,7 @@ export function PlaybarMobile({ isLargerThan1000 }: PlayBarMobileInterface) {
 
   return (
     <>
-      {!isLargerThan1000 && (
+      {!isLargardThan1000 && (
         <>
           {isListening && (
             <HStack

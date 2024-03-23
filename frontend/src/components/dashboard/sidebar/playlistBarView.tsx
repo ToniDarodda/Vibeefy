@@ -1,18 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { MdLibraryMusic } from 'react-icons/md';
 import { HStack, Text, Icon, VStack, Image } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { MdLibraryMusic } from 'react-icons/md';
 
-import {
-  AlbumInterface,
-  BasePlaylistInterface,
-  PlaylistType,
-} from '../../../interfaces';
+import { BasePlaylistInterface, PlaylistType } from '../../../interfaces';
 import { ModalPlaylistOption } from '../modal/playlistOption';
 import { useAudioPlayerContext } from '../../../contexts';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../../contexts/viewState.context';
 import { useGetLovedSong } from '../../../query/lovedSong';
 import { useGetAlbumBySongId } from '../../../query';
 
@@ -24,11 +17,6 @@ interface PlaylistBarViewInterface {
   playlists: BasePlaylistInterface[];
   isModalPlaylistOptionOpen: boolean;
 
-  setSelectedAlbumOrSong: (
-    value: React.SetStateAction<
-      BasePlaylistInterface | AlbumInterface | undefined
-    >,
-  ) => void;
   setMouseCoord: (
     value: React.SetStateAction<{
       clientX: number;
@@ -42,18 +30,17 @@ export function PlaylistBarView({
   playlists,
   mooseCoord,
   setMouseCoord,
-  setSelectedAlbumOrSong,
   isModalPlaylistOptionOpen,
   setModalPlaylistOptionOpen,
 }: PlaylistBarViewInterface) {
+  const navigate = useNavigate();
+
   const [selectedPlaylist, setSelectedPlaylist] =
     useState<BasePlaylistInterface | null>(null);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
   const { isPlaying } = useAudioPlayerContext();
-
-  const { setViewState } = useViewStateContext();
 
   const { data: lovedSong } = useGetLovedSong();
 
@@ -62,6 +49,10 @@ export function PlaylistBarView({
     .filter(Boolean);
 
   const albumInfoQueries = useGetAlbumBySongId(firstSongIds);
+
+  const handlePlaylistRedirect = (playlistId: string) => {
+    navigate(`/playlist/${playlistId}`);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -134,9 +125,9 @@ export function PlaylistBarView({
               setModalPlaylistOptionOpen(true);
             }}
             onClick={() => {
-              setSelectedAlbumOrSong(playlist);
-              if (!isModalPlaylistOptionOpen)
-                setViewState(ViewStateEnum.PLAYLIST);
+              // setSelectedAlbumOrSong(playlist);
+              console.log(playlist, 'plausliut');
+              handlePlaylistRedirect(playlist.id);
             }}
           >
             <Image src={thumbnailSrc} boxSize={'54px'} />
