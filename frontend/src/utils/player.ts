@@ -23,7 +23,7 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   useEffect(() => {
     if (url === undefined) return;
 
-    if (playerRef.current) playerRef.current.unload();
+    playerRef.current?.unload();
 
     const howlPlayer = new Howl({
       src: [url],

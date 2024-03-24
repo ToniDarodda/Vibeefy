@@ -57,7 +57,7 @@ export function Layout() {
           position="absolute"
           width="100%"
           height="100%"
-          transition={isFullScreen ? 'opacity 1s ease' : 'none'}
+          transition={isFullScreen ? 'opacity 2.5s ease' : 'none'}
           opacity={activePlaybar === 'fullPlaybar' ? 1 : 0}
           pointerEvents={activePlaybar === 'fullPlaybar' ? 'auto' : 'none'}
         >
