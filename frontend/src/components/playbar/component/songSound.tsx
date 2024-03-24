@@ -41,7 +41,7 @@ export function SoungSound({ isFullScreen }: SongSoundInterface) {
   };
 
   return (
-    <HStack w={'100%'} justifyContent={'flex-end'} gap={'12px'}>
+    <HStack w={'100%'} justifyContent={'flex-end'} gap={'20px'}>
       <HStack gap={'40px'}>
         {!isFullScreen && (
           <Icon
