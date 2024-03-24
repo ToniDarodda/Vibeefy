@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   HStack,
   VStack,
@@ -7,17 +8,17 @@ import {
   Spinner,
   useMediaQuery,
 } from '@chakra-ui/react';
+import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
+import { MdOutlineOpenInFull, MdOutlineSkipNext } from 'react-icons/md';
+
 import { useAudioPlayerContext } from '../../contexts';
 import { useGetAlbum } from '../../query';
 import { truncateText } from '../../utils/truncatText';
-import { useState } from 'react';
 import {
   useCreateLovedSong,
   useDeleteLovedSong,
   useGetLovedSong,
 } from '../../query/lovedSong';
-import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
-import { MdOutlineOpenInFull, MdOutlineSkipNext } from 'react-icons/md';
 
 export function PlaybarMobile() {
   const [likedSong, setLikedSong] = useState<boolean>(false);

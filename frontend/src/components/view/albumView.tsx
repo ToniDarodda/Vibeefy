@@ -70,10 +70,7 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                   clientX: e.clientX,
                   clientY: e.clientY,
                 });
-                // setClickedSong({
-                //   ...song,
-                //   albumName: album.title,
-                // });
+
                 setIsModalAddPlaylistQueueOpen(true);
               }}
             >

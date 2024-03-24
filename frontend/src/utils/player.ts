@@ -60,14 +60,6 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
     };
   }, [url]);
 
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     playerRef.current?.play();
-  //   } else {
-  //     playerRef.current?.pause();
-  //   }
-  // }, [isPlaying]);
-
   const pause = useCallback(() => {
     playerRef.current?.pause();
   }, []);

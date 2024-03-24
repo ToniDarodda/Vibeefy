@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { VStack, HStack, Image, Text } from '@chakra-ui/react';
+
 import { SearchBar } from '../components';
 import { useGetAlbum } from '../query';
 import { AlbumInterface } from '../interfaces';
@@ -39,10 +40,6 @@ export function EmptySearch() {
                   }}
                   borderRadius={'8px'}
                   padding={'12px'}
-                  onClick={() => {
-                    // setSelectedArtist(album.artist.id);
-                    // setViewState(ViewStateEnum.SELECTEDARTIST);
-                  }}
                 >
                   <Image
                     src={MakePictureLarger(album)}

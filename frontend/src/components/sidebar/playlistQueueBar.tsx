@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { VStack, HStack, Text, Icon, useMediaQuery } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-import { MdHome, MdSearch } from 'react-icons/md';
+import { MdHome, MdSearch, MdQueue } from 'react-icons/md';
+import { IoLibrarySharp } from 'react-icons/io5';
 
 import { QueueView } from './queueBarView';
 import { PlaylistBarView } from './playlistBarView';
-import { MdQueue } from 'react-icons/md';
-import { IoLibrarySharp } from 'react-icons/io5';
 import { ModalPlaylistCode } from '../modal/addPlaylistCode';
 import { useViewStateContext } from '../../contexts/viewState.context';
 import { useGetPlaylist } from '../../query';
-import { useNavigate } from 'react-router-dom';
 import { useSearchProvider } from '../../contexts/search.context';
 import { useAudioPlayerContext } from '../../contexts';
 

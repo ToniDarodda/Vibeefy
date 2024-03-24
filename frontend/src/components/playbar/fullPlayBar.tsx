@@ -14,14 +14,16 @@ import {
   Icon,
   useMediaQuery,
 } from '@chakra-ui/react';
-import { FaCirclePlay } from 'react-icons/fa6';
-import { FaCirclePause } from 'react-icons/fa6';
-import { MdOutlineSkipPrevious, MdOutlineSkipNext } from 'react-icons/md';
+import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
+import {
+  MdOutlineSkipPrevious,
+  MdOutlineSkipNext,
+  MdOutlineOpenInFull,
+} from 'react-icons/md';
 
 import { useAudioPlayerContext } from '../../contexts';
 import { formatTime } from '../../utils';
 import { truncateText } from '../../utils/truncatText';
-import { MdOutlineOpenInFull } from 'react-icons/md';
 
 import { PlaybarMobile } from './playBarMobile';
 import {
@@ -152,10 +154,9 @@ export function FullPlaybar() {
             <VStack w={'90%'} h={'100%'} alignItems={'flex-start'} gap={'40px'}>
               <HStack flex={1} w={'100%'} alignItems={'flex-end'}>
                 <HStack
-                  flex={1}
                   gap={'20px'}
                   alignItems={'center'}
-                  w={isLargardThan1000 ? 'auto' : '100%'}
+                  w={isLargardThan1000 ? '' : '100%'}
                 >
                   <Image
                     src={currentSong?.thumbnails}

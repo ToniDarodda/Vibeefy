@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { VStack, Text, Image, HStack } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
+
 import { PlaylistView } from '../components/view/playlistView';
 import { useAudioPlayerContext } from '../contexts';
 import { selectColor } from '../utils/playlistOrAlbum';
-import { useParams } from 'react-router-dom';
 import { useGetPlaylistById } from '../query';
 import { ReducedAlbumBar } from '../components/topBar/reduced/rAlbumBar';
 import { PlaylistBar } from '../components/topBar/playlistBar';
@@ -47,6 +47,7 @@ export function Playlist() {
       ) {
         const songId = playlist?.playlistSongs[0].songId;
         const album = await albumService.getAlbumBySongId(songId!);
+
         selectColor(album.thumbnails, setBackgroundColor);
       } else {
         setBackgroundColor('#191919');

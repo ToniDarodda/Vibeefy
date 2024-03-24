@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { VStack, Text, HStack, Icon, Image } from '@chakra-ui/react';
 import { UseMutateFunction } from '@tanstack/react-query';
+import { GoPlus } from 'react-icons/go';
+import { MdOutlineQueueMusic } from 'react-icons/md';
 
 import { useAudioPlayerContext } from '../../contexts';
 import {
@@ -9,8 +11,6 @@ import {
   PlaylistType,
   BasePlaylistInterface,
 } from '../../interfaces';
-import { MdOutlineQueueMusic } from 'react-icons/md';
-import { GoPlus } from 'react-icons/go';
 
 interface PlaylistOpenInterface {
   isModalAddPlaylistOpen: boolean;

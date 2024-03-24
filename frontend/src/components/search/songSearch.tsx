@@ -1,4 +1,5 @@
 import { VStack, HStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
+
 import { AlbumInterface, SongInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useAudioPlayerContext } from '../../contexts';

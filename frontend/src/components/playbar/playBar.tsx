@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from 'react';
 import {
   HStack,
@@ -15,15 +14,18 @@ import {
   Icon,
   useMediaQuery,
 } from '@chakra-ui/react';
-import { MdOutlineQueueMusic, MdOutlinePlaylistPlay } from 'react-icons/md';
-import { FaCirclePlay } from 'react-icons/fa6';
-import { FaCirclePause } from 'react-icons/fa6';
-import { MdOutlineSkipPrevious, MdOutlineSkipNext } from 'react-icons/md';
+import {
+  MdOutlineQueueMusic,
+  MdOutlinePlaylistPlay,
+  MdOutlineSkipPrevious,
+  MdOutlineSkipNext,
+  MdOutlineOpenInFull,
+} from 'react-icons/md';
+import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
 
 import { useAudioPlayerContext } from '../../contexts';
 import { formatTime } from '../../utils';
 import { truncateText } from '../../utils/truncatText';
-import { MdOutlineOpenInFull } from 'react-icons/md';
 
 import { useViewStateContext } from '../../contexts/viewState.context';
 import { PlaybarMobile } from './playBarMobile';
@@ -91,7 +93,7 @@ export function Playbar({}: PlaybarInterface) {
     setTime((result / 100) * duration!);
   };
 
-  const handleLovedSong = (e: any) => {
+  const handleLovedSong = () => {
     if (likedSong) deleteLovedSong(currentSong?.id ?? '');
     else
       addLovedSong({

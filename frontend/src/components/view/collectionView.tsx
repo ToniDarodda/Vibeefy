@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SetStateAction, useEffect, useState } from 'react';
-import { HStack, Text, Image, Icon, VStack } from '@chakra-ui/react';
+import { HStack, Text, Icon, VStack } from '@chakra-ui/react';
 
-import { PlaylistSong, Song, SongInterface } from '../../interfaces';
+import { Song, SongInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useGetSong } from '../../query/song';
 import { useAudioPlayerContext } from '../../contexts';
@@ -70,15 +69,6 @@ export function CollectionView({
             }}
             onContextMenu={(e) => {
               e.preventDefault();
-              // setMouseCoord({
-              //   clientX: e.clientX,
-              //   clientY: e.clientY,
-              // });
-              // setClickedSong({
-              //   ...song,
-              //   albumName: album.title,
-              // });
-              // setIsModalAddPlaylistQueueOpen(true);
             }}
           >
             <HStack justifyContent={'space-between'} w={'100%'}>
@@ -106,13 +96,6 @@ export function CollectionView({
                 color: '#ffffff',
               }}
               cursor={'pointer'}
-              onClick={(e) => {
-                // setMouseCoord({
-                //   clientX: e.clientX,
-                //   clientY: e.clientY,
-                // });
-                // setIsModalAddPlaylistQueueOpen(true);
-              }}
             />
           )}
         </HStack>

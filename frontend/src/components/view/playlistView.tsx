@@ -92,13 +92,6 @@ export function PlaylistView({
                 color: '#ffffff',
               }}
               cursor={'pointer'}
-              onClick={() => {
-                // setMouseCoord({
-                //   clientX: e.clientX,
-                //   clientY: e.clientY,
-                // });
-                // setIsModalAddPlaylistQueueOpen(true);
-              }}
             />
           )}
         </HStack>

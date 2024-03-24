@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { linkService } from '../services/link';
 
 const QueryKeyGetLink = 'GET_LINK_KEY';
