@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   HStack,
   VStack,
@@ -7,17 +8,17 @@ import {
   Spinner,
   useMediaQuery,
 } from '@chakra-ui/react';
+import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
+import { MdOutlineOpenInFull, MdOutlineSkipNext } from 'react-icons/md';
+
 import { useAudioPlayerContext } from '../../contexts';
 import { useGetAlbum } from '../../query';
 import { truncateText } from '../../utils/truncatText';
-import { useState } from 'react';
 import {
   useCreateLovedSong,
   useDeleteLovedSong,
   useGetLovedSong,
 } from '../../query/lovedSong';
-import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6';
-import { MdOutlineSkipNext } from 'react-icons/md';
 
 export function PlaybarMobile() {
   const [likedSong, setLikedSong] = useState<boolean>(false);
@@ -30,6 +31,8 @@ export function PlaybarMobile() {
     isListening,
     isFinish,
     isPlaying,
+    setIsFullScreen,
+    isFullScreen,
   } = useAudioPlayerContext();
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
@@ -74,7 +77,7 @@ export function PlaybarMobile() {
               <VStack alignItems={'flex-start'} gap={'4px'} marginRight={'8px'}>
                 <Text>{truncateText(currentSong?.title ?? '', 13)}</Text>
                 <Text color={'#ffffff8a'} fontSize={'12px'}>
-                  {albums ? truncateText(albums[0].title, 12) : ''}
+                  {albums ? truncateText(albums[0]?.title ?? '', 12) : ''}
                 </Text>
               </VStack>
               <Image
@@ -118,6 +121,13 @@ export function PlaybarMobile() {
                   _hover={{
                     color: '#ffffff',
                   }}
+                />
+                <Icon
+                  boxSize={'20px'}
+                  cursor={'pointer'}
+                  color={'#8d8d8d'}
+                  as={MdOutlineOpenInFull}
+                  onClick={() => setIsFullScreen(!isFullScreen)}
                 />
               </HStack>
             </HStack>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRef } from 'react';
 import { VStack, HStack } from '@chakra-ui/react';
 

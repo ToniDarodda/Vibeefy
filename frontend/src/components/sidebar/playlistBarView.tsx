@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from 'react';
 import { HStack, Text, VStack, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,6 @@ import { ModalPlaylistOption } from '../modal/playlistOption';
 import { useAudioPlayerContext } from '../../contexts';
 import { useGetLovedSong } from '../../query/lovedSong';
 import { useGetAlbumBySongId } from '../../query';
-import { useGetSong } from '../../query/song';
 
 interface PlaylistBarViewInterface {
   mooseCoord: {

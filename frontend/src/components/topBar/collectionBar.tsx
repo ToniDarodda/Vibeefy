@@ -1,8 +1,8 @@
 import { HStack, Image, Text, Icon, VStack } from '@chakra-ui/react';
-
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-import { truncateText } from '../../utils/truncatText';
 import { useNavigate } from 'react-router-dom';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+
+import { truncateText } from '../../utils/truncatText';
 
 export function CollectionBar() {
   const navigate = useNavigate();

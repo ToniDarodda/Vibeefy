@@ -1,4 +1,5 @@
 import { VStack, HStack, Text } from '@chakra-ui/react';
+
 import { AlbumInterface } from '../../interfaces';
 
 interface NoDataSearchInterface {

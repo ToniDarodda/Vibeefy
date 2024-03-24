@@ -23,6 +23,8 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   useEffect(() => {
     if (url === undefined) return;
 
+    playerRef.current?.unload();
+
     const howlPlayer = new Howl({
       src: [url],
       format: ['wav'],
@@ -57,14 +59,6 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
       howlPlayer.unload();
     };
   }, [url]);
-
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     playerRef.current?.play();
-  //   } else {
-  //     playerRef.current?.pause();
-  //   }
-  // }, [isPlaying]);
 
   const pause = useCallback(() => {
     playerRef.current?.pause();

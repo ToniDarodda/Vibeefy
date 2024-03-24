@@ -1,8 +1,8 @@
 import { HStack, Tooltip, Image, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 import { AlbumInterface, BasePlaylistInterface } from '../../../interfaces';
 import { truncateText } from '../../../utils/truncatText';
-import { useNavigate } from 'react-router-dom';
 import { isAlbumInterface } from '../../../utils/playlistOrAlbum';
 
 interface ReducedAlbumBarInterface {

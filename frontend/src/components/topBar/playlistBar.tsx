@@ -1,9 +1,9 @@
 import { HStack, Image, Text, Icon, VStack } from '@chakra-ui/react';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 import { BasePlaylistInterface } from '../../interfaces';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { truncateText } from '../../utils/truncatText';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { albumService } from '../../services';
 

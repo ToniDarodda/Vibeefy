@@ -1,9 +1,9 @@
 import { VStack, HStack, Text, Image, Icon } from '@chakra-ui/react';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 import { AlbumInterface } from '../../interfaces';
 import { truncateText } from '../../utils/truncatText';
-import { useNavigate } from 'react-router-dom';
 
 export interface AlbumBarInterface {
   album: AlbumInterface;

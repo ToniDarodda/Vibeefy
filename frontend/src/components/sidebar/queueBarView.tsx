@@ -18,7 +18,7 @@ export function QueueView() {
   };
 
   return (
-    <VStack w={'100%'} h={'560px'}>
+    <VStack w={'100%'} h={'560px'} overflow={'scroll'}>
       {queue.map((q, index) => {
         return (
           <HStack w={'100%'} key={index} padding={'10px'} alignItems={'center'}>
@@ -47,8 +47,8 @@ export function QueueView() {
       {playlistQueue.map((q, index) => {
         return (
           <HStack
-            w={'100%'}
             key={index}
+            w={'100%'}
             padding={'10px'}
             alignItems={'center'}
             onClick={() => {

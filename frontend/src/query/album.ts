@@ -16,7 +16,7 @@ export const useGetAlbum = (name: string, take?: number, skip?: number) => {
         skip as number,
       );
     },
-    staleTime: 5 * 60 * 1000, // Les données restent fraîches pendant 5 minutes
+    staleTime: 10 * 60 * 1000,
   });
 };
 

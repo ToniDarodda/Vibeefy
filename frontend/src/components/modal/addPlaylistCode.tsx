@@ -165,7 +165,7 @@ export function ModalPlaylistCode() {
                 <Input
                   placeholder="Playlist name..."
                   {...register('name', { required: true })}
-                ></Input>
+                />
               </VStack>
 
               <VStack alignItems={'flex-start'} w={'100%'}>

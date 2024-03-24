@@ -1,4 +1,5 @@
 import { VStack, HStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
+
 import { AlbumInterface, SongInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useAudioPlayerContext } from '../../contexts';
@@ -55,7 +56,7 @@ export function SongSearch({ albums }: SongSearchInterface) {
                     src={
                       currentSong?.id === song.id
                         ? isPaused
-                          ? 'pause.gif'
+                          ? '/pause.gif'
                           : '/playing.gif'
                         : song.thumbnails ?? ''
                     }
