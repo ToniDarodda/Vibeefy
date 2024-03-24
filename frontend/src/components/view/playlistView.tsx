@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from 'react';
-import { HStack, Text, Image } from '@chakra-ui/react';
+import { HStack, Text, Icon, VStack } from '@chakra-ui/react';
 
 import {
   BasePlaylistInterface,
@@ -9,6 +9,8 @@ import {
 import { formatTime } from '../../utils';
 import { useGetSong } from '../../query/song';
 import { useAudioPlayerContext } from '../../contexts';
+import { FaPlay } from 'react-icons/fa6';
+import { HiDotsHorizontal } from 'react-icons/hi';
 
 interface PlaylistViewInterface {
   hoveredIndex: number;
@@ -42,7 +44,7 @@ export function PlaylistView({
   }, [data]);
 
   return (
-    <>
+    <VStack w={'100%'}>
       {selectedAlbumOrSong?.playlistSongs.map((song, index) => (
         <HStack
           key={index}
@@ -53,9 +55,10 @@ export function PlaylistView({
           _hover={{ backgroundColor: '#ffffff1d' }}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(-1)}
+          cursor={'pointer'}
         >
           <HStack
-            gap={'20px'}
+            w={'95%'}
             onClick={() => {
               const filteredSongs = selectedAlbumOrSong.playlistSongs
                 .slice(index + 1)
@@ -67,17 +70,39 @@ export function PlaylistView({
               setClickedSong(song);
             }}
           >
-            {hoveredIndex === index && (
-              <Image src="/pause2.png" boxSize={'12px'} />
-            )}
-            {hoveredIndex !== index && (
-              <Text color={'#6a6a6a'}>{`${index + 1}.`}</Text>
-            )}
-            <Text color={'#ffffffab'}>{song.songName}</Text>
+            <HStack justifyContent={'space-between'} w={'100%'}>
+              <HStack gap={'20px'}>
+                {hoveredIndex === index && (
+                  <Icon as={FaPlay} boxSize={'12px'} color={'#7b7b7b'} />
+                )}
+
+                {hoveredIndex !== index && (
+                  <Text color={'#6a6a6a'}>{`${index + 1}.`}</Text>
+                )}
+                <Text color={'#ffffffab'}>{song.songName}</Text>
+              </HStack>
+              <Text color={'#7b7b7b'}>{formatTime(song.songDuration)}</Text>
+            </HStack>
           </HStack>
-          <Text color={'#7b7b7b'}>{formatTime(song.songDuration)}</Text>
+          {hoveredIndex === index && (
+            <Icon
+              as={HiDotsHorizontal}
+              color={'#b2b2b2'}
+              _hover={{
+                color: '#ffffff',
+              }}
+              cursor={'pointer'}
+              onClick={() => {
+                // setMouseCoord({
+                //   clientX: e.clientX,
+                //   clientY: e.clientY,
+                // });
+                // setIsModalAddPlaylistQueueOpen(true);
+              }}
+            />
+          )}
         </HStack>
       ))}
-    </>
+    </VStack>
   );
 }

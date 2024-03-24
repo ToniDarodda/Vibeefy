@@ -55,7 +55,7 @@ export function SongSearch({ albums }: SongSearchInterface) {
                     src={
                       currentSong?.id === song.id
                         ? isPaused
-                          ? 'pause.gif'
+                          ? '/pause.gif'
                           : '/playing.gif'
                         : song.thumbnails ?? ''
                     }

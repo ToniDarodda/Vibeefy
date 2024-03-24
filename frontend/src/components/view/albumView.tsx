@@ -1,10 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { HStack, Text, Image, VStack, Icon } from '@chakra-ui/react';
+import { HStack, Text, VStack, Icon } from '@chakra-ui/react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 
 import { SongInterface, AlbumInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useAudioPlayerContext } from '../../contexts';
+import { FaPlay } from 'react-icons/fa6';
 
 interface AlbumViewInterface {
   album: AlbumInterface;
@@ -43,6 +44,7 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
             }}
             onMouseEnter={() => setHoveredIndex(songIndex)}
             onMouseLeave={() => setHoveredIndex(-1)}
+            cursor={'pointer'}
           >
             <HStack
               padding={'12px'}
@@ -78,7 +80,7 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
               <HStack justifyContent={'space-between'} w={'100%'}>
                 <HStack gap={'20px'}>
                   {hoveredIndex === songIndex && (
-                    <Image src="/pause2.png" boxSize={'12px'} />
+                    <Icon as={FaPlay} boxSize={'12px'} color={'#7b7b7b'} />
                   )}
                   {hoveredIndex !== songIndex && (
                     <Text color={'#6a6a6a'}>{`${songIndex + 1}.`}</Text>

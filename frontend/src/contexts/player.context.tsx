@@ -22,6 +22,7 @@ interface AudioPlayerContextType {
   isFinish: boolean;
   isPaused: boolean;
   isListening: boolean;
+  isFullScreen: boolean;
   currentSong?: SongInterface & { link?: string };
   isPlaying: boolean;
   duration?: number;
@@ -35,6 +36,7 @@ interface AudioPlayerContextType {
   pause: () => void;
   reStart: () => void;
   togglePlayPause: () => void;
+  setIsFullScreen: (val: boolean) => void;
   setIsPaused: Dispatch<SetStateAction<boolean>>;
   setTime: (time: number) => void;
   setVolume: (volume: number) => void;
@@ -55,11 +57,13 @@ const defaultValue: AudioPlayerContextType = {
   seek: 0,
   isFinish: true,
   isListening: false,
+  isFullScreen: false,
   isPlaying: false,
   isPaused: false,
   queue: [],
   playlistQueue: [],
   setIsListening: () => {},
+  setIsFullScreen: () => {},
   pause: () => {},
   reStart: () => {},
   togglePlayPause: () => {},
@@ -91,6 +95,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
   >([]);
 
   const [isListening, setIsListening] = useState<boolean>(false);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const s3LinkCache: S3LinkCache = {};
 
@@ -196,6 +201,8 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     isListening,
     setIsListening,
     addAlbumToQueue,
+    isFullScreen,
+    setIsFullScreen,
     setCurrentSong: (song: SongInterface) => setCurrentSong(song),
   };
 

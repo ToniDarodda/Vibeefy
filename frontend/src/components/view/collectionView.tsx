@@ -52,6 +52,7 @@ export function CollectionView({
           }}
           onMouseEnter={() => setHoveredIndex(songIndex)}
           onMouseLeave={() => setHoveredIndex(-1)}
+          cursor={'pointer'}
         >
           <HStack
             padding={'12px'}

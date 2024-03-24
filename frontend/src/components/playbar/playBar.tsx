@@ -22,12 +22,10 @@ import { MdOutlineSkipPrevious, MdOutlineSkipNext } from 'react-icons/md';
 
 import { useAudioPlayerContext } from '../../contexts';
 import { formatTime } from '../../utils';
-import { useGetAlbumBySongId } from '../../query';
 import { truncateText } from '../../utils/truncatText';
-import {
-  ViewStateEnum,
-  useViewStateContext,
-} from '../../contexts/viewState.context';
+import { MdOutlineOpenInFull } from 'react-icons/md';
+
+import { useViewStateContext } from '../../contexts/viewState.context';
 import { PlaybarMobile } from './playBarMobile';
 import {
   useCreateLovedSong,
@@ -52,6 +50,8 @@ export function Playbar({}: PlaybarInterface) {
     setIsPaused,
     isFinish,
     isListening,
+    isFullScreen,
+    setIsFullScreen,
   } = useAudioPlayerContext();
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
@@ -62,11 +62,9 @@ export function Playbar({}: PlaybarInterface) {
 
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-  const albumInfoQueries = useGetAlbumBySongId([currentSong?.id ?? '']);
-
   const [previousVolume, setPreviousVolume] = useState(sliderValue);
 
-  const { setViewState, queueState, setQueueState } = useViewStateContext();
+  const { queueState, setQueueState } = useViewStateContext();
   const { mutate: addLovedSong } = useCreateLovedSong();
   const { mutate: deleteLovedSong } = useDeleteLovedSong();
   const { data: lovedSongs } = useGetLovedSong();
@@ -141,7 +139,11 @@ export function Playbar({}: PlaybarInterface) {
       {isListening && isLargardThan1000 && (
         <HStack
           w={'100%'}
-          h={'80px'}
+          position={isFullScreen ? 'fixed' : 'initial'}
+          bottom={isFullScreen ? '0' : ''}
+          alignItems={isFullScreen ? 'flex-end' : 'center'}
+          transition="all 0.5s ease"
+          h={isFullScreen ? '100%' : '80px'}
           borderRadius={'8px'}
           justifyContent={'space-between'}
           padding={'20px'}
@@ -149,14 +151,7 @@ export function Playbar({}: PlaybarInterface) {
         >
           <HStack flex={1} gap={'20px'}>
             <Image src={currentSong?.thumbnails} boxSize={'60px'} />
-            <VStack
-              alignItems={'flex-start'}
-              onClick={() => {
-                // if (albumInfoQueries[0].data)
-                //   setSelectedAlbumOrSong(albumInfoQueries[0].data);
-                setViewState(ViewStateEnum.ALBUM);
-              }}
-            >
+            <VStack alignItems={'flex-start'}>
               <Text cursor={'pointer'}>
                 {truncateText(currentSong?.title ?? '', 18)}
               </Text>
@@ -291,6 +286,13 @@ export function Playbar({}: PlaybarInterface) {
                 </SliderTrack>
                 <SliderThumb boxSize={'10px'} borderColor={'orange'} />
               </Slider>
+              <Icon
+                boxSize={'20px'}
+                cursor={'pointer'}
+                color={'#8d8d8d'}
+                as={MdOutlineOpenInFull}
+                onClick={() => setIsFullScreen(!isFullScreen)}
+              />
             </HStack>
           </HStack>
         </HStack>
