@@ -20,6 +20,7 @@ import {
   Search,
   Register,
 } from './pages';
+import { ModalProvider } from './contexts/modal.context';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,7 +84,9 @@ root.render(
         <AudioPlayerProvider>
           <ViewStateProvider>
             <SearchProvider>
-              <RouterProvider router={router} />
+              <ModalProvider>
+                <RouterProvider router={router} />
+              </ModalProvider>
             </SearchProvider>
           </ViewStateProvider>
         </AudioPlayerProvider>

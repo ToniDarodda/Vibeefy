@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { VStack, Text, Image, HStack } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
+
 import { AlbumView } from '../components/view/albumView';
 import { useAudioPlayerContext } from '../contexts';
 import { useGetAlbumById } from '../query';
 import { selectColor } from '../utils/playlistOrAlbum';
-import { useParams } from 'react-router-dom';
 import { AlbumBar } from '../components/topBar/albumBar';
 import { ReducedAlbumBar } from '../components/topBar/reduced/rAlbumBar';
+import { ModalAddPlaylistOpen } from '../components/modal/addToPlaylistOpen';
+import { SongInterface } from '../interfaces';
 
 export function Album() {
   const { albumId } = useParams();
 
   const [reducedView, setReducedView] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
+  const [clickedSong, setClickedSong] = useState<SongInterface>();
+
   const [isModalAddPlaylistQueueOpen, setIsModalAddPlaylistQueueOpen] =
     useState<boolean>(false);
 
@@ -23,11 +27,6 @@ export function Album() {
   const { setCurrentSong, setIsListening } = useAudioPlayerContext();
 
   const { data: album } = useGetAlbumById(albumId ?? '');
-
-  const [mooseCoord, setMouseCoord] = useState<{
-    clientX: number;
-    clientY: number;
-  }>({ clientX: 0, clientY: 0 });
 
   const handleScroll = (e: any) => {
     const scrollTop = e.target.scrollTop;
@@ -82,12 +81,19 @@ export function Album() {
           </HStack>
         </HStack>
         <HStack borderBottom={'1px solid #ffffff34'} h={'1px'} w={'100%'} />
+        {isModalAddPlaylistQueueOpen && (
+          <ModalAddPlaylistOpen
+            setIsModalAddPlaylistOpen={setIsModalAddPlaylistQueueOpen}
+            isModalAddPlaylistOpen={isModalAddPlaylistQueueOpen}
+            clickedSong={clickedSong}
+          />
+        )}
         <AlbumView
           album={album!}
           setHoveredIndex={setHoveredIndex}
           setIsListening={setIsListening}
           setCurrentSong={setCurrentSong}
-          setMouseCoord={setMouseCoord}
+          setClickedSong={setClickedSong}
           setIsModalAddPlaylistQueueOpen={setIsModalAddPlaylistQueueOpen}
           hoveredIndex={hoveredIndex}
         />

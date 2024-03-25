@@ -1,4 +1,6 @@
-import { HStack, Image, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Image, Text, VStack } from '@chakra-ui/react';
+import { MdDelete } from 'react-icons/md';
+
 import { truncateText } from '../../utils/truncatText';
 import { useAudioPlayerContext } from '../../contexts';
 import {
@@ -7,7 +9,7 @@ import {
 } from '../../contexts/viewState.context';
 
 export function QueueView() {
-  const { queue, playlistQueue } = useAudioPlayerContext();
+  const { queue, playlistQueue, removeFromQueue } = useAudioPlayerContext();
 
   const { setViewState } = useViewStateContext();
 
@@ -21,14 +23,32 @@ export function QueueView() {
     <VStack w={'100%'} h={'560px'} overflow={'scroll'}>
       {queue.map((q, index) => {
         return (
-          <HStack w={'100%'} key={index} padding={'10px'} alignItems={'center'}>
+          <HStack
+            w={'100%'}
+            key={index}
+            padding={'10px'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+          >
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
-            <VStack alignItems={'flex-start'}>
+            <VStack
+              alignItems={'flex-start'}
+              gap={'0px'}
+              w={'100%'}
+              justifyContent={'space-between'}
+              h={'100%'}
+            >
               <Text cursor={'pointer'}>
                 {truncateText(q.title.split('(')[0], 20)}
               </Text>
               <Text color={'#818181'}>{getAlbumName(q.albumName)}</Text>
             </VStack>
+            <Icon
+              as={MdDelete}
+              onClick={() => removeFromQueue(q)}
+              color={'#818181'}
+              cursor={'pointer'}
+            />
           </HStack>
         );
       })}
@@ -56,6 +76,7 @@ export function QueueView() {
             }}
           >
             <Image src={q.thumbnails} boxSize={'60px'} borderRadius={'4px'} />
+
             <VStack alignItems={'flex-start'}>
               <Text cursor={'pointer'}>
                 {getAlbumName(truncateText(q.title, 20))}

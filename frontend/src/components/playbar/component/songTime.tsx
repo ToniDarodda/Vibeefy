@@ -46,7 +46,7 @@ export function SongTime({ isFullScreen }: SongTimeInterface) {
               : (Math.round(seek) * 100) / 180
           }
           sx={{
-            '& > div:first-child': {
+            '& > div:first-of-type': {
               transition: 'width 1s linear',
             },
           }}

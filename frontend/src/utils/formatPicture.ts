@@ -8,3 +8,10 @@ export function MakePictureLarger(album: AlbumInterface) {
   }
   return '/vinyl.png';
 }
+
+export function MakePictureLargerWithImageLink(thumbnails: string) {
+  if (thumbnails && thumbnails.length > 0) {
+    return thumbnails.replaceAll('120', '550');
+  }
+  return '/vinyl.png';
+}

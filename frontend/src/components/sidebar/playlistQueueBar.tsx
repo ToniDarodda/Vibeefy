@@ -12,6 +12,7 @@ import { useViewStateContext } from '../../contexts/viewState.context';
 import { useGetPlaylist } from '../../query';
 import { useSearchProvider } from '../../contexts/search.context';
 import { useAudioPlayerContext } from '../../contexts';
+import { useModalProvider } from '../../contexts/modal.context';
 
 export function PlaylistQueueBar() {
   const navigate = useNavigate();
@@ -24,10 +25,8 @@ export function PlaylistQueueBar() {
 
   const [isModalPlaylistOptionOpen, setModalPlaylistOptionOpen] =
     useState<boolean>(false);
-  const [mooseCoord, setMouseCoord] = useState<{
-    clientX: number;
-    clientY: number;
-  }>({ clientX: 0, clientY: 0 });
+
+  const { setMouseCoord } = useModalProvider();
 
   const { queueState } = useViewStateContext();
 
@@ -84,7 +83,7 @@ export function PlaylistQueueBar() {
               borderRadius={'8px'}
               onMouseEnter={() => setIsHoveredLoop(true)}
               onMouseLeave={() => setIsHoveredLoop(false)}
-              onClick={() => {}}
+              onClick={handleNavigateHome}
             >
               <Icon
                 as={MdSearch}
@@ -106,7 +105,6 @@ export function PlaylistQueueBar() {
               setModalPlaylistOptionOpen(false);
               setMouseCoord({ clientX: e.clientX, clientY: e.clientY });
             }}
-            contextMenu={'preventDefault'}
             onClick={() => {
               setModalPlaylistOptionOpen(false);
             }}
@@ -114,13 +112,14 @@ export function PlaylistQueueBar() {
             <HStack
               w={'100%'}
               h={'70px'}
-              padding={'20px'}
+              padding={'8px'}
               borderRadius={'8px'}
               justifyContent={'space-between'}
             >
               <Icon
                 as={queueState ? MdQueue : IoLibrarySharp}
                 boxSize={'28px'}
+                w={'40px'}
                 color={'#535353'}
               />
               <Text fontSize={'16px'}>{queueState ? 'Queue' : 'Playlist'}</Text>
@@ -135,10 +134,8 @@ export function PlaylistQueueBar() {
             >
               {!queueState ? (
                 <PlaylistBarView
-                  mooseCoord={mooseCoord}
                   playlists={playlists ?? []}
                   isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-                  setMouseCoord={setMouseCoord}
                   setModalPlaylistOptionOpen={setModalPlaylistOptionOpen}
                 />
               ) : (

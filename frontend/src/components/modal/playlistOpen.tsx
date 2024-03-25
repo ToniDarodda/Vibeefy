@@ -2,38 +2,29 @@ import { useRef } from 'react';
 import { VStack, HStack, Text, Image } from '@chakra-ui/react';
 
 import { useCreatePlaylist } from '../../query';
+import { useModalProvider } from '../../contexts/modal.context';
 
 interface PlaylistOpenInterface {
   isModalPlaylistOpen: boolean;
   playlistsLength: number | undefined;
-  mooseCoord: { clientX: number; clientY: number };
 }
 
 export function ModalPlaylistOpen({
-  mooseCoord,
   playlistsLength,
   isModalPlaylistOpen,
 }: PlaylistOpenInterface) {
   const { mutate: createPlaylist } = useCreatePlaylist();
+  const { calculateModalCoordX, mouseCoord } = useModalProvider();
 
   const componentRef = useRef<HTMLDivElement>(null);
-
-  const calculateModalCoordX = (clientX: number) => {
-    const { innerWidth: width } = window;
-    const componentSize = componentRef.current?.offsetWidth ?? 0;
-    if (clientX + componentSize > width) {
-      return clientX - componentSize;
-    }
-    return clientX;
-  };
 
   return (
     <>
       {isModalPlaylistOpen && (
         <VStack
           position={'absolute'}
-          top={mooseCoord.clientY}
-          left={calculateModalCoordX(mooseCoord.clientX)}
+          top={mouseCoord.clientY}
+          left={calculateModalCoordX(mouseCoord.clientX, componentRef)}
         >
           <VStack
             backgroundColor={'#121212'}

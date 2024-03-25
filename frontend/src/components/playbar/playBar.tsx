@@ -4,7 +4,6 @@ import { HStack, VStack, useMediaQuery } from '@chakra-ui/react';
 import { useAudioPlayerContext } from '../../contexts';
 
 import { PlaybarMobile } from './playBarMobile';
-import { useGetLovedSong } from '../../query/lovedSong';
 import { SongInfo } from './component/songInfo';
 import { SongManagement } from './component/songManagement';
 import { SongTime } from './component/songTime';
@@ -15,22 +14,10 @@ interface PlaybarInterface {}
 export function Playbar({}: PlaybarInterface) {
   const [wait, setWait] = useState<boolean>(false);
 
-  const {
-    togglePlayPause,
-    currentSong,
-    isPaused,
-    setIsPaused,
-    isListening,
-    isFullScreen,
-  } = useAudioPlayerContext();
+  const { togglePlayPause, isPaused, setIsPaused, isListening, isFullScreen } =
+    useAudioPlayerContext();
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
-
-  const { data: lovedSongs } = useGetLovedSong();
-
-  const isTheSongLiked = () => {
-    return lovedSongs?.some((song) => song.songId === currentSong?.id);
-  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -78,17 +65,13 @@ export function Playbar({}: PlaybarInterface) {
         <HStack
           w={'100%'}
           transition="all 0.5s ease"
-          h={'80px'}
+          h={'100%'}
           borderRadius={'8px'}
           justifyContent={'space-between'}
           padding={'20px'}
           background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #121212"
         >
-          <SongInfo
-            currentSong={currentSong}
-            isTheSongLiked={isTheSongLiked}
-            isFullScreen={wait}
-          />
+          <SongInfo isFullScreen={wait} />
 
           <VStack flex={3} gap={'20px'}>
             <SongManagement isFullScreen={wait} />

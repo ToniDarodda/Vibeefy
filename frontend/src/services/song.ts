@@ -1,4 +1,4 @@
-import { Song } from '../interfaces/song';
+import { RawSong, Song } from '../interfaces/song';
 import { Fetch } from '../utils/axios';
 
 class SongService {
@@ -18,6 +18,14 @@ class SongService {
       ),
     );
     return songsInfo;
+  }
+
+  async getSongsByName(songName: string): Promise<RawSong[]> {
+    const { data: songs }: { data: RawSong[] } = await Fetch.get(
+      `/songs/name/${songName}`,
+    );
+
+    return songs;
   }
 }
 

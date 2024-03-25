@@ -25,11 +25,11 @@ export class ArtistService {
   }
 
   async getArtistByPseudo(pseudo: ArtistGetByPseudo): Promise<Artist[]> {
-    return this.artistRepository.find({
-      where: {
-        ...pseudo,
-      },
-    });
+    return this.artistRepository
+      .createQueryBuilder('artist')
+      .orWhere('artist.name ILIKE :name', { name: `%${pseudo.name}%` })
+      .take(30)
+      .getMany();
   }
 
   async getAllArtistRandom(take: number, skip: number): Promise<Artist[]> {

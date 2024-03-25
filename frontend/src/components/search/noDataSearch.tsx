@@ -1,15 +1,15 @@
 import { VStack, HStack, Text } from '@chakra-ui/react';
 
-import { AlbumInterface } from '../../interfaces';
+import { AlbumInterface, RawArtist, RawSong } from '../../interfaces';
 
 interface NoDataSearchInterface {
-  albums: AlbumInterface[];
+  data: AlbumInterface[] | RawArtist[] | RawSong[] | undefined;
 }
 
-export function NoDataSearch({ albums }: NoDataSearchInterface) {
+export function NoDataSearch({ data }: NoDataSearchInterface) {
   return (
     <>
-      {albums?.length === 0 && (
+      {data && data?.length === 0 && (
         <VStack w={'100%'} justifyContent={'center'} alignItems={'center'}>
           <Text fontSize={'20px'}>No data found...</Text>
           <HStack

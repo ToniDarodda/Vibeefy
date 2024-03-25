@@ -27,6 +27,7 @@ import { useEffect } from 'react';
 import { AxiosError } from 'axios';
 
 import { useCreatePlaylist, usePlaylistCode } from '../../query';
+import { useViewStateContext } from '../../contexts/viewState.context';
 
 type Inputs = {
   name: string;
@@ -60,6 +61,8 @@ export function ModalPlaylistCode() {
 
   const { mutate: addPlaylistWithCode, error, isError } = usePlaylistCode();
 
+  const { queueState } = useViewStateContext();
+
   const onSubmitCode: SubmitHandler<InputCode> = ({ code }: InputCode) => {
     addPlaylistWithCode(code);
     onAddByCodeClose();
@@ -88,6 +91,7 @@ export function ModalPlaylistCode() {
     <>
       <Menu>
         <MenuButton
+          visibility={queueState ? 'hidden' : 'visible'}
           border={'none'}
           as={IconButton}
           _hover={{

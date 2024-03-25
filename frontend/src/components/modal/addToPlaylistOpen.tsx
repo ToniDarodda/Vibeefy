@@ -1,56 +1,45 @@
 import { useEffect, useRef, useState } from 'react';
 import { VStack, Text, HStack, Icon, Image } from '@chakra-ui/react';
-import { UseMutateFunction } from '@tanstack/react-query';
 import { GoPlus } from 'react-icons/go';
 import { MdOutlineQueueMusic } from 'react-icons/md';
 
 import { useAudioPlayerContext } from '../../contexts';
-import {
-  SongInterface,
-  PlaylistSong,
-  PlaylistType,
-  BasePlaylistInterface,
-} from '../../interfaces';
+import { SongInterface, BasePlaylistInterface } from '../../interfaces';
+import { useAddSongToPlaylist, useGetPlaylist } from '../../query';
+import { useModalProvider } from '../../contexts/modal.context';
 
 interface PlaylistOpenInterface {
   isModalAddPlaylistOpen: boolean;
   clickedSong: SongInterface | undefined;
-  addSong: UseMutateFunction<
-    PlaylistSong,
-    Error,
-    {
-      name: string;
-      songId: string;
-      playlistId: string;
-      songDuration: number;
-    },
-    unknown
-  >;
+
   setIsModalAddPlaylistOpen: (b: boolean) => void;
-  playlists: PlaylistType[] | undefined;
-  mooseCoord: { clientX: number; clientY: number };
 }
 
 export function ModalAddPlaylistOpen({
-  addSong,
-  playlists,
-  mooseCoord,
   clickedSong,
   isModalAddPlaylistOpen,
   setIsModalAddPlaylistOpen,
 }: PlaylistOpenInterface) {
-  const { addToQueue } = useAudioPlayerContext();
+  const modalRef = useRef<HTMLDivElement>(null);
+
   const [createPlaylistClicked, setCreatePlaylistCliked] =
     useState<boolean>(false);
 
-  const modalRef = useRef<HTMLDivElement>(null);
+  const { mutate: addSong } = useAddSongToPlaylist();
+
+  const { data: playlists } = useGetPlaylist();
+
+  const { addToQueue } = useAudioPlayerContext();
+  const { mouseCoord, calculateModalCoordX } = useModalProvider();
 
   const handleClickPlaylist = () => {
     setCreatePlaylistCliked(true);
   };
 
   const handleClickQueue = () => {
+    console.log(clickedSong);
     if (clickedSong !== undefined) {
+      console.log(clickedSong, 'pasund');
       addToQueue(clickedSong);
     }
     setIsModalAddPlaylistOpen(false);
@@ -90,8 +79,8 @@ export function ModalAddPlaylistOpen({
       {isModalAddPlaylistOpen && (
         <VStack
           position={'absolute'}
-          top={mooseCoord.clientY}
-          left={mooseCoord.clientX}
+          top={mouseCoord.clientY}
+          left={calculateModalCoordX(mouseCoord.clientX, modalRef)}
           onContextMenu={(e) => e.preventDefault()}
           ref={modalRef}
         >
@@ -159,26 +148,29 @@ export function ModalAddPlaylistOpen({
             >
               <Text fontSize={'12px'}>Add to playlist</Text>
               <VStack w={'100%'} h={'1px'} borderBottom={'1px solid #3e3d3d'} />
-              {playlists?.map((playlist: BasePlaylistInterface) => {
-                return (
-                  <HStack
-                    alignItems={'center'}
-                    w={'100%'}
-                    padding={'8px'}
-                    borderRadius={'4px'}
-                    _hover={{ backgroundColor: '#1a1a1a' }}
-                  >
-                    <Image src="/vinyl.png" boxSize={'24px'} />
-
-                    <Text
-                      w={'100px'}
-                      onClick={() => handleAddSongToPlaylist(playlist.id)}
+              {playlists?.map(
+                (playlist: BasePlaylistInterface, index: number) => {
+                  return (
+                    <HStack
+                      key={index}
+                      alignItems={'center'}
+                      w={'100%'}
+                      padding={'8px'}
+                      borderRadius={'4px'}
+                      _hover={{ backgroundColor: '#1a1a1a' }}
                     >
-                      {playlist.name}
-                    </Text>
-                  </HStack>
-                );
-              })}
+                      <Image src="/vinyl.png" boxSize={'24px'} />
+
+                      <Text
+                        w={'100px'}
+                        onClick={() => handleAddSongToPlaylist(playlist.id)}
+                      >
+                        {playlist.name}
+                      </Text>
+                    </HStack>
+                  );
+                },
+              )}
             </VStack>
           )}
         </VStack>

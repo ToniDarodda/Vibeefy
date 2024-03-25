@@ -1,12 +1,12 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { HStack, Text, Icon, VStack } from '@chakra-ui/react';
+import { FaPlay } from 'react-icons/fa6';
+import { HiDotsHorizontal } from 'react-icons/hi';
 
 import { Song, SongInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useGetSong } from '../../query/song';
 import { useAudioPlayerContext } from '../../contexts';
-import { FaPlay } from 'react-icons/fa6';
-import { HiDotsHorizontal } from 'react-icons/hi';
 
 interface CollectionViewInterface {
   hoveredIndex: number;
@@ -68,6 +68,7 @@ export function CollectionView({
               setClickedSong(song);
             }}
             onContextMenu={(e) => {
+              console.log('dwqfqw');
               e.preventDefault();
             }}
           >

@@ -17,9 +17,15 @@ export class ArtistManagerController {
   async getArtistInfo(@Param('artistId') artistId: string) {
     return this.userService.getArtistInfo(artistId);
   }
+
   @Get('artist-info')
   async getArtist(@Query('take') take: string, @Query('skip') skip: string) {
     return this.userService.getArtist(+take, +skip);
+  }
+
+  @Get('artist-info/name/:name')
+  async getArtistByPseudo(@Param('name') name: string) {
+    return this.userService.getArtistByPseudo(name);
   }
 
   @Get('album-info/song/:songId')
@@ -49,6 +55,11 @@ export class ArtistManagerController {
     const ids = songIds instanceof Array ? songIds : [songIds];
 
     return this.userService.getSongsInfoByIds(ids);
+  }
+
+  @Get('songs/name/:name')
+  async getSongsByName(@Param('name') name: string) {
+    return this.userService.getSongsByName(name);
   }
 
   @Get('songs/:songId')

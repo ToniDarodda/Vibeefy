@@ -31,16 +31,14 @@ export class SongService {
   }
 
   async getSongsByName(title: string): Promise<Song[]> {
-    return this.songRepository.find({
-      where: {
-        title,
-      },
-      relations: {
-        album: {
-          artist: true,
-        },
-      },
-    });
+    return await this.songRepository
+      .createQueryBuilder('song')
+      .leftJoinAndSelect('song.album', 'album') // Jointure avec la table 'album'
+      .leftJoinAndSelect('album.artist', 'artist') // Jointure avec la table 'artist' à partir de l'album
+      .where('song.title ILIKE :title', { title: `%${title}%` }) // Condition de recherche insensible à la casse sur le titre de la chanson
+      .orWhere('artist.name ILIKE :name', { name: `%${title}%` }) // Condition de recherche insensible à la casse sur le titre de la chanson
+      .take(40)
+      .getMany(); // Récupère toutes les chansons correspondantes avec leurs albums et artistes
   }
 
   async getSongsByAlbumId(albumId: string): Promise<Song[]> {

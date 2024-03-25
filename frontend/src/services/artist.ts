@@ -1,4 +1,4 @@
-import { ArtistInfo } from '../interfaces';
+import { ArtistInfo, RawArtist } from '../interfaces';
 import { Fetch } from '../utils';
 
 class ArtistService {
@@ -8,6 +8,14 @@ class ArtistService {
     );
 
     return artist;
+  }
+
+  async getArtistByName(artistName: string): Promise<RawArtist[]> {
+    const { data: rawArtist }: { data: RawArtist[] } = await Fetch.get(
+      `artist-info/name/${artistName}`,
+    );
+
+    return rawArtist;
   }
 }
 

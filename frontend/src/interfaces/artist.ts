@@ -19,7 +19,7 @@ export interface SongInterface {
   albumName?: string;
 }
 
-interface ArtistInterface {
+export interface ArtistInterface {
   id: string;
   name: string;
   thumbnails: string | null;
@@ -46,4 +46,13 @@ export interface ArtistInfo {
   profilePicture: string;
   artistYoutubeId: string;
   albums: AlbumInfo[];
+}
+
+export interface RawArtist {
+  id: string;
+  name: string;
+  thumbnails: string;
+  description: string;
+  profilePicture: string;
+  artistYoutubeId: string;
 }
