@@ -21,7 +21,7 @@ export function Loading() {
   }, [text, fullText]);
 
   useEffect(() => {
-    if (!isFetching) navigate('/dashboard');
+    if (!isFetching) navigate('/');
   }, [isFetching]);
 
   useEffect(() => {

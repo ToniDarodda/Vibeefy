@@ -34,7 +34,7 @@ export function LoginCard({ title }: CardInterface) {
   const [show, setShow] = useState(false);
 
   const handleClick = () => setShow(!show);
-  const redirectRegister = () => navigate('/');
+  const redirectRegister = () => navigate('/register');
 
   const { mutate: loginUser } = useLoginUser();
 
