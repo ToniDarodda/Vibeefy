@@ -13,7 +13,7 @@ export function MusicTypeSong() {
   return (
     <>
       {musicType === GetMusicType.SONGS && songs && songs.length > 0 ? (
-        <VStack w={'100%'} h={'calc(100% - 150px)'}>
+        <VStack w={'100%'} h={'100vh'}>
           <HStack w={'100%'} justifyContent={'space-between'} h={'60px'}>
             <HStack>
               <Text color={'#a7a7a7'}>#</Text>
@@ -24,7 +24,12 @@ export function MusicTypeSong() {
           </HStack>
 
           <VStack borderBottom={'1px solid #212121'} h={'1px'} w={'100%'} />
-          <VStack w={'100%'} gap={'16px'} h={'100%'} overflowY={'auto'}>
+          <VStack
+            w={'100%'}
+            gap={'16px'}
+            maxH="calc(100vh - 250px)"
+            overflow={'scroll'}
+          >
             {songs?.map((song, index) => {
               return (
                 <HStack
