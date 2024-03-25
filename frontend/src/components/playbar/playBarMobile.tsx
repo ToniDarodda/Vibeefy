@@ -65,9 +65,10 @@ export function PlaybarMobile() {
             <HStack
               background={`linear-gradient(190deg, #191919 0%, #131313 100%)`}
               borderRadius={'8px'}
-              h={'60px'}
+              h={'100%'}
               w={'100%'}
               padding={'8px'}
+              overflow={'hidden'}
             >
               <Image
                 src={currentSong?.thumbnails ?? '/vinyl.png'}
@@ -134,7 +135,7 @@ export function PlaybarMobile() {
           )}
           <HStack
             w={'100%'}
-            h={'48px'}
+            minH={'48px'}
             borderRadius={'8px'}
             justifyContent={'space-evenly'}
             gap={'50px'}
@@ -142,9 +143,9 @@ export function PlaybarMobile() {
             padding={'12px'}
             background="linear-gradient(45deg, rgba(0, 0, 0, 0.20) 2.92%, rgba(0, 0, 0, 0.00) 74.78%), #191919  "
           >
-            <Image src="/home.png" boxSize={'22px'} />
-            <Image src="/loop.png" boxSize={'22px'} />
-            <Image src="/pl.png" boxSize={'22px'} />
+            <Image src="/home.png" boxSize={'20px'} />
+            <Image src="/loop.png" boxSize={'20px'} />
+            <Image src="/pl.png" boxSize={'20px'} />
           </HStack>
         </>
       )}

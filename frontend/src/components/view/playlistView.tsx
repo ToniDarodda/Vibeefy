@@ -47,10 +47,7 @@ export function PlaylistView({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setInputValue(value);
-    console.log(value);
   };
-
-  console.log(songs);
 
   useEffect(() => {
     if (data) {
