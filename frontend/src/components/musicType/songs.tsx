@@ -4,9 +4,12 @@ import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 import { truncateText, formatTime } from '../../utils';
 import { useGetSongByName } from '../../query';
 import { NoDataSearch } from '../search/noDataSearch';
+import { useAudioPlayerContext } from '../../contexts';
 
 export function MusicTypeSong() {
   const { musicType, search } = useSearchProvider();
+
+  const { setCurrentSong, setIsListening } = useAudioPlayerContext();
 
   const { data: songs } = useGetSongByName(search);
 
@@ -43,6 +46,10 @@ export function MusicTypeSong() {
                   }}
                   padding={'4px'}
                   borderRadius={'4px'}
+                  onClick={() => {
+                    setCurrentSong({ ...song, albumName: song.album.title });
+                    setIsListening(true);
+                  }}
                 >
                   <HStack flex={2}>
                     <Text color={'#a7a7a7'} w={'30px'}>

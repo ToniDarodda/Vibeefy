@@ -4,10 +4,17 @@ import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 import { MakePictureLargerWithImageLink } from '../../utils';
 import { useGetArtistName } from '../../query';
 import { NoDataSearch } from '../search/noDataSearch';
+import { useNavigate } from 'react-router-dom';
 
 export function MusicTypeArtist() {
+  const navigate = useNavigate();
+
   const { musicType, search } = useSearchProvider();
   const { data: artists } = useGetArtistName(search);
+
+  const handleNavigateArtist = (artistId: string) => {
+    navigate(`/artist/${artistId}`);
+  };
 
   return (
     <>
@@ -29,6 +36,7 @@ export function MusicTypeArtist() {
                 _hover={{
                   backgroundColor: '#1a1a1a',
                 }}
+                onClick={() => handleNavigateArtist(artist.id)}
               >
                 <Image
                   src={MakePictureLargerWithImageLink(artist.profilePicture)}

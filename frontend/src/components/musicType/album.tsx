@@ -4,11 +4,18 @@ import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 import { MakePictureLargerWithImageLink, truncateText } from '../../utils';
 import { useGetAlbum } from '../../query';
 import { NoDataSearch } from '../search/noDataSearch';
+import { useNavigate } from 'react-router-dom';
 
 export function MusicTypeAlbum() {
+  const navigate = useNavigate();
+
   const { musicType, search } = useSearchProvider();
 
   const { data: albums } = useGetAlbum(search, 30, 0);
+
+  const handleRedirectAlbum = (albumId: string) => {
+    navigate(`/album/${albumId}`);
+  };
 
   return (
     <>
@@ -31,6 +38,7 @@ export function MusicTypeAlbum() {
                 _hover={{
                   backgroundColor: '#1a1a1a',
                 }}
+                onClick={() => handleRedirectAlbum(album.id)}
               >
                 <Image
                   src={MakePictureLargerWithImageLink(album.thumbnails)}
