@@ -14,7 +14,7 @@ export function EmptySearch() {
   return (
     <VStack h={'100%'} w={'100%'} overflow={'auto'} backgroundColor={'#121212'}>
       <SearchBar inputRef={inputRef} />
-      <VStack w={'100%'} h={'100%'} gap={'20px'}>
+      <VStack w={'100%'} h={'100%'} gap={'20px'} marginTop={'20px'}>
         <HStack
           w={'100%'}
           h={'100%'}
@@ -40,10 +40,11 @@ export function EmptySearch() {
                   }}
                   borderRadius={'8px'}
                   padding={'12px'}
+                  box-shadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
                 >
                   <Image
                     src={MakePictureLarger(album)}
-                    boxSize={'200px'}
+                    boxSize={'180px'}
                     borderRadius={'100px'}
                   />
                   <Text>{album.artist.name}</Text>

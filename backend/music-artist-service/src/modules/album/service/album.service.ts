@@ -27,10 +27,15 @@ export class AlbumService {
       .createQueryBuilder('album')
       .leftJoinAndSelect('album.songs', 'songs')
       .leftJoinAndSelect('album.artist', 'artist')
-      .where('album.title ILIKE :title', { title: `%${title}%` })
-      .orWhere('artist.name ILIKE :name', { name: `%${title}%` })
+      .where('album.title ILIKE :title AND album.title != :exactTitle', {
+        title: `%${title}%`,
+        exactTitle: title,
+      })
+      .orWhere('artist.name ILIKE :name AND artist.name != :exactName', {
+        name: `%${title}%`,
+        exactName: title,
+      })
       .take(take)
-      .skip(skip)
       .getMany();
   }
 

@@ -7,10 +7,11 @@ import { MdFavorite } from 'react-icons/md';
 
 import { ArtistBar } from '../components/topBar/artistBar';
 import { useAudioPlayerContext } from '../contexts';
-import { AlbumInfo } from '../interfaces';
+import { AlbumInfo, SongInterface } from '../interfaces';
 import { formatTime } from '../utils';
 import { truncateText } from '../utils/truncatText';
 import { useGetArtistInfo } from '../query/artist';
+import { useModalProvider } from '../contexts/modal.context';
 
 export function Artist() {
   const { id } = useParams();
@@ -20,10 +21,8 @@ export function Artist() {
   const [clickedAlbum, setClickedAlbum] = useState<AlbumInfo>();
   const [isModalAlbumQueueOpen, setIsModalAlbumQueueOpen] =
     useState<boolean>(false);
-  const [mooseCoord, setMouseCoord] = useState<{
-    clientX: number;
-    clientY: number;
-  }>({ clientX: 0, clientY: 0 }); // faire un context avec la gestion des modal
+  const { mouseCoord, setMouseCoord, calculateModalCoordX } =
+    useModalProvider();
   const [lastScrollTop, setLastScrollTop] = useState<number>(0);
 
   const [songDisplayLimit, setSongDisplayLimit] = useState<number>(5);
@@ -84,7 +83,7 @@ export function Artist() {
   }, []);
 
   return (
-    <>
+    <VStack w={'100%'} h={'100%'}>
       <VStack w={'100%'} h={'100%'} backgroundColor={'#121212'}>
         <ArtistBar artist={artist!} reducedView={reducedView} />
 
@@ -92,7 +91,7 @@ export function Artist() {
           w={'100%'}
           overflowY="auto"
           onScroll={handleScroll}
-          maxH={'800px'}
+          h={'100%'}
           gap={'16px'}
           padding={'24px'}
           alignItems={'flex-start'}
@@ -129,7 +128,7 @@ export function Artist() {
                       src={
                         currentSong?.id === song.id
                           ? isPaused
-                            ? 'pause.gif'
+                            ? '/pause.gif'
                             : '/playing.gif'
                           : song.thumbnails ?? ''
                       }
@@ -159,13 +158,7 @@ export function Artist() {
             Discography
           </Text>
 
-          <HStack
-            w={'100%'}
-            h={'100%'}
-            gap={'20px'}
-            minH={'300px'}
-            overflow={'scroll'}
-          >
+          <HStack w={'100%'} maxW={'100%'} gap={'20px'} flexWrap={'wrap'}>
             {artist?.albums
               .sort((a, b) => +b.year - +a.year)
               .map((album, index) => {
@@ -183,6 +176,7 @@ export function Artist() {
                     cursor={'pointer'}
                     onContextMenu={(e) => {
                       e.preventDefault();
+                      console.log('artist');
                       setMouseCoord({
                         clientX: e.clientX,
                         clientY: e.clientY,
@@ -237,8 +231,8 @@ export function Artist() {
           padding={'4px'}
           position={'absolute'}
           alignItems={'flex-start'}
-          top={mooseCoord.clientY}
-          left={mooseCoord.clientX}
+          top={mouseCoord.clientY}
+          left={calculateModalCoordX(mouseCoord.clientX, modalRef)}
         >
           <HStack
             w={'100%'}
@@ -250,8 +244,22 @@ export function Artist() {
             paddingLeft={'8px'}
             onClick={() => {
               if (clickedAlbum) {
-                addAlbumToQueue(clickedAlbum.songs);
+                const changeAlbum: SongInterface[] = clickedAlbum.songs.map(
+                  (song) => {
+                    return {
+                      id: song.id,
+                      songDuration: song.songDuration,
+                      thumbnails: song.thumbnails,
+                      title: song.title,
+                      videoId: song.videoId,
+                      albumName: clickedAlbum.title,
+                      trackNumber: song.trackNumber,
+                    };
+                  },
+                );
+                addAlbumToQueue(changeAlbum);
               }
+              setIsModalAlbumQueueOpen(false);
             }}
           >
             <Icon as={MdOutlineQueueMusic} boxSize={'24px'} color={'#a7a7a7'} />
@@ -288,6 +296,6 @@ export function Artist() {
           </HStack>
         </VStack>
       )}
-    </>
+    </VStack>
   );
 }

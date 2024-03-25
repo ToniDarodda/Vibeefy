@@ -5,21 +5,14 @@ import { MdDelete, MdAddToQueue, MdShare } from 'react-icons/md';
 
 import { useDeletePlaylist, useGenerateCode } from '../../query';
 import { BasePlaylistInterface } from '../../interfaces';
+import { useModalProvider } from '../../contexts/modal.context';
 
 interface PlaylistOption {
   isModalPlaylistOptionOpen: boolean;
-  mooseCoord: { clientX: number; clientY: number };
   selectedPl: BasePlaylistInterface;
-  setMouseCoord: (
-    value: React.SetStateAction<{
-      clientX: number;
-      clientY: number;
-    }>,
-  ) => void;
 }
 
 export function ModalPlaylistOption({
-  mooseCoord,
   selectedPl,
   isModalPlaylistOptionOpen,
 }: PlaylistOption) {
@@ -30,17 +23,10 @@ export function ModalPlaylistOption({
   });
 
   const componentRef = useRef<HTMLDivElement>(null);
+
   const { mutate: generateCode, data: generatedCode } = useGenerateCode();
 
-  const calculateModalCoordX = (clientX: number) => {
-    const { innerWidth: width } = window;
-    const componentSize = componentRef.current?.offsetWidth ?? 100;
-
-    if (clientX + componentSize > width) {
-      return clientX - componentSize;
-    }
-    return clientX;
-  };
+  const { calculateModalCoordX, mouseCoord } = useModalProvider();
 
   const { mutate: deletePlaylist } = useDeletePlaylist();
 
@@ -82,8 +68,8 @@ export function ModalPlaylistOption({
           h={'200px'}
           zIndex={'2'}
           position={'absolute'}
-          top={mooseCoord.clientY}
-          left={calculateModalCoordX(mooseCoord.clientX)}
+          top={mouseCoord.clientY}
+          left={calculateModalCoordX(mouseCoord.clientX, componentRef)}
         >
           <VStack
             w={'100%'}

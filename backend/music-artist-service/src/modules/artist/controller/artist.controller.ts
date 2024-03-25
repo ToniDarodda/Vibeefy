@@ -19,11 +19,13 @@ export class ArtistController {
   }
 
   @MessagePattern({ cmd: 'get_artist_by_pseudo' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getArtistByPseudo(data: ArtistGetByPseudo): Promise<Artist[]> {
     return await this.artistService.getArtistByPseudo(data);
   }
 
   @MessagePattern({ cmd: 'get_artist' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAllArtistRandom({ take, skip }: ArtistGet): Promise<Artist[]> {
     return await this.artistService.getAllArtistRandom(take, skip);
   }

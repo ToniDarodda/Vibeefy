@@ -18,7 +18,12 @@ export function TopResultSearch({ albums }: TopResultSearchInterface) {
   };
 
   return (
-    <VStack justifyContent={'flex-start'} alignItems={'flex-start'}>
+    <VStack
+      justifyContent={'flex-start'}
+      alignItems={'flex-start'}
+      w={'30%'}
+      minW={{ base: '120px', sm: '150px', md: '200px', lg: '240px' }}
+    >
       <Text fontSize={'20px'} as={'b'}>
         Top result
       </Text>

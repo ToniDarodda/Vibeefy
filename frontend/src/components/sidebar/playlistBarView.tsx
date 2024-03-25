@@ -4,31 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { BasePlaylistInterface, PlaylistType } from '../../interfaces';
 import { ModalPlaylistOption } from '../modal/playlistOption';
-import { useAudioPlayerContext } from '../../contexts';
 import { useGetLovedSong } from '../../query/lovedSong';
 import { useGetAlbumBySongId } from '../../query';
+import { useModalProvider } from '../../contexts/modal.context';
 
 interface PlaylistBarViewInterface {
-  mooseCoord: {
-    clientX: number;
-    clientY: number;
-  };
   playlists: BasePlaylistInterface[];
   isModalPlaylistOptionOpen: boolean;
 
-  setMouseCoord: (
-    value: React.SetStateAction<{
-      clientX: number;
-      clientY: number;
-    }>,
-  ) => void;
   setModalPlaylistOptionOpen: (value: React.SetStateAction<boolean>) => void;
 }
 
 export function PlaylistBarView({
   playlists,
-  mooseCoord,
-  setMouseCoord,
   isModalPlaylistOptionOpen,
   setModalPlaylistOptionOpen,
 }: PlaylistBarViewInterface) {
@@ -39,9 +27,8 @@ export function PlaylistBarView({
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const { isPlaying } = useAudioPlayerContext();
-
   const { data: lovedSong } = useGetLovedSong();
+  const { setMouseCoord } = useModalProvider();
 
   const firstSongIds = playlists
     .map((playlist) => playlist.playlistSongs[0]?.songId)
@@ -77,7 +64,6 @@ export function PlaylistBarView({
   return (
     <VStack
       w={'100%'}
-      h={isPlaying ? '580px' : '660px'}
       gap={'18px'}
       ref={modalRef}
       overflow={'scroll'}
@@ -122,6 +108,7 @@ export function PlaylistBarView({
               backgroundColor: '#161616',
             }}
             onContextMenu={(e) => {
+              console.log('oui');
               e.stopPropagation();
               e.preventDefault();
               setSelectedPlaylist(playlist);
@@ -155,9 +142,7 @@ export function PlaylistBarView({
       })}
       <ModalPlaylistOption
         selectedPl={selectedPlaylist!}
-        setMouseCoord={setMouseCoord}
         isModalPlaylistOptionOpen={isModalPlaylistOptionOpen}
-        mooseCoord={mooseCoord}
       />
     </VStack>
   );

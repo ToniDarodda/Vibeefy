@@ -8,37 +8,33 @@ import {
 } from '@chakra-ui/react';
 
 import { truncateText } from '../../../utils';
-import { SongInterface } from '../../../interfaces';
 import { useState } from 'react';
-import { useCreateLovedSong, useDeleteLovedSong } from '../../../query';
+import {
+  useCreateLovedSong,
+  useDeleteLovedSong,
+  useGetLovedSong,
+} from '../../../query';
 import { useAudioPlayerContext } from '../../../contexts';
 import { MdOutlineOpenInFull } from 'react-icons/md';
 
 interface SongInfoInterface {
-  currentSong:
-    | (SongInterface & {
-        link?: string | undefined;
-      })
-    | undefined;
-
   isFullScreen: boolean;
-
-  isTheSongLiked: () => boolean | undefined;
 }
 
-export function SongInfo({
-  currentSong,
-  isFullScreen,
-  isTheSongLiked,
-}: SongInfoInterface) {
+export function SongInfo({ isFullScreen }: SongInfoInterface) {
   const [likedSong, setLikedSong] = useState<boolean>(false);
 
-  const { setIsFullScreen } = useAudioPlayerContext();
+  const { setIsFullScreen, currentSong } = useAudioPlayerContext();
 
   const [isLargardThan1000] = useMediaQuery('(min-width: 1000px)');
 
   const { mutate: addLovedSong } = useCreateLovedSong();
   const { mutate: deleteLovedSong } = useDeleteLovedSong();
+  const { data: lovedSongs } = useGetLovedSong();
+
+  const isTheSongLiked = () => {
+    return lovedSongs?.some((song) => song.songId === currentSong?.id);
+  };
 
   const handleLovedSong = () => {
     if (likedSong) deleteLovedSong(currentSong?.id ?? '');
@@ -78,11 +74,11 @@ export function SongInfo({
               lg: '30px',
             }}
           >
-            {truncateText(currentSong?.title ?? '', 18)}
+            {truncateText(currentSong?.title ?? '', 30)}
           </Text>
         ) : (
           <Text cursor={'pointer'}>
-            {truncateText(currentSong?.title ?? '', 18)}
+            {truncateText(currentSong?.title ?? '', 30)}
           </Text>
         )}
         {isFullScreen ? (

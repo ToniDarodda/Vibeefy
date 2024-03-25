@@ -1,4 +1,8 @@
-import { Controller } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AlbumService } from '../service/album.service';
 import { MessagePattern } from '@nestjs/microservices';
 import {
@@ -15,15 +19,18 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @MessagePattern({ cmd: 'get_album_by_id' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAlbumById({ id }: AlbumGetById): Promise<Album> {
     return await this.albumService.getAlbumById(id);
   }
 
   @MessagePattern({ cmd: 'get_album_by_name' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAlbumByName({ name, skip, take }: AlbumGetByName): Promise<Album[]> {
     return await this.albumService.getAlbumByName(name, take, skip);
   }
   @MessagePattern({ cmd: 'get_album_by_song_id' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAlbumBySongId({ id }: AlbumGetBySongId): Promise<Album> {
     return await this.albumService.getAlbumBySongId(id);
   }

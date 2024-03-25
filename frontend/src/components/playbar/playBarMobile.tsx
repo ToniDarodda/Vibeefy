@@ -70,7 +70,7 @@ export function PlaybarMobile() {
               padding={'8px'}
             >
               <Image
-                src={albums ? albums[0]?.thumbnails : '/vinyl.png'}
+                src={currentSong?.thumbnails ?? '/vinyl.png'}
                 borderRadius={'4px'}
                 boxSize={'50px'}
               />

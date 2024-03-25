@@ -131,9 +131,6 @@ export const SearchBar = forwardRef<HTMLInputElement, SearchBarInterface>(
               }}
               placeholder="Browse your favorite music..."
               border={'1px solid transparent'}
-              onContextMenu={(e) => {
-                e.stopPropagation();
-              }}
             />
           </HStack>
           <Icon

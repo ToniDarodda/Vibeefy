@@ -1,11 +1,12 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { HStack, Text, VStack, Icon } from '@chakra-ui/react';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import { FaPlay } from 'react-icons/fa6';
 
 import { SongInterface, AlbumInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useAudioPlayerContext } from '../../contexts';
-import { FaPlay } from 'react-icons/fa6';
+import { useModalProvider } from '../../contexts/modal.context';
 
 interface AlbumViewInterface {
   album: AlbumInterface;
@@ -13,7 +14,8 @@ interface AlbumViewInterface {
 
   setHoveredIndex: Dispatch<SetStateAction<number>>;
   setIsModalAddPlaylistQueueOpen: Dispatch<SetStateAction<boolean>>;
-  setMouseCoord: Dispatch<SetStateAction<{ clientX: number; clientY: number }>>;
+  setClickedSong: Dispatch<SetStateAction<SongInterface | undefined>>;
+
   setIsListening: (b: boolean) => void;
   setCurrentSong: (song: SongInterface) => void;
 }
@@ -22,13 +24,14 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
   album,
   hoveredIndex,
 
-  setMouseCoord,
+  setClickedSong,
   setCurrentSong,
   setIsListening,
   setHoveredIndex,
   setIsModalAddPlaylistQueueOpen,
 }) => {
   const { addPlaylistToQueue } = useAudioPlayerContext();
+  const { setMouseCoord } = useModalProvider();
 
   return (
     <VStack w={'100%'}>
@@ -65,11 +68,14 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                 });
               }}
               onContextMenu={(e) => {
+                console.log('oji');
+                console.log(song);
                 e.preventDefault();
                 setMouseCoord({
                   clientX: e.clientX,
                   clientY: e.clientY,
                 });
+                setClickedSong({ ...song, albumName: album.title });
 
                 setIsModalAddPlaylistQueueOpen(true);
               }}
@@ -104,6 +110,7 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                     clientX: e.clientX,
                     clientY: e.clientY,
                   });
+                  setClickedSong({ ...song, albumName: album.title });
                   setIsModalAddPlaylistQueueOpen(true);
                 }}
               />

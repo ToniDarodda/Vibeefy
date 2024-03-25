@@ -44,6 +44,7 @@ interface AudioPlayerContextType {
   addAlbumToQueue: (songs: SongInterface[]) => void;
   setCurrentSong: (song: SongInterface) => void;
   setIsListening: Dispatch<SetStateAction<boolean>>;
+  removeFromQueue: (song: SongInterface) => void;
   addPlaylistToQueue: (
     songs: PlaylistSong[] | SongInterface[],
     playlistName: string,
@@ -63,6 +64,7 @@ const defaultValue: AudioPlayerContextType = {
   queue: [],
   playlistQueue: [],
   setIsListening: () => {},
+  removeFromQueue: () => {},
   setIsFullScreen: () => {},
   pause: () => {},
   reStart: () => {},
@@ -108,6 +110,12 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     setQueue((prevQueue) => [
       ...prevQueue,
       { ...song, link: s3LinkCache[song.videoId] },
+    ]);
+  };
+
+  const removeFromQueue = async (song: SongInterface) => {
+    setQueue((prevQueue) => [
+      ...prevQueue.filter((s) => s.videoId !== song.videoId),
     ]);
   };
 
@@ -203,6 +211,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     addAlbumToQueue,
     isFullScreen,
     setIsFullScreen,
+    removeFromQueue,
     setCurrentSong: (song: SongInterface) => setCurrentSong(song),
   };
 
