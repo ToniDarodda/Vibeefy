@@ -7,7 +7,7 @@ const MutationKeyUsePlaylist = 'USE_PLAYLIST_KEY';
 const MutationKeyCreateCodePlaylist = 'CREATE_CODE_PLAYLIST_KEY';
 const MutationKeyDeletePlaylist = 'DELETE_PLAYLIST_KEY';
 const MutationKeyAddSongToPlaylist = 'CREATE_ADD_SONG_TO_PLAYLIST_KEY';
-const MutationKeyGetPlaylist = 'GET_PLAYLIST_KEY';
+export const MutationKeyGetPlaylist = 'GET_PLAYLIST_KEY';
 const MutationKeyGetPublicPlaylist = 'GET_PUBLIC_PLAYLIST_KEY';
 const MutationKeyGetPlaylistById = 'GET_PLAYLIST_BY_ID_KEY';
 
@@ -69,6 +69,9 @@ export const useAddSongToPlaylist = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [MutationKeyGetPlaylist],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [MutationKeyGetPlaylistById],
       });
     },
   });
