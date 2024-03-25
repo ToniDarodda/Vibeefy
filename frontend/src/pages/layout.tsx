@@ -25,6 +25,7 @@ export function Layout() {
       padding="8px"
       backgroundColor="#000000"
       overflow="hidden"
+      onContextMenu={(e) => e.preventDefault()}
     >
       <HStack w="100%" minH={isListening ? 'calc(100% - 90px)' : '100%'}>
         {isLargerThan1000 ? (

@@ -31,8 +31,8 @@ export class SongController {
 
   @MessagePattern({ cmd: 'get_songs_by_name' })
   @UseInterceptors(ClassSerializerInterceptor)
-  async getSongsByName({ name }: SongGetByName): Promise<Song[]> {
-    return await this.songService.getSongsByName(name);
+  async getSongsByName({ name, take, skip }: SongGetByName): Promise<Song[]> {
+    return await this.songService.getSongsByName(name, take, skip);
   }
 
   @MessagePattern({ cmd: 'get_songs_by_album_id' })

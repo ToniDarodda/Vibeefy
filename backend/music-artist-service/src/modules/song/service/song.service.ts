@@ -30,14 +30,20 @@ export class SongService {
     });
   }
 
-  async getSongsByName(title: string): Promise<Song[]> {
+  async getSongsByName(
+    title: string,
+    take: number,
+    skip: number,
+  ): Promise<Song[]> {
     return await this.songRepository
       .createQueryBuilder('song')
       .leftJoinAndSelect('song.album', 'album') // Jointure avec la table 'album'
       .leftJoinAndSelect('album.artist', 'artist') // Jointure avec la table 'artist' à partir de l'album
       .where('song.title ILIKE :title', { title: `%${title}%` }) // Condition de recherche insensible à la casse sur le titre de la chanson
       .orWhere('artist.name ILIKE :name', { name: `%${title}%` }) // Condition de recherche insensible à la casse sur le titre de la chanson
-      .take(40)
+      .orderBy('album.title', 'ASC')
+      .take(take)
+      .skip(skip)
       .getMany(); // Récupère toutes les chansons correspondantes avec leurs albums et artistes
   }
 

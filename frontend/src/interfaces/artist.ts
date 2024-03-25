@@ -1,22 +1,13 @@
-export interface AlbumInterface {
+import { AlbumInfo } from './album';
+
+export interface Artist {
+  name: string;
   id: string;
-  title: string;
-  thumbnails: string;
-  year: string;
-  description?: string;
-  albumId: string;
-  songs: SongInterface[];
-  artist: ArtistInterface;
 }
 
-export interface SongInterface {
+export interface FeaturedArtists {
+  name: string;
   id: string;
-  title: string;
-  songDuration: number;
-  thumbnails: string;
-  videoId: string;
-  trackNumber?: number;
-  albumName?: string;
 }
 
 export interface ArtistInterface {
@@ -26,16 +17,6 @@ export interface ArtistInterface {
   description: string | null;
   profilePicture: string;
   artistYoutubeId: string;
-}
-
-export interface AlbumInfo {
-  id: string;
-  title: string;
-  thumbnails: string;
-  year: string;
-  description?: string;
-  albumId: string;
-  songs: SongInterface[];
 }
 
 export interface ArtistInfo {

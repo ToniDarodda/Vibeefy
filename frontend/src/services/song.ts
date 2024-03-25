@@ -20,9 +20,12 @@ class SongService {
     return songsInfo;
   }
 
-  async getSongsByName(songName: string): Promise<RawSong[]> {
+  async getSongsByName(
+    songName: string,
+    numberFetch: number,
+  ): Promise<RawSong[]> {
     const { data: songs }: { data: RawSong[] } = await Fetch.get(
-      `/songs/name/${songName}`,
+      `/songs/name?name=${songName}&take=${numberFetch}&skip=${0}`,
     );
 
     return songs;

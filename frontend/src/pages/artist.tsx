@@ -7,11 +7,12 @@ import { MdFavorite } from 'react-icons/md';
 
 import { ArtistBar } from '../components/topBar/artistBar';
 import { useAudioPlayerContext } from '../contexts';
-import { AlbumInfo, SongInterface } from '../interfaces';
 import { formatTime } from '../utils';
 import { truncateText } from '../utils/truncatText';
 import { useGetArtistInfo } from '../query/artist';
 import { useModalProvider } from '../contexts/modal.context';
+import { SongInterface } from '../interfaces';
+import { AlbumInfo } from '../interfaces/album';
 
 export function Artist() {
   const { id } = useParams();

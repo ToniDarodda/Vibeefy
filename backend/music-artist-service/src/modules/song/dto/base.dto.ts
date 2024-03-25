@@ -20,6 +20,20 @@ export class SondBaseDTO {
   name: string;
 
   @ApiProperty({
+    example: 20,
+    description: 'Number sent back',
+  })
+  @IsNumber()
+  take?: number;
+
+  @ApiProperty({
+    example: 2,
+    description: 'Number skipped',
+  })
+  @IsNumber()
+  skip?: number;
+
+  @ApiProperty({
     example: '2,42',
     description: 'Song duration',
   })
@@ -45,6 +59,10 @@ export class SongsGetByIdsDTO {
 
 export class SongGetById extends PickType(SondBaseDTO, ['id']) {}
 
-export class SongGetByName extends PickType(SondBaseDTO, ['name']) {}
+export class SongGetByName extends PickType(SondBaseDTO, [
+  'name',
+  'take',
+  'skip',
+]) {}
 
 export class SongGetByAlbumId extends PickType(SondBaseDTO, ['id']) {}

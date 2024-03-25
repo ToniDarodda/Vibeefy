@@ -1,4 +1,4 @@
-import { ArtistInterface } from './artist';
+import { AlbumInterface } from './album';
 
 export interface Song {
   id: string;
@@ -17,14 +17,14 @@ export interface RawSong {
   album: AlbumInterface;
 }
 
-interface AlbumInterface {
+export interface SongInterface {
   id: string;
   title: string;
+  songDuration: number;
   thumbnails: string;
-  year: string;
-  description?: string;
-  albumId: string;
-  artist: ArtistInterface;
+  videoId: string;
+  trackNumber?: number;
+  albumName?: string;
 }
 
 export interface LovedSongToSong {
