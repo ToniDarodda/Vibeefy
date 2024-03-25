@@ -6,7 +6,6 @@ import { ArtistSearch } from '../search/artistSearch';
 import { SongSearch } from '../search/songSearch';
 import { TopResultSearch } from '../search/topResultSearch';
 import { useGetAlbum } from '../../query';
-import { NoDataSearch } from '../search/noDataSearch';
 
 export function MusicTypeAll() {
   const { musicType, search } = useSearchProvider();
@@ -15,7 +14,7 @@ export function MusicTypeAll() {
 
   return (
     <>
-      {albums && musicType === GetMusicType.ALL ? (
+      {albums && musicType === GetMusicType.ALL && (
         <VStack w={'100%'} gap={'20px'} h={'100%'}>
           <HStack w={'100%'} h={'100%'}>
             <TopResultSearch albums={albums} />
@@ -26,8 +25,6 @@ export function MusicTypeAll() {
             <AlbumSearch albums={albums} />
           </VStack>
         </VStack>
-      ) : (
-        <NoDataSearch data={albums} />
       )}
     </>
   );

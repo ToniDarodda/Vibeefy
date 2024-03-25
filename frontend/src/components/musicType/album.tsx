@@ -3,7 +3,6 @@ import { HStack, VStack, Image, Text } from '@chakra-ui/react';
 import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 import { MakePictureLargerWithImageLink, truncateText } from '../../utils';
 import { useGetAlbum } from '../../query';
-import { NoDataSearch } from '../search/noDataSearch';
 import { useNavigate } from 'react-router-dom';
 
 export function MusicTypeAlbum() {
@@ -19,7 +18,7 @@ export function MusicTypeAlbum() {
 
   return (
     <>
-      {albums && albums.length > 0 && musicType === GetMusicType.ALBUMS ? (
+      {albums && albums.length > 0 && musicType === GetMusicType.ALBUMS && (
         <HStack
           w={'100%'}
           h={'100%'}
@@ -54,8 +53,6 @@ export function MusicTypeAlbum() {
             );
           })}
         </HStack>
-      ) : (
-        <NoDataSearch data={albums} />
       )}
     </>
   );

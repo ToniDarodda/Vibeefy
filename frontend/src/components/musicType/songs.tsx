@@ -3,7 +3,6 @@ import { VStack, HStack, Image, Text } from '@chakra-ui/react';
 import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 import { truncateText, formatTime } from '../../utils';
 import { useGetSongByName } from '../../query';
-import { NoDataSearch } from '../search/noDataSearch';
 import { useAudioPlayerContext } from '../../contexts';
 
 export function MusicTypeSong() {
@@ -15,7 +14,7 @@ export function MusicTypeSong() {
 
   return (
     <>
-      {musicType === GetMusicType.SONGS && songs && songs.length > 0 ? (
+      {musicType === GetMusicType.SONGS && songs && songs.length > 0 && (
         <VStack w={'100%'} h={'100vh'}>
           <HStack w={'100%'} justifyContent={'space-between'} h={'60px'}>
             <HStack>
@@ -78,8 +77,6 @@ export function MusicTypeSong() {
             })}
           </VStack>
         </VStack>
-      ) : (
-        <NoDataSearch data={songs} />
       )}
     </>
   );

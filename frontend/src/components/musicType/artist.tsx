@@ -3,7 +3,6 @@ import { HStack, VStack, Image, Text } from '@chakra-ui/react';
 import { GetMusicType, useSearchProvider } from '../../contexts/search.context';
 import { MakePictureLargerWithImageLink } from '../../utils';
 import { useGetArtistName } from '../../query';
-import { NoDataSearch } from '../search/noDataSearch';
 import { useNavigate } from 'react-router-dom';
 
 export function MusicTypeArtist() {
@@ -18,7 +17,7 @@ export function MusicTypeArtist() {
 
   return (
     <>
-      {musicType === GetMusicType.ARTISTS && artists && artists?.length > 0 ? (
+      {musicType === GetMusicType.ARTISTS && artists && artists?.length > 0 && (
         <HStack
           w={'100%'}
           h={'100%'}
@@ -50,8 +49,6 @@ export function MusicTypeArtist() {
             );
           })}
         </HStack>
-      ) : (
-        <NoDataSearch data={artists} />
       )}
     </>
   );
