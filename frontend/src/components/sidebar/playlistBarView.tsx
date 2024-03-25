@@ -108,7 +108,6 @@ export function PlaylistBarView({
               backgroundColor: '#161616',
             }}
             onContextMenu={(e) => {
-              console.log('oui');
               e.stopPropagation();
               e.preventDefault();
               setSelectedPlaylist(playlist);

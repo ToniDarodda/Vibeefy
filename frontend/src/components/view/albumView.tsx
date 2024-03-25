@@ -68,8 +68,6 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                 });
               }}
               onContextMenu={(e) => {
-                console.log('oji');
-                console.log(song);
                 e.preventDefault();
                 setMouseCoord({
                   clientX: e.clientX,

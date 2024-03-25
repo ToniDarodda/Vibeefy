@@ -28,8 +28,8 @@ export const useGetAlbumById = (albumId: string) => {
   });
 };
 
-export const useGetAlbumBySongId = (firstSongIds: string[]) =>
-  useQueries({
+export const useGetAlbumBySongId = (firstSongIds: string[]) => {
+  return useQueries({
     queries: firstSongIds.map((songId) => {
       return {
         queryKey: [MutationKeyGetAlbumBySongId, songId],
@@ -38,3 +38,4 @@ export const useGetAlbumBySongId = (firstSongIds: string[]) =>
       };
     }),
   });
+};

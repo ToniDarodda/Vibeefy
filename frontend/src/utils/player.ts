@@ -21,7 +21,6 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
   }, [onSongEnd]);
 
   useEffect(() => {
-    console.log('AJAHAHAHHA');
     if (url === undefined) return;
 
     playerRef.current?.unload();
@@ -42,7 +41,6 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
         setIsPaused(false);
       },
       onpause: () => {
-        console.log('oui');
         setIsPlaying(false);
         setIsPaused(true);
       },
@@ -68,8 +66,6 @@ export const useAudioPlayer = ({ url, onSongEnd }: UseAudioPlayerOptions) => {
 
   const togglePlayPause = useCallback(() => {
     if (!playerRef.current) return;
-
-    console.log('ici');
 
     if (isPlaying) {
       playerRef.current.pause();

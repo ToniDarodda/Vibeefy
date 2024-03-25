@@ -2,6 +2,7 @@ import {
   CreatePlaylist,
   PlaylistSong,
   PlaylistType,
+  PlaylistTypeWithUser,
 } from '../interfaces/playlist';
 import { Fetch } from '../utils/axios';
 
@@ -16,6 +17,13 @@ class PlaylistService {
   async getPlaylist(): Promise<PlaylistType[]> {
     const { data: playlists }: { data: PlaylistType[] } =
       await Fetch.get<PlaylistType[]>(`/playlist/by-user/me`);
+
+    return playlists;
+  }
+
+  async getPublicPlaylist(): Promise<PlaylistTypeWithUser[]> {
+    const { data: playlists }: { data: PlaylistTypeWithUser[] } =
+      await Fetch.get<PlaylistTypeWithUser[]>(`/playlist/public`);
 
     return playlists;
   }

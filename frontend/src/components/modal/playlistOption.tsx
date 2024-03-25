@@ -31,7 +31,6 @@ export function ModalPlaylistOption({
   const { mutate: deletePlaylist } = useDeletePlaylist();
 
   const handlePlaylistdelete = () => {
-    selectedPl.id;
     deletePlaylist(selectedPl.id);
   };
 

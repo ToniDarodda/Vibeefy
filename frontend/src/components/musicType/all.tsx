@@ -12,8 +12,6 @@ export function MusicTypeAll() {
 
   const { data: albums } = useGetAlbum(search, 30, 0);
 
-  console.log(albums);
-
   return (
     <>
       {albums && albums.length > 0 && musicType === GetMusicType.ALL && (

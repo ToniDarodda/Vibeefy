@@ -177,7 +177,6 @@ export function Artist() {
                     cursor={'pointer'}
                     onContextMenu={(e) => {
                       e.preventDefault();
-                      console.log('artist');
                       setMouseCoord({
                         clientX: e.clientX,
                         clientY: e.clientY,

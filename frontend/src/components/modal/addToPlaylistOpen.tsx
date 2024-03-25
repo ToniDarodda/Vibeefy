@@ -37,9 +37,7 @@ export function ModalAddPlaylistOpen({
   };
 
   const handleClickQueue = () => {
-    console.log(clickedSong);
     if (clickedSong !== undefined) {
-      console.log(clickedSong, 'pasund');
       addToQueue(clickedSong);
     }
     setIsModalAddPlaylistOpen(false);
