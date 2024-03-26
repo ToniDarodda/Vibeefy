@@ -41,8 +41,8 @@ export class ArtistManagerService {
     return firstValueFrom(observable);
   }
 
-  async getSongsByName(songName: string) {
-    return this.client.send({ cmd: 'get_songs_by_name' }, { name: songName });
+  async getSongsByName(name: string, take?: number, skip?: number) {
+    return this.client.send({ cmd: 'get_songs_by_name' }, { name, take, skip });
   }
 
   async getSongsInfoByIds(ids: string[]) {

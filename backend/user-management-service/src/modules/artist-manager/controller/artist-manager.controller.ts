@@ -57,9 +57,13 @@ export class ArtistManagerController {
     return this.userService.getSongsInfoByIds(ids);
   }
 
-  @Get('songs/name/:name')
-  async getSongsByName(@Param('name') name: string) {
-    return this.userService.getSongsByName(name);
+  @Get('songs/name/')
+  async getSongsByName(
+    @Query('name') name: string,
+    @Query('take') take: string,
+    @Query('skip') skip: string,
+  ) {
+    return this.userService.getSongsByName(name, +take, +skip);
   }
 
   @Get('songs/:songId')

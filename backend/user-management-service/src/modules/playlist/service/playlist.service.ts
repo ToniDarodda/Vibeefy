@@ -127,6 +127,10 @@ export class PlaylistService {
       where: {
         isPublic: true,
       },
+      relations: {
+        user: true,
+        playlistSongs: true,
+      },
     });
   }
 

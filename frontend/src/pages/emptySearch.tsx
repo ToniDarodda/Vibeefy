@@ -5,11 +5,17 @@ import { SearchBar } from '../components';
 import { useGetAlbum } from '../query';
 import { AlbumInterface } from '../interfaces';
 import { MakePictureLarger } from '../utils/formatPicture';
+import { useNavigate } from 'react-router-dom';
 
 export function EmptySearch() {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: albums } = useGetAlbum('', 20, 0);
+
+  const handleNavigateArtist = (artistId: string) => {
+    navigate(`/artist/${artistId}`);
+  };
 
   return (
     <VStack h={'100%'} w={'100%'} overflow={'auto'} backgroundColor={'#121212'}>
@@ -41,6 +47,7 @@ export function EmptySearch() {
                   borderRadius={'8px'}
                   padding={'12px'}
                   box-shadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
+                  onClick={() => handleNavigateArtist(album.artist.id)}
                 >
                   <Image
                     src={MakePictureLarger(album)}

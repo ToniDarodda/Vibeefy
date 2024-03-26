@@ -14,7 +14,7 @@ export function MusicTypeAll() {
 
   return (
     <>
-      {albums && musicType === GetMusicType.ALL && (
+      {albums && albums.length > 0 && musicType === GetMusicType.ALL && (
         <VStack w={'100%'} gap={'20px'} h={'100%'}>
           <HStack w={'100%'} h={'100%'}>
             <TopResultSearch albums={albums} />

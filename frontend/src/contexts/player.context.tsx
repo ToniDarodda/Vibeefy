@@ -8,9 +8,8 @@ import React, {
   SetStateAction,
 } from 'react';
 import { useAudioPlayer } from '../utils/player';
-import { SongInterface } from '../interfaces/artist';
 import { linkService } from '../services/link';
-import { PlaylistSong } from '../interfaces';
+import { PlaylistSong, SongInterface } from '../interfaces';
 import { songService } from '../services/song';
 
 interface S3LinkCache {

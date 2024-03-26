@@ -3,13 +3,13 @@ import { HStack, Text, VStack, Icon } from '@chakra-ui/react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { FaPlay } from 'react-icons/fa6';
 
-import { SongInterface, AlbumInterface } from '../../interfaces';
+import { AlbumInterfaceWithSongs, SongInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useAudioPlayerContext } from '../../contexts';
 import { useModalProvider } from '../../contexts/modal.context';
 
 interface AlbumViewInterface {
-  album: AlbumInterface;
+  album: AlbumInterfaceWithSongs;
   hoveredIndex: number;
 
   setHoveredIndex: Dispatch<SetStateAction<number>>;
@@ -68,8 +68,6 @@ export const AlbumView: React.FC<AlbumViewInterface> = ({
                 });
               }}
               onContextMenu={(e) => {
-                console.log('oji');
-                console.log(song);
                 e.preventDefault();
                 setMouseCoord({
                   clientX: e.clientX,

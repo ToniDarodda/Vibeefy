@@ -1,12 +1,12 @@
 import { VStack, HStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 
-import { AlbumInterface, SongInterface } from '../../interfaces';
+import { AlbumInterfaceWithSongs, SongInterface } from '../../interfaces';
 import { formatTime } from '../../utils';
 import { useAudioPlayerContext } from '../../contexts';
 import { truncateText } from '../../utils/truncatText';
 
 interface SongSearchInterface {
-  albums: AlbumInterface[];
+  albums: AlbumInterfaceWithSongs[];
 }
 
 export function SongSearch({ albums }: SongSearchInterface) {
@@ -30,7 +30,7 @@ export function SongSearch({ albums }: SongSearchInterface) {
         alignItems={'flex-start'}
         padding={isLargardThan800 ? '24px' : isLargardThan400 ? '12px' : '4px'}
       >
-        {albums?.map((album: AlbumInterface) => {
+        {albums?.map((album: AlbumInterfaceWithSongs) => {
           return album.songs.map((song: SongInterface, index: number) => {
             return (
               <HStack

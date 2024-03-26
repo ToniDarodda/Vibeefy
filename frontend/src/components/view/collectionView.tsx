@@ -68,7 +68,6 @@ export function CollectionView({
               setClickedSong(song);
             }}
             onContextMenu={(e) => {
-              console.log('dwqfqw');
               e.preventDefault();
             }}
           >

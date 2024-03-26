@@ -7,6 +7,7 @@ import { MusicTypeAll } from '../components/musicType/all';
 import { MusicTypeAlbum } from '../components/musicType/album';
 import { MusicTypeSong } from '../components/musicType/songs';
 import { MusicTypeArtist } from '../components/musicType/artist';
+import { MusicTypePlaylist } from '../components/musicType/playlist';
 
 export function Search() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +32,7 @@ export function Search() {
         <MusicTypeArtist />
         <MusicTypeAlbum />
         <MusicTypeSong />
+        <MusicTypePlaylist />
       </HStack>
     </VStack>
   );

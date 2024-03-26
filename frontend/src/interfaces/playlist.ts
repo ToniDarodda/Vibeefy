@@ -1,3 +1,5 @@
+import { UserType } from './user';
+
 export interface PlaylistSong {
   id: string;
   songId: string;
@@ -22,6 +24,7 @@ export interface BasePlaylistInterface {
 }
 
 export type PlaylistType = BasePlaylistInterface;
+export type PlaylistTypeWithUser = BasePlaylistInterface & { user: UserType };
 
 export type CreatePlaylist = Pick<BasePlaylistInterface, 'name' | 'isPublic'>;
 

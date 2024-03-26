@@ -22,10 +22,10 @@ export const useGetSongsInfoByIds = (songIds: string[]) => {
   });
 };
 
-export const useGetSongByName = (songName: string) => {
+export const useGetSongByName = (songName: string, numberFetch: number) => {
   return useQuery({
-    queryKey: [QueryKeyGetSongByName, songName],
-    queryFn: () => songService.getSongsByName(songName),
+    queryKey: [QueryKeyGetSongByName, songName, numberFetch],
+    queryFn: () => songService.getSongsByName(songName, numberFetch),
     enabled: songName !== undefined && songName.length > 0,
   });
 };

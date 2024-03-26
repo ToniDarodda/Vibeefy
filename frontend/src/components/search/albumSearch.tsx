@@ -1,8 +1,8 @@
 import { HStack, VStack, Text, Image, useMediaQuery } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { AlbumInterface } from '../../interfaces';
 import { truncateText } from '../../utils/truncatText';
+import { AlbumInterface } from '../../interfaces/album';
 
 interface AlbumSearchInterface {
   albums: AlbumInterface[];

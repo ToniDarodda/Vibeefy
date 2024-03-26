@@ -11,8 +11,24 @@ import { FullPlaybar } from '../components/playbar/fullPlayBar';
 export function Layout() {
   const { isListening, isFullScreen } = useAudioPlayerContext();
   const [isLargerThan1000] = useMediaQuery('(min-width: 1000px)');
-
   const [activePlaybar, setActivePlaybar] = useState('playbar');
+
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Exécutez la fonction handleResize immédiatement pour définir la hauteur initiale
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     setActivePlaybar(isFullScreen ? 'fullPlaybar' : 'playbar');
@@ -21,12 +37,14 @@ export function Layout() {
   return (
     <VStack
       w="100vw"
-      h="100vh"
+      h={`${windowHeight}px`}
       padding="8px"
       backgroundColor="#000000"
       overflow="hidden"
+      justifyContent={'flex-end'}
+      onContextMenu={(e) => e.preventDefault()}
     >
-      <HStack w="100%" minH={isListening ? 'calc(100% - 90px)' : '100%'}>
+      <HStack w="100%" minH={isListening ? 'calc(100% - 110px)' : '100%'}>
         {isLargerThan1000 ? (
           <HStack w={'100%'} h={'100%'}>
             <VStack h="100%" flex={5} maxW={'80%'}>
@@ -43,7 +61,13 @@ export function Layout() {
         )}
       </HStack>
       {isListening && (
-        <VStack w="100%" h={'90px'} minH={'90px'} position="relative">
+        <VStack
+          w="100%"
+          h={'100%'}
+          minH={'80px'}
+          maxH={isLargerThan1000 ? '90px' : '110px'}
+          position="relative"
+        >
           <VStack
             position="absolute"
             width="100%"
