@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Common } from '../common/entity';
 import { Album } from '../album/entity';
 import { Artist } from '../artist/entity';
@@ -21,6 +28,7 @@ export class Song extends Common {
   videoId: string;
 
   @ManyToMany(() => Artist, (artist) => artist.collaboration)
+  @JoinTable({ name: 'featured_artist' })
   featuredArtists: Artist[];
 
   @ManyToOne(() => Album, (album) => album.songs)
